@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.21)
+project(navigation VERSION "0.1.0")
+
+# specify c++ standard to c++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+#set(Boost_USE_STATIC_LIBS ON)
+#set(BOOST_MIN_VERSION "1.70.0")
+#find_package(Boost ${BOOST_MIN_VERSION} REQUIRED)
+find_package(Threads)
+#
+#if(NOT Boost_FOUND)
+#    message("未在本机查找到Boost库1.75.0版本,请安装后编译")
+#endif()
+
+if (APPLE)
+    set(CMAKE_C_COMPILER "/usr/local/bin/gcc-10")
+    set(CMAKE_CXX_COMPILER "/usr/local/bin/g++-10")
+endif(APPLE)
+
+include_directories(src)
+add_subdirectory(src)
+
+enable_testing()
+
+#add_executable(navigation main.cpp)
