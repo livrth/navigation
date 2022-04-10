@@ -31,7 +31,7 @@ protected:
 public:
 	// init from a vector
 	// available information truncates from 2:-1
-	virtual void init(Id, std::vector<std::string>&) = 0;
+//	virtual void init(Id, std::vector<std::string>&) = 0;
 	void set_id(Id);
 	Id get_id();
 	void set_name(std::string);
