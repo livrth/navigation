@@ -1,6 +1,3 @@
-// Created by livrth on 4/4/2022.
-
-
 #ifndef NAVIGATION_NAVIGATION_H
 #define NAVIGATION_NAVIGATION_H
 

@@ -1,7 +1,3 @@
-//
-// Created by x on 4/4/0004.
-//
-
 #ifndef NAVIGATION_MODEL_H
 #define NAVIGATION_MODEL_H
 

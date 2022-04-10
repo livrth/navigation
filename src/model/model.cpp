@@ -1,7 +1,3 @@
-//
-// Created by x on 4/4/0004.
-//
-
 #include "model.h"
 using std::shared_ptr, std::vector, std::string;
 

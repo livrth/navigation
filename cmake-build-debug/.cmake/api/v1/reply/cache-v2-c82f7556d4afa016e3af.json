@@ -15,7 +15,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/addr2line.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/addr2line.exe"
 		},
 		{
 			"name" : "CMAKE_AR",
@@ -31,7 +31,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/ar.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/ar.exe"
 		},
 		{
 			"name" : "CMAKE_BUILD_TYPE",
@@ -195,7 +195,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/g++.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/g++.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_AR",
@@ -211,7 +211,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/gcc-ar.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/gcc-ar.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_RANLIB",
@@ -227,7 +227,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/gcc-ranlib.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/gcc-ranlib.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_FLAGS",
@@ -339,7 +339,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/gcc.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/gcc.exe"
 		},
 		{
 			"name" : "CMAKE_C_COMPILER_AR",
@@ -355,7 +355,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/gcc-ar.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/gcc-ar.exe"
 		},
 		{
 			"name" : "CMAKE_C_COMPILER_RANLIB",
@@ -371,7 +371,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/gcc-ranlib.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/gcc-ranlib.exe"
 		},
 		{
 			"name" : "CMAKE_C_FLAGS",
@@ -483,7 +483,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/dlltool.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/dlltool.exe"
 		},
 		{
 			"name" : "CMAKE_EXECUTABLE_FORMAT",
@@ -611,7 +611,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include/c++/11.2.0;c:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include/c++/11.2.0/x86_64-w64-mingw32;c:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include/c++/11.2.0/backward;c:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/11.2.0/include;c:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include;c:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed;c:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../x86_64-w64-mingw32/include"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++;C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32;C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward;C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include;C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include;C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed;C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../x86_64-w64-mingw32/include"
 		},
 		{
 			"name" : "CMAKE_EXTRA_GENERATOR_C_SYSTEM_DEFINED_MACROS",
@@ -635,7 +635,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/11.2.0/include;c:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include;c:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed;c:\\mingw64\\bin\\../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../x86_64-w64-mingw32/include"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include;C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include;C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed;C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../x86_64-w64-mingw32/include"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -759,7 +759,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/ld.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/ld.exe"
 		},
 		{
 			"name" : "CMAKE_MAKE_PROGRAM",
@@ -775,7 +775,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/mingw32-make.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/mingw32-make.exe"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -871,7 +871,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/nm.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/nm.exe"
 		},
 		{
 			"name" : "CMAKE_NUMBER_OF_MAKEFILES",
@@ -899,7 +899,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/objcopy.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/objcopy.exe"
 		},
 		{
 			"name" : "CMAKE_OBJDUMP",
@@ -915,7 +915,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/objdump.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/objdump.exe"
 		},
 		{
 			"name" : "CMAKE_PLATFORM_INFO_INITIALIZED",
@@ -1039,7 +1039,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/ranlib.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/ranlib.exe"
 		},
 		{
 			"name" : "CMAKE_RC_COMPILER",
@@ -1055,7 +1055,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/windres.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/windres.exe"
 		},
 		{
 			"name" : "CMAKE_RC_COMPILER_WORKS",
@@ -1163,7 +1163,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/readelf.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/readelf.exe"
 		},
 		{
 			"name" : "CMAKE_ROOT",
@@ -1383,7 +1383,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/mingw64/bin/strip.exe"
+			"value" : "C:/Users/x/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/mingw/bin/strip.exe"
 		},
 		{
 			"name" : "CMAKE_VERBOSE_MAKEFILE",

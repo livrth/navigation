@@ -1,5 +1,3 @@
-// Created by livrth on 4/4/2022.
-
 #include <cassert>
 #include <iostream>
 #include <string>
