@@ -11,6 +11,9 @@
 using namespace std;
 
 void student_menu(Student*& stu) {
+    while (true) {
+        stu->operMenu();
+    }
 }
 
 void teacher_menu(Teacher*& teacher) {
