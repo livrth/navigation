@@ -1,6 +1,6 @@
 #pragma once
-#include <string>
 #include <iostream>
+#include <string>
 using namespace std;
 
 class Teacher {
@@ -12,7 +12,7 @@ class Teacher {
     Teacher(string id);
 
     //教师操作菜单
-    virtual void operMenu();
+    void operMenu();
 
     //教师布置作业
     void set_homework();

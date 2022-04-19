@@ -3,8 +3,9 @@
 Student::Student() {
 }
 
-Student::Student(string id) {
+Student::Student(string id, string name) {
     this->stu_id = id;
+    this->stu_name = name;
 }
 
 void Student::query_by_course_name() {

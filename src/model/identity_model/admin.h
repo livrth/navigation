@@ -1,4 +1,4 @@
-#pragma once;
+#pragma once
 #include <string>
 using namespace std;
 
@@ -10,7 +10,7 @@ class Admin {
     Admin(string user_name);
 
     //管理员菜单
-    virtual void operMenu();
+    void operMenu();
 
     //发布考试时间和考试地点
     void release_exam();

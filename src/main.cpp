@@ -3,11 +3,13 @@
 #include <iostream>
 #include <locale>
 #include <string>
-
-#include "./model/identity_model/admin.h"
-#include "./model/identity_model/student.h"
-#include "./model/identity_model/teacher.h"
+#include "admin.h"
+#include "student.h"
+#include "teacher.h"
+#include "menu.cpp"
 #include "global_file.h"
+#include "global_file.h"
+
 using namespace std;
 
 void student_menu(Student*& stu) {
@@ -47,7 +49,7 @@ void login(string fileName, int type) {
                 system("pause");
                 system("cls");
                 Student* stu = nullptr;
-                stu = new Student(id);
+                stu = new Student(id, file_name);
                 student_menu(stu);
                 return;
             }
@@ -177,7 +179,7 @@ int main() {
         cout << "\t\t|                               |\n";
         cout << "\t\t -------------------------------\n";
         cout << "\n\n";
-        cout << "请输入您的选择";
+        cout << "请输入您的选择: ";
 
         cin >> op;
         switch (op) {
