@@ -2,6 +2,7 @@
 #define NAVIGATION_BUILDING_H
 
 #include <memory>
+#include <vector>
 #include <string>
 #include "../model.h"
 
@@ -21,8 +22,8 @@ class Building : public Model{
     std::string get_campus_type();
     void set_campus_type();
 
-    void add_adj(Id id, std::pair<int,int> coord);
-    vector<int> & get_adj(Id building); //get the adjacent building
+    void add_adj(Building adj);
+    std::vector<int> & get_adj(Id building); //get the adjacent building
 };
 
 #endif  // NAVIGATION_BUILDING_H

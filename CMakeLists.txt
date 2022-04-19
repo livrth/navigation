@@ -9,9 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 #find_package(Boost ${BOOST_MIN_VERSION} REQUIRED)
 find_package(Threads)
 #
-#if(NOT Boost_FOUND)
-#    message("未在本机查找到Boost库1.75.0版本,请安装后编译")
-#endif()
+
 
 if (APPLE)
     set(CMAKE_C_COMPILER "/usr/local/bin/gcc-10")
@@ -23,4 +21,4 @@ add_subdirectory(src)
 
 enable_testing()
 
-#add_executable(navigation main.cpp)
+#add_executable(navigation )
