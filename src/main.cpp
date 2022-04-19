@@ -16,6 +16,9 @@ void student_menu(Student*& stu) {
 void teacher_menu(Teacher*& teacher) {
 }
 
+void admin_menu(Admin*& admin) {
+}
+
 //学生/教师/管理员登录
 void login(string fileName, int type) {
     ifstream ifs;
@@ -47,9 +50,36 @@ void login(string fileName, int type) {
             }
         }
     } else if (type == 2) {  //教师登录
+        string file_id, file_pwd, file_name;
+        while (ifs >> file_id >> file_pwd >> file_name) {
+            if (file_id == id && file_pwd == pwd) {
+                cout << "\n教师用户登录成功!" << endl;
+                system("pause");
+                system("cls");
+                Teacher* tea = nullptr;
+                tea = new Teacher(id);
+                teacher_menu(tea);
+                return;
+            }
+        }
 
     } else if (type == 3) {  //管理员登录
+        string file_name, file_pwd;
+        while (ifs >> file_name >> file_pwd) {
+            if (file_name == id && file_pwd == pwd) {
+                cout << "\n管理员登录成功!" << endl;
+                system("pause");
+                system("cls");
+                Admin* admin = nullptr;
+                admin = new Admin(id);
+                admin_menu(admin);
+                return;
+            }
+        }
     }
+    cout << "验证登录失败！请检查用户名或者密码。" << endl;
+    system("pause");
+    system("cls");
 
     return;
 }
