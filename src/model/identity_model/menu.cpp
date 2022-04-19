@@ -29,17 +29,28 @@ void Student::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t|     7.进行路径导航    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t|     0.注销登出        |\n";
+    cout << "\t\t|     0.注销登出账号    |\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t -----------------------\n";
-    cout << "请选择您的操作： ";
+    cout << "请选择您的操作: ";
 }
 
-void Student::operMenuSub(){
+void Student::operMenuSub() {
     //
 }
 
 void Teacher::operMenu() {
+    system("cls");
+    cout << "\t\t -----------------------\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     1.教师布置作业    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     2.教师批改作业    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     0.注销登出账号    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t -----------------------\n";
+    cout << "请选择您的操作: ";
 }
 
 void Admin::operMenu() {

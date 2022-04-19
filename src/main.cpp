@@ -4,21 +4,67 @@
 #include <locale>
 #include <string>
 #include "admin.h"
+#include "global_file.h"
+#include "menu.cpp"
 #include "student.h"
 #include "teacher.h"
-#include "menu.cpp"
-#include "global_file.h"
-#include "global_file.h"
 
 using namespace std;
 
 void student_menu(Student*& stu) {
     while (true) {
         stu->operMenu();
+        int op;
+        cin >> op;
+        if (op == 1) {  //课程名称查询
+            stu->query_by_course_name();
+        } else if (op == 2) {
+            stu->query_by_course_table();
+        } else if (op == 3) {
+            stu->upload_course_material();
+        } else if (op == 4) {
+            stu->upload_home_work();
+        } else if (op == 5) {
+            stu->query_activity();
+        } else if (op == 6) {
+            stu->set_activity_alarm();
+        } else if (op == 7) {
+            stu->guide_now();
+        } else if (op == 0) {
+            delete stu;
+            cout << "注销成功" << endl;
+            system("pause");
+            system("cls");
+            return;
+        } else {
+            cout << "\n无法识别的操作, 请重新输入: ";
+            system("pause");
+            system("cls");
+        }
     }
 }
 
-void teacher_menu(Teacher*& teacher) {
+void teacher_menu(Teacher*& tea) {
+    while (true) {
+        tea->operMenu();
+        int op;
+        cin >> op;
+        if (op == 1) {
+            tea->set_homework();  //布置作业
+        } else if (op == 2) {
+            tea->check_homework();  //检查作业
+        } else if (op == 0) {
+            delete tea;
+            cout << "注销成功" << endl;
+            system("pause");
+            system("cls");
+            return;
+        } else {
+            cout << "\n无法识别的操作, 请重新输入: ";
+            system("pause");
+            system("cls");
+        }
+    }
 }
 
 void admin_menu(Admin*& admin) {
@@ -26,8 +72,12 @@ void admin_menu(Admin*& admin) {
 
 //学生/教师/管理员登录
 void login(string fileName, int type) {
+    Student* stu = nullptr;
+    Teacher* tea = nullptr;
+    // cout << "here ---- 1" << endl;
     ifstream ifs;
     ifs.open(fileName, ios::in);
+    // cout << "here ----- 2" << endl;
 
     if (!ifs.is_open()) {
         cout << "用户文件不存在" << endl;
@@ -48,7 +98,6 @@ void login(string fileName, int type) {
                 cout << "\n学生用户登录成功!" << endl;
                 system("pause");
                 system("cls");
-                Student* stu = nullptr;
                 stu = new Student(id, file_name);
                 student_menu(stu);
                 return;
@@ -61,7 +110,6 @@ void login(string fileName, int type) {
                 cout << "\n教师用户登录成功!" << endl;
                 system("pause");
                 system("cls");
-                Teacher* tea = nullptr;
                 tea = new Teacher(id);
                 teacher_menu(tea);
                 return;
@@ -91,6 +139,14 @@ void login(string fileName, int type) {
 
 //学生用户注册
 void new_stu_reg() {
+    // ofstream ofs;
+    // ofs.open(STU_INFO_FILE, ios::app);
+    // if (!ofs.is_open()) {
+    //     cout << "学生用户信息文件打开失败!" << endl;
+    //     ofs.close();
+    //     return;
+    // }
+
     string stu_id, name, pwd;
     cout << "\n请输入您的学号: ";
     cin >> stu_id;
@@ -99,6 +155,8 @@ void new_stu_reg() {
     cout << "\n请输入新账号的密码: ";
     cin >> pwd;
 
+    //FIXME: IO流一调用就直接段错误
+    //修改文件路径为 "test.txt" 也就是当前目录下生成也不行
     ofstream ofs;
     ofs.open(STU_INFO_FILE, ios::app);
     if (!ofs.is_open()) {
