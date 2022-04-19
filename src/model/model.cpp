@@ -1,5 +1,5 @@
 #include "model.h"
-using std::shared_ptr, std::vector, std::string;
+using namespace std;
 
 Model::Model(string name) : name{name} {
 }

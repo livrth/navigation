@@ -1,13 +1,10 @@
-//
-// Created by x on 4/4/0004.
-//
-
 #include "logger.h"
 #include <ctime>
 #include <iomanip>
 #include <iostream>
 
-using std::string, std::make_shared, std::shared_ptr, std::ios, std::ostream, std::make_unique, std::ofstream;
+using namespace std;
+// using std::string, std::make_shared, std::shared_ptr, std::ios, std::ostream, std::make_unique, std::ofstream;
 Logger* Logger::instance = nullptr;
 Logger::Logger(string& filename, FileMode mode, LogLevel log_level = LogLevel::DEBUG)
 		: filename{filename}, mode{mode}, log_level{log_level} {

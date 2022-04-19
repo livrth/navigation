@@ -1,7 +1,3 @@
-//
-// Created by x on 4/4/0004.
-//
-
 #ifndef NAVIGATION_LOGGER_H
 #define NAVIGATION_LOGGER_H
 

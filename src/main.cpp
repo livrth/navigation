@@ -24,5 +24,11 @@ int main() {
     Sleep(1500);
     // */
     system("cls");
+
+    int op;
+    while (true) {
+        
+    }
+
     return 0;
 }
