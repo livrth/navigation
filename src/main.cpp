@@ -69,16 +69,35 @@ void teacher_menu(Teacher*& tea) {
 }
 
 void admin_menu(Admin*& admin) {
+    while (true) {
+        admin->operMenu();
+        int op;
+        cin >> op;
+        if (op == 1) {
+            admin->release_exam();
+        } else if (op == 2) {
+            admin->release_new_course();
+        } else if (op == 3) {
+            admin->change_course();
+        } else if (op == 0) {
+            delete admin;
+            cout << "注销成功" << endl;
+            system("pause");
+            system("cls");
+        } else {
+            cout << "\n无法识别的操作, 请重新输入: ";
+            system("pause");
+            system("cls");
+        }
+    }
 }
 
 //学生/教师/管理员登录
 void login(string fileName, int type) {
     Student* stu = nullptr;
     Teacher* tea = nullptr;
-    // cout << "here ---- 1" << endl;
     ifstream ifs;
     ifs.open(fileName, ios::in);
-    // cout << "here ----- 2" << endl;
 
     if (!ifs.is_open()) {
         cout << "用户文件不存在" << endl;
@@ -87,9 +106,9 @@ void login(string fileName, int type) {
     }
     string id;  //用户名
     string pwd;
-    cout << "\n请输入学号或者教职工号: ";
+    cout << "\n请输入您的账号: ";
     cin >> id;
-    cout << "\n请输入密码: " << endl;
+    cout << "\n请输入密码: ";
     cin >> pwd;
 
     if (type == 1) {  //学生登录
@@ -111,7 +130,7 @@ void login(string fileName, int type) {
                 cout << "\n教师用户登录成功!" << endl;
                 system("pause");
                 system("cls");
-                tea = new Teacher(id);
+                tea = new Teacher(id,file_name);
                 teacher_menu(tea);
                 return;
             }
@@ -125,7 +144,7 @@ void login(string fileName, int type) {
                 system("pause");
                 system("cls");
                 Admin* admin = nullptr;
-                admin = new Admin(id);
+                admin = new Admin(file_name);
                 admin_menu(admin);
                 return;
             }
@@ -148,7 +167,7 @@ void new_stu_reg() {
     cout << "\n请输入新账号的密码: ";
     cin >> pwd;
 
-    //IO流一调用就直接段错误 关掉 -O3 优化选项
+    // IO流一调用就直接段错误 关掉 -O3 优化选项
     //修改文件路径为 "test.txt" 也就是当前目录下生成也不行
     ofstream ofs;
     ofs.open(STU_INFO_FILE, ios::app);
@@ -170,9 +189,9 @@ void new_teacher_reg() {
     string teacher_id, name, pwd;
     cout << "\n请输入您的教职工号: ";
     cin >> teacher_id;
-    cout << "请输入您的姓名: ";
+    cout << "\n请输入您的姓名: ";
     cin >> name;
-    cout << "请输入新账号的密码: ";
+    cout << "\n请输入新账号的密码: ";
     cin >> pwd;
 
     ofstream ofs;

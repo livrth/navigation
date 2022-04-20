@@ -7,8 +7,9 @@ Teacher::Teacher(){
 
 }
 
-Teacher::Teacher(string id){
+Teacher::Teacher(string id, string name){
     this->teacher_id = id;
+    this->name = name;
 }
 
 

@@ -41,6 +41,10 @@ void Student::operMenuSub() {
 
 void Teacher::operMenu() {
     system("cls");
+    time_t now = time(0);
+    char* dt = ctime(&now);
+    cout << endl;
+    cout << "欢迎教师：" << this->name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t|     1.教师布置作业    |\n";
@@ -54,4 +58,21 @@ void Teacher::operMenu() {
 }
 
 void Admin::operMenu() {
+    system("cls");
+    time_t now = time(0);
+    char* dt = ctime(&now);
+    cout << endl;
+    cout << "欢迎管理员: " << this->user_name << " 登录! " << dt << endl;
+    cout << "\t\t -----------------------\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     1.发布考试信息    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     2.设置新的课程    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     3.修改原有课程    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     0.注销登出账号    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t -----------------------\n";
+    cout << "请选择您的操作: ";
 }

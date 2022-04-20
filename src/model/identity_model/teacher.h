@@ -9,7 +9,7 @@ class Teacher {
     string name;        //教师姓名
 
     Teacher();
-    Teacher(string id);
+    Teacher(string id, string name);
 
     //教师操作菜单
     void operMenu();
