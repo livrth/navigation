@@ -7,6 +7,9 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -fexec-charset=GBK")
 
 # find sources
 add_subdirectory(model/identity_model)
+# add_subdirectory(model)
+add_subdirectory(model/homework_model)
+
 add_executable(
 	${PROJECT_NAME}
 	global_file.h
@@ -15,4 +18,5 @@ add_executable(
 target_link_libraries(
 	${PROJECT_NAME}
 	identity_model
+	homework_model
 )

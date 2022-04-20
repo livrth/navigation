@@ -1,4 +1,4 @@
-project("identity_model")
+project("homework_model")
 cmake_minimum_required(VERSION 3.22)
 set(CMAKE_CXX_STANDARD 14) 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -fexec-charset=GBK")
@@ -7,16 +7,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_library( 
 	${PROJECT_NAME}
 	STATIC
-	admin.h
-	student.h
-	teacher.h 
-	admin.cpp
-	student.cpp
-	teacher.cpp
+    homework.h
+    homework.cpp
 )
 
 target_link_libraries(
-	${PROJECT_NAME}
-	homework_model
+    ${PROJECT_NAME}
+    identity_model
 )
+
 target_include_directories(${PROJECT_NAME} PUBLIC .) #${INCLUDE_DIRECTORIES})

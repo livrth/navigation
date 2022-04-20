@@ -1,32 +1,22 @@
 #ifndef NAVIGATION_HOMEWORK_H
 #define NAVIGATION_HOMEWORK_H
-#include "Model.h"
-class Homework: public Model{
-private:
-    Id studentid=-1;
-    Id courseid=-1;
-    Id teacherid=-1;
-    bool  commit=false;
-    std::string description="";
-    double check_result;
-    double grades;
-    std::string compress_address="";
-    std::string code_address="";
-    std::string decompress_address="";
-public:
-    Homework(Id id,std::string name,Id studentid, std::string description,Id courseid,Id teacherid);
-    void print();
-    void set_grades(double grades);
-    void set_commit();
-    void set_check_result(double check_result);
-    double get_grades();
-    std::string get_commit();
-    double get_check_result();
-    std::string get_compress_address();
-    std::string get_code_address();
-    std::string get_decompress_address();
-    void submit(std::string location);
-    void decode();
-};
-#endif //NAVIGATION_HOMEWORK_H
+#include <string>
+using namespace std;
 
+class Homework {
+   public:
+    string course_name;  //课程名称
+    string course_id;    //课程唯一的编号
+    string hw_ddl;       //截至日期
+
+    Homework();
+    //每个老师的学工号
+    //每门课程的编号
+    Homework(string teacher_id, string course_id, string course_name);
+
+    void compress();         //压缩
+    void decompress();       //解压缩
+    void set_grades();       //作业评分
+    void check_duplicate();  //作业查重
+};
+#endif  // NAVIGATION_HOMEWORK_H
