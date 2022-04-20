@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 project(navigation VERSION "0.1.0")
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O3 -Wall -fexec-charset=GBK")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -fexec-charset=GBK")
 find_package(Threads)
 
 if (APPLE)

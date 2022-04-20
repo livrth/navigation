@@ -3,6 +3,7 @@
 #include <iostream>
 #include <locale>
 #include <string>
+
 #include "admin.h"
 #include "global_file.h"
 #include "menu.cpp"
@@ -86,7 +87,7 @@ void login(string fileName, int type) {
     }
     string id;  //用户名
     string pwd;
-    cout << "\n请输入学号或者教职工号: " << endl;
+    cout << "\n请输入学号或者教职工号: ";
     cin >> id;
     cout << "\n请输入密码: " << endl;
     cin >> pwd;
@@ -130,7 +131,7 @@ void login(string fileName, int type) {
             }
         }
     }
-    cout << "验证登录失败！请检查用户名或者密码。" << endl;
+    cout << "验证登录失败! 请检查用户名或者密码 " << endl;
     system("pause");
     system("cls");
 
@@ -139,14 +140,6 @@ void login(string fileName, int type) {
 
 //学生用户注册
 void new_stu_reg() {
-    // ofstream ofs;
-    // ofs.open(STU_INFO_FILE, ios::app);
-    // if (!ofs.is_open()) {
-    //     cout << "学生用户信息文件打开失败!" << endl;
-    //     ofs.close();
-    //     return;
-    // }
-
     string stu_id, name, pwd;
     cout << "\n请输入您的学号: ";
     cin >> stu_id;
@@ -155,7 +148,7 @@ void new_stu_reg() {
     cout << "\n请输入新账号的密码: ";
     cin >> pwd;
 
-    //FIXME: IO流一调用就直接段错误
+    //IO流一调用就直接段错误 关掉 -O3 优化选项
     //修改文件路径为 "test.txt" 也就是当前目录下生成也不行
     ofstream ofs;
     ofs.open(STU_INFO_FILE, ios::app);
