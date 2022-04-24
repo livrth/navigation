@@ -116,7 +116,7 @@ void Student::query_by_course_time(){
     time=(date-1)*1440+60*hour+min;
     int close_t;
     int r=rank(time,root);
-    printf("%d %d",cnt ,r);
+   
     if(r!=cnt){
        close_t=kth(r,root);
     }
