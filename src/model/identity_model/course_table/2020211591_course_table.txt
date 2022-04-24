@@ -1,0 +1,5 @@
+Fri 10 30 15 20 N101 data_strcture 0001
+Mon 11 30 13 30 S301 net 0003
+Mon 17 30 19 30 N505 java 0002
+Sun 15 30 16 30 S1-102 math 0004
+Sar 8 30 9 30 playground pe 0005

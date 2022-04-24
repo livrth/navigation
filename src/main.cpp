@@ -13,6 +13,7 @@
 using namespace std;
 
 void student_menu(Student*& stu) {
+     stu->init();            //首先初始化学生类
     while (true) {
         stu->operMenu();
         int op;
@@ -22,9 +23,9 @@ void student_menu(Student*& stu) {
         } else if (op == 2) {
             stu->query_by_course_table();
         } else if (op == 3) {
-            stu->upload_course_material();
+            stu->set_activity();
         } else if (op == 4) {
-            stu->upload_home_work();
+            stu->query_by_course_time();
         } else if (op == 5) {
             stu->query_activity();
         } else if (op == 6) {
@@ -250,7 +251,7 @@ int main() {
         cout << "\t\t -------------------------------\n";
         cout << "\n\n";
         cout << "请输入您的选择: ";
-
+        
         cin >> op;
         switch (op) {
             case 1:

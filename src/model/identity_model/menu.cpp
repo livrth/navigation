@@ -19,9 +19,9 @@ void Student::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t|     2.课表课程查询    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t|     3.上传课程资料    |\n";
+    cout << "\t\t|     3.设置课外活动    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t|     4.上传课程作业    |\n";
+    cout << "\t\t|     4.时间查找课程    |\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t|     5.查询课外活动    |\n";
     cout << "\t\t|                       |\n";
@@ -33,6 +33,7 @@ void Student::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t -----------------------\n";
     cout << "请选择您的操作: ";
+    
 }
 
 void Student::operMenuSub() {
