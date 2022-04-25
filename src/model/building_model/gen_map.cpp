@@ -38,7 +38,7 @@ void gen() {
     ofs.close();
 }
 
-int main() {
+int main_() {
     gen();
     return 0;
 }
