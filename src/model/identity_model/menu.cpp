@@ -5,6 +5,7 @@
 #include "admin.h"
 #include "student.h"
 #include "teacher.h"
+#include "../course_model/course.h"
 
 //实现除了登录界面之外所有的图形化打印菜单
 
@@ -76,4 +77,8 @@ void Admin::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t -----------------------\n";
     cout << "请选择您的操作: ";
+}
+
+void Course::operMenu(){
+
 }

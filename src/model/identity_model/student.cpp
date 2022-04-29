@@ -1,4 +1,5 @@
 #include "student.h"
+#include "..\course_model\course.h"
 #include <fstream>
 Student::Student() {
 }
@@ -9,9 +10,47 @@ Student::Student(string id, string name) {
 }
 
 void Student::query_by_course_name() {
+   
 }
 
 void Student::query_by_course_table() {
+   cout<<endl;
+   cout<<"\t\t\t\t\t\t\t课程表"<<endl;
+   cout<<"    ";
+   for(int i=1;i<=11;i++)cout<<"    "<<"第"<<i<<"节"<<"    ";
+   cout<<endl;
+   for(int i=1;i<=5;i++){
+       cout<<number_to_date[i]+"|";
+       for(int seq=1;seq<=11;seq++){
+           if(my_course_table[i][seq]!="NULL"){
+               int blank_number=12-my_course_table[i][seq].length();
+               cout<<my_course_table[i][seq];
+               for(int i=1;i<=blank_number;i++)cout<<" ";
+           }
+           else{
+               for(int i=1;i<=12;i++)cout<<" ";
+           }
+           cout<<"|";
+       }
+       cout<<endl;
+   }
+   string object_name;
+    string object_id;
+   cout<<endl<<"请输入想要进入的课程名称："<<endl;
+   cin>>object_name;
+   while(true){
+   if(name_to_id.find(object_name)==name_to_id.end()){
+       cout<<"请输入正确的名称："<<endl;
+       cin>>object_name;
+   }
+   else {
+       object_id=name_to_id[object_name];
+       break;
+   }
+   }
+   //Course* cou=new Course(object_id,object_name);
+  // cou->init();
+   
 }
 
 void Student::upload_course_material() {
@@ -72,25 +111,42 @@ void Student::init(){
         ifs.close();
         return;
     }
+    
+    for(int i=1;i<=5;i++)
+    for(int j=1;j<=8;j++)
+    my_course_table[i][j]="NULL";
+
 
     string date,place,course_name,course_id;
-    int start_h,finish_h,start_m,finish_m;
+    int seq;
     t[root=++cnt]=Node(0,0,1,2147483647);
-    while(ifs >>date>>start_h>>start_m>>finish_h>>finish_m>>place>>course_name>>course_id){
+    while(ifs >>date>>seq>>place>>course_name>>course_id){
         int time=0;
-        if(date.find("Mon")!=-1)time+=0 ;
-        if(date.find("Tue")!=-1)time+=1440 ;
-        if(date.find("Wed")!=-1)time+=2880 ;
-        if(date.find("Thu")!=-1)time+=4320 ;
-        if(date.find("Fri")!=-1)time+=5760 ;
-        if(date.find("Sar")!=-1)time+=7200 ;
-        if(date.find("Sun")!=-1)time+=8640 ;
-        time+=start_h*60+start_m;
+        if(date.find("Mon")!=-1){
+            time+=0;
+            my_course_table[1][seq]=course_name;
+        }
+        if(date.find("Tue")!=-1){
+            time+=24*60;
+            my_course_table[2][seq]=course_name;
+        }
+        if(date.find("Wed")!=-1){
+            time+=48*60;
+            my_course_table[3][seq]=course_name;
+        }
+        if(date.find("Thu")!=-1){
+            time+=72*60;
+            my_course_table[4][seq]=course_name;
+        }
+        if(date.find("Fri")!=-1){
+            time+=96*60;
+            my_course_table[5][seq]=course_name;
+        }
+        time+=course_start_time_table[seq];
         insert(time,root);
-        name_to_id[course_name]=course_id;
+         name_to_id[course_name]=course_id;
         time_to_place[time]=place;
         time_to_id[time]=course_id;
-        my_course_table.push_back(single_course(date,start_h,start_m,finish_h,finish_m,place,course_name,course_id));
     }
     ifs.close();
 }

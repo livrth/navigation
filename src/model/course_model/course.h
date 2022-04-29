@@ -13,6 +13,14 @@ class Course {
     
     Course();
     Course(string course_id, string course_name);
+    void init();
+    void operMenu();
+    void submit_homework();
+    void submit_material();
+    void download_material();
+    void query_homework_by_grades();
+    void query_material_by_name();
+    void query_material_by_weight();
 };
 
 #endif  // NAVIGATION_COURSE_H

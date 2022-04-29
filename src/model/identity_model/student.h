@@ -4,20 +4,19 @@
 #include <map>
 #include <vector>
 using namespace std;
-
-struct single_course{
-   string date;
-   int starttime_h;
+/*int starttime_h;
    int starttime_m;
    int finishitime_h;
-   int finishitime_m;
+   int finishitime_m;*/
+/*struct single_course{
+   string date;
+   int seq;
    string place;
    string name;
    string course_id;
-   single_course(string d,int sh,int sm,int fh,int fm,string p,string n,string c):date(d),
-   starttime_h(sh),starttime_m(sm),finishitime_h(fh),finishitime_m(fm),place(p),name(n),
-   course_id(c){}
-};
+   single_course(string d,int s,string p,string n,string c):date(d),
+   seq(s),place(p),name(n),course_id(c){} 
+};*/
 
  struct Node{
     int left,right,size,value,num;
@@ -32,11 +31,12 @@ class Student {
     map<string,string> name_to_id;//在找到正确的名字后必须通过名字找到对应的下标
     map<int,string> time_to_place;//在找到合理的时间后必须通过时间查找到对应的地名
     map<int,string> time_to_id;//在找到合理的时间后必须通过时间查找到对应的下标
-    vector<single_course> my_course_table;//我的课程表
+    string my_course_table[6][9];//我的课程表
+    string number_to_date[8]={"No","Mon","Tue","Wed","Thu","Fri","Sar","Sun"};
     Node t[1000];//课程时间表
     int cnt=0;   //二叉树节点数
     int root=0;//根
-
+    int course_start_time_table[12]={0,8*60,8*60+50,9*60+50,10*60+40,11*60+30,13*60,13*60+50,14*60+45,15*60+40,16*60+40,17*60+35};
     Student();
     Student(string id, string name);
 
