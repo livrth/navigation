@@ -126,19 +126,19 @@ void Student::init(){
             time+=0;
             my_course_table[1][seq]=course_name;
         }
-        if(date.find("Tue")!=-1){
+        else if(date.find("Tue")!=-1){
             time+=24*60;
             my_course_table[2][seq]=course_name;
         }
-        if(date.find("Wed")!=-1){
+        else if(date.find("Wed")!=-1){
             time+=48*60;
             my_course_table[3][seq]=course_name;
         }
-        if(date.find("Thu")!=-1){
+        else if(date.find("Thu")!=-1){
             time+=72*60;
             my_course_table[4][seq]=course_name;
         }
-        if(date.find("Fri")!=-1){
+        else if(date.find("Fri")!=-1){
             time+=96*60;
             my_course_table[5][seq]=course_name;
         }
