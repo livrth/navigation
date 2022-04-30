@@ -1,12 +1,12 @@
 1
-Fri 2 西土城校区 N101  
-王老师 2020219366
+fri 2 xitucheng N101 data_struc  
+wanglaoshi 2020219366
 QQ2350371219
 18
-19 Mon 12 10 14 10 N203
+19 Sunday 12 10 14 10 shahe N203
 2
-数据结构（清华）
-大话数据结构
+data_stucturee
+data_stuctureeee
 3
 10 哈夫曼树电子资料 1001   
 90 链表电子资料   1002
