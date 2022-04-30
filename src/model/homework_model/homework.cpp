@@ -1,4 +1,4 @@
-#include "Homework.h"
+#include "homework.h"
 #include <iostream>
 #include <string>
 using namespace std;

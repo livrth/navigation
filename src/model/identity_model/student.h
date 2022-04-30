@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 using namespace std;
+#define MAX_LENGTH 12;
 /*int starttime_h;
    int starttime_m;
    int finishitime_h;
@@ -29,9 +30,9 @@ class Student {
     string stu_name;//学生姓名
     string    stu_id;       //学号 唯一区分学生
     map<string,string> name_to_id;//在找到正确的名字后必须通过名字找到对应的下标
-    map<int,string> time_to_place;//在找到合理的时间后必须通过时间查找到对应的地名
+    map<int,pair<string,string> > time_to_place;//在找到合理的时间后必须通过时间查找到对应的地名（校区+建筑）
     map<int,string> time_to_id;//在找到合理的时间后必须通过时间查找到对应的下标
-    string my_course_table[6][9];//我的课程表
+    string my_course_table[6][12];//我的课程表
     string number_to_date[8]={"No","Mon","Tue","Wed","Thu","Fri","Sar","Sun"};
     Node t[1000];//课程时间表
     int cnt=0;   //二叉树节点数
@@ -68,4 +69,6 @@ class Student {
    void set_activity();    // 设置活动
 
    void query_by_course_time();   // 通过时间查询地点
+   
+   void course_menu(string object_id,string object_name,string student_id);
 };

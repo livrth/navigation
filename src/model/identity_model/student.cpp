@@ -1,5 +1,5 @@
 #include "student.h"
-#include "..\course_model\course.h"
+#include "course.h"
 #include <fstream>
 Student::Student() {
 }
@@ -15,7 +15,7 @@ void Student::query_by_course_name() {
 
 void Student::query_by_course_table() {
    cout<<endl;
-   cout<<"\t\t\t\t\t\t\t课程表"<<endl;
+   cout<<"\t\t\t\t\t\t\t\t\t课程表"<<endl;
    cout<<"    ";
    for(int i=1;i<=11;i++)cout<<"    "<<"第"<<i<<"节"<<"    ";
    cout<<endl;
@@ -25,17 +25,18 @@ void Student::query_by_course_table() {
            if(my_course_table[i][seq]!="NULL"){
                int blank_number=12-my_course_table[i][seq].length();
                cout<<my_course_table[i][seq];
-               for(int i=1;i<=blank_number;i++)cout<<" ";
+               for(int j=1;j<=blank_number;j++)cout<<" ";
            }
            else{
-               for(int i=1;i<=12;i++)cout<<" ";
+               int blank_number=12;
+               for(int j=1;j<=blank_number;j++)cout<<" ";
            }
            cout<<"|";
        }
        cout<<endl;
    }
    string object_name;
-    string object_id;
+   string object_id;
    cout<<endl<<"请输入想要进入的课程名称："<<endl;
    cin>>object_name;
    while(true){
@@ -48,8 +49,7 @@ void Student::query_by_course_table() {
        break;
    }
    }
-   //Course* cou=new Course(object_id,object_name);
-  // cou->init();
+   course_menu(object_id,object_name,this->stu_id);
    
 }
 
@@ -113,14 +113,14 @@ void Student::init(){
     }
     
     for(int i=1;i<=5;i++)
-    for(int j=1;j<=8;j++)
+    for(int j=1;j<=11;j++)
     my_course_table[i][j]="NULL";
 
 
-    string date,place,course_name,course_id;
+    string date,place,course_name,course_id,campus;
     int seq;
     t[root=++cnt]=Node(0,0,1,2147483647);
-    while(ifs >>date>>seq>>place>>course_name>>course_id){
+    while(ifs >>date>>seq>>place>>course_name>>campus>>course_id){
         int time=0;
         if(date.find("Mon")!=-1){
             time+=0;
@@ -144,8 +144,9 @@ void Student::init(){
         }
         time+=course_start_time_table[seq];
         insert(time,root);
-         name_to_id[course_name]=course_id;
-        time_to_place[time]=place;
+        name_to_id[course_name]=course_id;
+        time_to_place[time].first=campus; 
+        time_to_place[time].second=place;
         time_to_id[time]=course_id;
     }
     ifs.close();
@@ -178,8 +179,45 @@ void Student::query_by_course_time(){
     }
     else {close_t=kth(1,root);
     }
-    cout<<time_to_place[close_t];
+    cout<<time_to_place[close_t].first<<" "<<time_to_place[close_t].second;
 }
 
 void Student::set_activity(){
+}
+
+void Student::course_menu(string object_id,string object_name,string stu_id) {
+    Course* cou=new Course(object_id,object_name,stu_id);
+    cou->init();            //首先初始化类
+    while (true) {
+        cou->operMenu();
+        int op;
+        cin >> op;
+        if (op == 1) {  
+           cou->submit_homework();
+        } else if (op == 2) {
+            cou->submit_material();
+        } else if (op == 3) {
+            cou->download_material();
+        } else if (op == 4) {
+            cou->query_homework_by_name();
+        }else if( op == 5 ) {
+            cou->query_homework_by_grades();
+        }else if( op == 6 ){
+            cou->query_material_by_name();
+        }else if( op == 7 ){
+            cou->query_material_by_weight();
+        }
+            else if (op == 0) {
+            delete cou;
+            cout << "退出成功" << endl;
+            system("pause");
+            system("cls");
+            return;
+        } 
+        else {
+            cout << "\n无法识别的操作, 请重新输入: ";
+            system("pause");
+            system("cls");
+        }
+    }
 }

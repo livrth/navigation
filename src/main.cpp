@@ -286,36 +286,3 @@ int main() {
     return 0;
 }
 
-/*void course_menu(Course*& cou) {
-    cou->init();            //首先初始化类
-    while (true) {
-        cou->operMenu();
-        int op;
-        cin >> op;
-        if (op == 1) {  
-            cou->submit_homework();
-        } else if (op == 2) {
-            cou->submit_material();
-        } else if (op == 3) {
-            cou->download_material();
-        } else if(op==4){
-            cou->query_homework_by_grades();
-        }else if(op==5){
-            cou->query_material_by_name();
-        }else if(op==6){
-            cou->query_material_by_weight();
-        }
-            else if (op == 0) {
-            delete cou;
-            cout << "注销成功" << endl;
-            system("pause");
-            system("cls");
-            return;
-        } 
-        else {
-            cout << "\n无法识别的操作, 请重新输入: ";
-            system("pause");
-            system("cls");
-        }
-    }
-}*/

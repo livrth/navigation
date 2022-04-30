@@ -1,5 +1,6 @@
-Fri 2 N101 data_struc 0001
-Mon 3 S301 net 0003
-Mon 6 N505 java 0002
-Wed 7 S1-102 math 0004
-Wed 8 playground pe 0005
+Fri 2 N101 data_struc 西土城 0001 
+Mon 3 S301 net 沙河 0003
+Mon 6 N505 java 西土城 0002
+Wed 7 S1-102 math 沙河 0004
+Wed 8 playground pe 西土城 0005
+Tue 11 宿舍 网课 沙河 0006

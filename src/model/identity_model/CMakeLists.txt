@@ -18,5 +18,6 @@ add_library(
 target_link_libraries(
 	${PROJECT_NAME}
 	homework_model
+	course_model
 )
 target_include_directories(${PROJECT_NAME} PUBLIC .) #${INCLUDE_DIRECTORIES})
