@@ -114,13 +114,13 @@ void login(string fileName, int type) {
     cin >> pwd;
 
     if (type == 1) {  //学生登录
-        string file_id, file_pwd, file_name;
-        while (ifs >> file_id >> file_pwd >> file_name) {
+        string file_id, file_pwd, file_name,group_id;
+        while (ifs >> file_id >> file_pwd >> file_name>>group_id) {
             if (file_id == id && file_pwd == pwd) {
                 cout << "\n学生用户登录成功!" << endl;
                 system("pause");
                 system("cls");
-                stu = new Student(id, file_name);
+                stu = new Student(id, file_name,group_id );
                 student_menu(stu);
                 return;
             }
@@ -161,7 +161,9 @@ void login(string fileName, int type) {
 
 //学生用户注册
 void new_stu_reg() {
-    string stu_id, name, pwd;
+    string stu_id, name, pwd,group;
+    cout << "\n请输入您的班级: ";
+    cin >> group;
     cout << "\n请输入您的学号: ";
     cin >> stu_id;
     cout << "\n请输入您的学生姓名: ";
@@ -179,7 +181,7 @@ void new_stu_reg() {
         return;
     }
     //学号 密码 姓名
-    ofs << stu_id << ' ' << pwd << ' ' << name << endl;
+    ofs << stu_id << ' ' << pwd << ' ' << name << ' '<<group<<endl;
     ofs.close();
     cout << "\n您已注册成功, 请登录使用本系统!\n\n";
     system("pause");

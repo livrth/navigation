@@ -4,9 +4,10 @@
 Student::Student() {
 }
 
-Student::Student(string id, string name) {
+Student::Student(string id, string name,string group) {
     this->stu_id = id;
     this->stu_name = name;
+    this->group_id=group;
 }
 
 void Student::query_by_course_name() {
@@ -53,20 +54,22 @@ void Student::query_by_course_table() {
    
 }
 
-void Student::upload_course_material() {
-}
+//void Student::upload_course_material() {
+//}
 
-void Student::set_activity_alarm() {
-}
+
 
 void Student::guide_now() {
 }
 
-void Student::query_activity() {
-}
+void Student::set_activity(){}  // 设置活动
+   void Student::delete_activity(){}
+   void Student::change_activity(){}
+   void Student::query_activity(){}
+   void Student::set_activity_alarm(){} 
 
-void Student::upload_home_work() {
-}
+//void Student::upload_home_work() {
+//}
 
 void Student::update(int root){
     t[root].size=t[t[root].left].size+t[t[root].right].size+t[root].num;
@@ -182,8 +185,7 @@ void Student::query_by_course_time(){
     cout<<time_to_place[close_t].first<<" "<<time_to_place[close_t].second;
 }
 
-void Student::set_activity(){
-}
+
 
 void Student::course_menu(string object_id,string object_name,string stu_id) {
     Course* cou=new Course(object_id,object_name,stu_id);
