@@ -24,13 +24,13 @@ void student_menu(Student*& stu) {
         } else if (op == 2) {
             stu->query_by_course_table();
         } else if (op == 3) {
-            stu->set_activity();
-        } else if (op == 4) {
             stu->query_by_course_time();
+        } else if (op == 4) {
+            stu->query_by_activity_name();
         } else if (op == 5) {
-            stu->query_activity();
+            stu->query_by_activity_table();
         } else if (op == 6) {
-            stu->set_activity_alarm();
+            stu->query_by_activity_time();
         } else if (op == 7) {
             stu->guide_now();
         } else if (op == 0) {

@@ -56,73 +56,72 @@ void Student::query_by_course_table() {
 
 //void Student::upload_course_material() {
 //}
-
+void Student::query_by_activity_name(){
+}
+void Student::query_by_activity_table(){
+}
 
 
 void Student::guide_now() {
 }
 
-void Student::set_activity(){}  // 设置活动
+/*void Student::set_activity(){}  // 设置活动
    void Student::delete_activity(){}
    void Student::change_activity(){}
    void Student::query_activity(){}
-   void Student::set_activity_alarm(){} 
+   void Student::set_activity_alarm(){} */
 
 //void Student::upload_home_work() {
 //}
 
-void Student::update(int root){
+void Student::update(int root,Node *t){
     t[root].size=t[t[root].left].size+t[t[root].right].size+t[root].num;
 }
 
-int Student::rank(int x,int root){
+int Student::rank(int x,int root,Node * t){
     if(root){
         if(x<t[root].value)
-        return rank(x,t[root].left);
+        return rank(x,t[root].left,t);
         if(x>t[root].value)
-        return rank(x,t[root].right)+t[t[root].left].size+t[root].num;
+        return rank(x,t[root].right,t)+t[t[root].left].size+t[root].num;
         return t[t[root].left].size+t[root].num;
     }
     return 1;
 }
 
-int Student::kth(int x,int root){
-    if(x<=t[t[root].left].size)return kth(x,t[root].left);
+int Student::kth(int x,int root,Node * t){
+    if(x<=t[t[root].left].size)return kth(x,t[root].left,t);
     if(x<=t[t[root].left].size+t[root].num)return t[root].value;
-    return kth(x-t[t[root].left].size-t[root].num,t[root].right);
+    return kth(x-t[t[root].left].size-t[root].num,t[root].right,t);
 }
 
-void Student::insert(int x,int root){
+void Student::insert(int x,int root,Node *t,int &cnt){
     if(x<t[root].value)
     if(!t[root].left)
     t[t[root].left=++cnt]=Node(0,0,1,x);
-    else insert(x,t[root].left);
+    else insert(x,t[root].left,t,cnt);
     else if(x>t[root].value)
     if(!t[root].right)t[t[root].right=++cnt]=Node(0,0,1,x);
-    else insert(x,t[root].right);
+    else insert(x,t[root].right,t,cnt);
     else t[root].num++;
-    update(root);
+    update(root,t);
 }
 
 void Student::init(){
     string courese_table_filename="../../src/model/identity_model/course_table/"+stu_id+"_course_table.txt";
     ifstream ifs;
     ifs.open(courese_table_filename, ios::in);
-
     if (!ifs.is_open()) {
-        cout << "用户文件不存在" << endl;
+        cout << "用户课程文件不存在" << endl;
         ifs.close();
         return;
     }
-    
     for(int i=1;i<=5;i++)
     for(int j=1;j<=11;j++)
     my_course_table[i][j]="NULL";
-
-
     string date,place,course_name,course_id,campus;
     int seq;
-    t[root=++cnt]=Node(0,0,1,2147483647);
+    t1[root=++cnt1]=Node(0,0,1,2147483647);
     while(ifs >>date>>seq>>place>>course_name>>campus>>course_id){
         int time=0;
         if(date.find("Mon")!=-1){
@@ -146,13 +145,93 @@ void Student::init(){
             my_course_table[5][seq]=course_name;
         }
         time+=course_start_time_table[seq];
-        insert(time,root);
+        insert(time,root,t1,cnt1);
         name_to_id[course_name]=course_id;
         time_to_place[time].first=campus; 
         time_to_place[time].second=place;
-        time_to_id[time]=course_id;
     }
     ifs.close();
+    
+    ifstream ifs1;
+    string activity_table_filename="../../src/model/identity_model/activity_table/"+stu_id+"_activity_table.txt";
+    ifs1.open(activity_table_filename, ios::in);
+    if (!ifs1.is_open()) {
+        cout << "用户活动文件不存在" << endl;
+        ifs1.close();
+        return;
+    }
+   t2[root=++cnt2]=Node(0,0,1,2147483647);
+   single_activity x;
+  while(ifs1>>x.date>>x.sh>>x.sm>>x.fh>>x.fm>>x.place>>x.name>>x.clock_state){
+        x.porc='p';
+        name_to_activity[x.name]=x;
+        int time=x.sh*60+x.sm;
+         if(x.date.find("Mon")!=-1){
+            time+=0;
+        }
+        else if(x.date.find("Tue")!=-1){
+            time+=24*60;
+        }
+        else if(x.date.find("Wed")!=-1){
+            time+=48*60;
+        }
+        else if(x.date.find("Thu")!=-1){
+            time+=72*60;
+        }
+        else if(x.date.find("Fri")!=-1){
+            time+=96*60;
+        }
+        else if(x.date.find("Sar")!=-1){
+            time+=120*60;
+        }
+        else if(x.date.find("Sun")!=-1){
+            time+=144*60;
+        }
+        time_to_activity[time]=x;
+        insert(time,root,t2,cnt2);
+   } 
+   ifs1.close();
+   
+  ifstream ifs2;
+  string group_table_filename="../../src/model/identity_model/group_set/"+group_id+"_group.txt";
+    ifs2.open(group_table_filename, ios::in);
+    if (!ifs2.is_open()) {
+        cout << "用户班级文件不存在" << endl;
+        ifs2.close();
+        return;
+    }
+   ifs2>>ca_number;
+   for(int i=1;i<=ca_number;i++){
+       ifs2>>x.date>>x.sh>>x.sm>>x.fh>>x.fm>>x.place>>x.name;
+        x.clock_state="circular_clock";
+        x.porc='c';
+        name_to_activity[x.name]=x;
+        int time=x.sh*60+x.sm;
+         if(date.find("Mon")!=-1){
+            time+=0;
+        }
+        else if(date.find("Tue")!=-1){
+            time+=24*60;
+        }
+        else if(date.find("Wed")!=-1){
+            time+=48*60;
+        }
+        else if(date.find("Thu")!=-1){
+            time+=72*60;
+        }
+        else if(date.find("Fri")!=-1){
+            time+=96*60;
+        }
+        else if(date.find("Sar")!=-1){
+            time+=120*60;
+        }
+        else if(date.find("Sun")!=-1){
+            time+=144*60;
+        }
+        insert(time,root,t2,cnt2);
+        time_to_activity[x.sh*60+x.sm]=x;
+   }
+   ifs2.close();
 }
 
 void Student::query_by_course_time(){
@@ -160,14 +239,14 @@ void Student::query_by_course_time(){
     int min;
     int date;
     int time;
-    cout<<"\n 1:星期一";
+    cout<<"\n 1: 星期一";
     cout<<"\n 2：星期二";
     cout<<"\n 3：星期三";
     cout<<"\n 4：星期四";
     cout<<"\n 5：星期五";
     cout<<"\n 6：星期六";
     cout<<"\n 7：星期日"; 
-     cout<<"\n请选择星期：";
+    cout<<"\n请选择星期：";
     cin>>date;
     cout<<"\n请以格式 小时 ：分钟 输入时间,输入小时后按回车:\n";
     cin>>hour;
@@ -175,16 +254,46 @@ void Student::query_by_course_time(){
     cin>>min;
     time=(date-1)*1440+60*hour+min;
     int close_t;
-    int r=rank(time,root);
-   
-    if(r!=cnt){
-       close_t=kth(r,root);
-    }
-    else {close_t=kth(1,root);
-    }
+    int r=rank(time,root,t1);
+    if(r!=cnt2)close_t=kth(r,root,t1);  
+    else close_t=kth(1,root,t1);
     cout<<time_to_place[close_t].first<<" "<<time_to_place[close_t].second;
 }
 
+void Student::query_by_activity_time(){
+    int hour;
+    int min;
+    int date;
+    int time;
+    cout<<"\n 1: 星期一";
+    cout<<"\n 2：星期二";
+    cout<<"\n 3：星期三";
+    cout<<"\n 4：星期四";
+    cout<<"\n 5：星期五";
+    cout<<"\n 6：星期六";
+    cout<<"\n 7：星期日"; 
+    cout<<"\n请选择星期：";
+    cin>>date;
+    cout<<"\n请以格式 小时 ：分钟 输入时间,输入小时后按回车:\n";
+    cin>>hour;
+    cout<<":";
+    cin>>min;
+    time=(date-1)*1440+60*hour+min;
+    int close_t;
+    int r=rank(time,root,t2);
+    if(r!=cnt2)close_t=kth(r,root,t2);  
+    else close_t=kth(1,root,t2);
+    /*set<single_activity>result=time_to_activity[close_t];
+    for(set<single_activity>::iterator it=result.begin();it!=result.end();++it){
+        cout<<"活动时间："<<it->date<<x.sh<<":"<<it->sm<<"-"<<x.fh<<":"<<it->fm<<" ";
+        cout<<"活动地点:"<<it->place<<" "<<"活动名称："<<it->name<<" "<<"活动类型：";
+        cout<<kind[it->porc]<<" "<<"闹钟属性："<<it->clock_state<<endl;
+    }*/
+    single_activity x=time_to_activity[close_t];
+    cout<<"活动时间："<<x.date<<x.sh<<":"<<x.sm<<"-"<<x.fh<<":"<<x.fm<<" ";
+        cout<<"活动地点:"<<x.place<<" "<<"活动名称："<<x.name<<" "<<"活动类型：";
+        cout<<kind[x.porc]<<" "<<"闹钟属性："<<x.clock_state<<endl;
+}
 
 
 void Student::course_menu(string object_id,string object_name,string stu_id) {
@@ -223,3 +332,5 @@ void Student::course_menu(string object_id,string object_name,string stu_id) {
         }
     }
 }
+
+void Student::activity_menu(){}

@@ -20,13 +20,13 @@ void Student::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t|     2.课表课程查询    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t|     3.设置课外活动    |\n";
+    cout << "\t\t|     3.课程时间查询    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t|     4.时间查找课程    |\n";
+    cout << "\t\t|     4.活动名称查询    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t|     5.查询课外活动    |\n";
+    cout << "\t\t|     5.修改个人活动    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t|     6.设定活动闹钟    |\n";
+    cout << "\t\t|     6.活动时间查询    |\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t|     7.进行路径导航    |\n";
     cout << "\t\t|                       |\n";

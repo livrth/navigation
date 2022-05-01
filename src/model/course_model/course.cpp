@@ -6,7 +6,7 @@ Course::Course(string course_id, string course_name,string id) {
     this->user_id=id;
 }
 void Course::init(){
-    string courese_filename="../../src/model/course_model/course_collection/"+course_id+"_course.txt";
+    string courese_filename="../../src/model/course_model/course_set/"+course_id+"_course.txt";
     ifstream ifs;
     ifs.open(courese_filename, ios::in);
 
@@ -19,7 +19,7 @@ void Course::init(){
     ifs>>times_per_week;
     for(int i=1;i<=times_per_week;i++){
       single_course a;
-      ifs>>a.date>>a.seq>>a.campus>>a.place>>course_name;
+      ifs>>a.date>>a.seq>>a.campus>>a.place;
       a.sh=course_start_time_table[a.seq]/60;
       a.sm=course_start_time_table[a.seq]%60;
       a.fh=course_finish_time_table[a.seq]/60;
@@ -68,6 +68,8 @@ void Course::download_material(){
 }
 void Course::query_homework_by_name(){
 }
+void Course::query_material_by_name(){
+}
 void Course::query_homework_by_grades(){
 qsort_h(1,homework_number) ;
 for(int i=1;i<=homework_number;i++){
@@ -78,8 +80,6 @@ string opt;
 cin>>opt;
 if(opt=="No")return;
 else submit_homework();    
-}
-void Course::query_material_by_name(){
 }
 void Course::query_material_by_weight(){ 
 qsort_m(0,material_number-1);

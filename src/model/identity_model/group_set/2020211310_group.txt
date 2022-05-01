@@ -1,0 +1,22 @@
+10
+Mon 12 20 14 20 class study 
+Tue 12 20 14 20 kfc eat
+Mon 6 0 7 0 kfc drink
+Thu 8 0 9 0 library clean
+Sun 18 0 19 0 playground soccer
+Fri 16 0 17 0 N101 meeting
+Wed 19 10 20 10 library seminar
+Wed 20 10 21 10 lab experiment
+Mon 6 10 7 10 playground rise_flag
+Thu 12 0 13 0 square music_festival  
+10
+2020211591
+2020211610
+2020211611
+2020211612
+2020211613
+2020211614
+2020211615
+2020211616
+2020211617
+2020211618
