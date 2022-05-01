@@ -39,8 +39,8 @@ class Student {
     string my_course_table[6][12];//我的课程表
     Node t1[1000];//课程时间表
     int cnt1=0;   //二叉树节点数
-    map<string,single_activity > name_to_activity;//在找到正确的名字后必须通过名字找到对应的活动
-    map<int,single_activity> time_to_activity;//在找到合理的时间后必须通过时间查找到对应的地名（校区+建筑）
+    map<string,vector<single_activity> > name_to_activity;//在找到正确的名字后必须通过名字找到对应的活动
+    map<int,vector<single_activity> > time_to_activity;//在找到合理的时间后必须通过时间查找到对应的地名（校区+建筑）
     Node t2[1000];
     int cnt2=0;
     
@@ -57,9 +57,7 @@ class Student {
     void operMenu();
     void operMenuSub();
 
-    //课内信息管理和查询
-    void query_by_course_name();   //通过课程名称查询
-    void query_by_course_table();  //通过课表查询
+   
 
     //void upload_course_material();  //上传课程资料
     //void upload_home_work();        //上传作业
@@ -77,18 +75,19 @@ class Student {
    void insert(int x,int root,Node *t,int &cnt);
 
    void init();      //初始化
-
-   /*void set_activity();    // 设置活动
-   void delete_activity();
-   void change_activity();
-   void query_activity();
-   void set_activity_alarm();  //设定课外活动闹钟 */
-
+   
+    //课内信息管理和查询
+    void query_by_course_name();   //通过课程名称查询
+    void query_by_course_table();  //通过课表查询
    void query_by_course_time();   // 通过时间查询地点
 
    void query_by_activity_name();
-    void query_by_activity_table();
-     void query_by_activity_time();
+   void query_by_activity_time();
+   void set_activity();    // 设置活动
+   void delete_activity();
+   void change_activity();
+  
+   void set_activity_alarm();  //设定课外活动闹钟 
       
    void course_menu(string object_id,string object_name,string student_id);
    void activity_menu();

@@ -28,7 +28,7 @@ void student_menu(Student*& stu) {
         } else if (op == 4) {
             stu->query_by_activity_name();
         } else if (op == 5) {
-            stu->query_by_activity_table();
+            stu->activity_menu();
         } else if (op == 6) {
             stu->query_by_activity_time();
         } else if (op == 7) {

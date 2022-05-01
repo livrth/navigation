@@ -56,20 +56,9 @@ void Student::query_by_course_table() {
 
 //void Student::upload_course_material() {
 //}
-void Student::query_by_activity_name(){
-}
-void Student::query_by_activity_table(){
-}
-
-
 void Student::guide_now() {
 }
-
-/*void Student::set_activity(){}  // 设置活动
-   void Student::delete_activity(){}
-   void Student::change_activity(){}
-   void Student::query_activity(){}
-   void Student::set_activity_alarm(){} */
+ 
 
 //void Student::upload_home_work() {
 //}
@@ -164,7 +153,7 @@ void Student::init(){
    single_activity x;
   while(ifs1>>x.date>>x.sh>>x.sm>>x.fh>>x.fm>>x.place>>x.name>>x.clock_state){
         x.porc='p';
-        name_to_activity[x.name]=x;
+        name_to_activity[x.name].push_back(x);
         int time=x.sh*60+x.sm;
          if(x.date.find("Mon")!=-1){
             time+=0;
@@ -187,7 +176,7 @@ void Student::init(){
         else if(x.date.find("Sun")!=-1){
             time+=144*60;
         }
-        time_to_activity[time]=x;
+        time_to_activity[time].push_back(x);
         insert(time,root,t2,cnt2);
    } 
    ifs1.close();
@@ -205,7 +194,7 @@ void Student::init(){
        ifs2>>x.date>>x.sh>>x.sm>>x.fh>>x.fm>>x.place>>x.name;
         x.clock_state="circular_clock";
         x.porc='c';
-        name_to_activity[x.name]=x;
+        name_to_activity[x.name].push_back(x);
         int time=x.sh*60+x.sm;
          if(date.find("Mon")!=-1){
             time+=0;
@@ -229,7 +218,7 @@ void Student::init(){
             time+=144*60;
         }
         insert(time,root,t2,cnt2);
-        time_to_activity[x.sh*60+x.sm]=x;
+        time_to_activity[x.sh*60+x.sm].push_back(x);
    }
    ifs2.close();
 }
@@ -259,42 +248,6 @@ void Student::query_by_course_time(){
     else close_t=kth(1,root,t1);
     cout<<time_to_place[close_t].first<<" "<<time_to_place[close_t].second;
 }
-
-void Student::query_by_activity_time(){
-    int hour;
-    int min;
-    int date;
-    int time;
-    cout<<"\n 1: 星期一";
-    cout<<"\n 2：星期二";
-    cout<<"\n 3：星期三";
-    cout<<"\n 4：星期四";
-    cout<<"\n 5：星期五";
-    cout<<"\n 6：星期六";
-    cout<<"\n 7：星期日"; 
-    cout<<"\n请选择星期：";
-    cin>>date;
-    cout<<"\n请以格式 小时 ：分钟 输入时间,输入小时后按回车:\n";
-    cin>>hour;
-    cout<<":";
-    cin>>min;
-    time=(date-1)*1440+60*hour+min;
-    int close_t;
-    int r=rank(time,root,t2);
-    if(r!=cnt2)close_t=kth(r,root,t2);  
-    else close_t=kth(1,root,t2);
-    /*set<single_activity>result=time_to_activity[close_t];
-    for(set<single_activity>::iterator it=result.begin();it!=result.end();++it){
-        cout<<"活动时间："<<it->date<<x.sh<<":"<<it->sm<<"-"<<x.fh<<":"<<it->fm<<" ";
-        cout<<"活动地点:"<<it->place<<" "<<"活动名称："<<it->name<<" "<<"活动类型：";
-        cout<<kind[it->porc]<<" "<<"闹钟属性："<<it->clock_state<<endl;
-    }*/
-    single_activity x=time_to_activity[close_t];
-    cout<<"活动时间："<<x.date<<x.sh<<":"<<x.sm<<"-"<<x.fh<<":"<<x.fm<<" ";
-        cout<<"活动地点:"<<x.place<<" "<<"活动名称："<<x.name<<" "<<"活动类型：";
-        cout<<kind[x.porc]<<" "<<"闹钟属性："<<x.clock_state<<endl;
-}
-
 
 void Student::course_menu(string object_id,string object_name,string stu_id) {
     Course* cou=new Course(object_id,object_name,stu_id);
@@ -333,4 +286,45 @@ void Student::course_menu(string object_id,string object_name,string stu_id) {
     }
 }
 
+void Student::query_by_activity_time(){
+    int hour;
+    int min;
+    int date;
+    int time;
+    cout<<"\n 1: 星期一";
+    cout<<"\n 2：星期二";
+    cout<<"\n 3：星期三";
+    cout<<"\n 4：星期四";
+    cout<<"\n 5：星期五";
+    cout<<"\n 6：星期六";
+    cout<<"\n 7：星期日"; 
+    cout<<"\n请选择星期：";
+    cin>>date;
+    cout<<"\n请以格式 小时 ：分钟 输入时间,输入小时后按回车:\n";
+    cin>>hour;
+    cout<<":";
+    cin>>min;
+    time=(date-1)*1440+60*hour+min;
+    int close_t;
+    int r=rank(time,root,t2);
+    if(r!=cnt2)close_t=kth(r,root,t2);  
+    else close_t=kth(1,root,t2);
+    vector<single_activity>result=time_to_activity[close_t];
+    for(vector<single_activity>::iterator it=result.begin();it!=result.end();++it){
+        cout<<"活动时间："<<it->date<<it->sh<<":"<<it->sm<<"-"<<it->fh<<":"<<it->fm<<" ";
+        cout<<"活动地点:"<<it->place<<" "<<"活动名称："<<it->name<<" "<<"活动类型：";
+        cout<<kind[it->porc]<<" "<<"闹钟属性："<<it->clock_state<<endl;
+    }
+    /*single_activity x=time_to_activity[close_t];
+    cout<<"活动时间："<<x.date<<x.sh<<":"<<x.sm<<"-"<<x.fh<<":"<<x.fm<<" ";
+        cout<<"活动地点:"<<x.place<<" "<<"活动名称："<<x.name<<" "<<"活动类型：";
+        cout<<kind[x.porc]<<" "<<"闹钟属性："<<x.clock_state<<endl;*/
+}
+
+void Student::query_by_activity_name(){
+}
 void Student::activity_menu(){}
+void Student::set_activity(){}  
+void Student::delete_activity(){}
+void Student::change_activity(){}
+void Student::set_activity_alarm(){}
