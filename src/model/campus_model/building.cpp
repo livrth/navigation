@@ -5,6 +5,7 @@
 using namespace std;
 
 Building::Building() {
+
 }
 
 Building::Building(string s) {  //所属校区

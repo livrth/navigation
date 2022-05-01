@@ -22,4 +22,6 @@ target_link_libraries(
 	identity_model
 	homework_model
 	course_model
+	navigation_model
+	campus_model
 )
