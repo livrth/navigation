@@ -3,9 +3,9 @@
 #include <ctime>
 
 #include "admin.h"
+#include "guide.h"
 #include "student.h"
 #include "teacher.h"
-#include "guide.h"
 //#include "course.h"
 
 //实现除了登录界面之外所有的图形化打印菜单
@@ -13,6 +13,7 @@
 void Student::operMenu() {
     time_t now = time(0);
     char* dt = ctime(&now);
+    cout << endl;
     cout << endl;
     cout << "欢迎学生：" << this->stu_name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
@@ -33,9 +34,8 @@ void Student::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t|     0.注销登出账号    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t -----------------------\n";
+    cout << "\t\t -----------------------\n\n";
     cout << "请选择您的操作: ";
-    
 }
 
 void Student::operMenuSub() {
@@ -47,6 +47,7 @@ void Teacher::operMenu() {
     time_t now = time(0);
     char* dt = ctime(&now);
     cout << endl;
+    cout << endl;
     cout << "欢迎教师：" << this->name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
     cout << "\t\t|                       |\n";
@@ -56,7 +57,7 @@ void Teacher::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t|     0.注销登出账号    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t -----------------------\n";
+    cout << "\t\t -----------------------\n\n";
     cout << "请选择您的操作: ";
 }
 
@@ -64,6 +65,7 @@ void Admin::operMenu() {
     system("cls");
     time_t now = time(0);
     char* dt = ctime(&now);
+    cout << endl;
     cout << endl;
     cout << "欢迎管理员: " << this->user_name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
@@ -77,6 +79,25 @@ void Admin::operMenu() {
     cout << "\t\t|     0.注销登出账号    |\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t -----------------------\n";
+    cout << "\n";
     cout << "请选择您的操作: ";
 }
 
+void Guide::guideOperMenu() {
+    system("cls");
+    cout << endl;
+    cout << endl;
+    cout << "\t\t ----------------------------\n";
+    cout << "\t\t|                            |\n";
+    cout << "\t\t|     1.根据课程名称导航     |\n";
+    cout << "\t\t|                            |\n";
+    cout << "\t\t|     2.根据教室位置导航     |\n";
+    cout << "\t\t|                            |\n";
+    cout << "\t\t|     3.根据课程时间导航     |\n";
+    cout << "\t\t|                            |\n";
+    cout << "\t\t|     0.退出当前导航系统     |\n";
+    cout << "\t\t|                            |\n";
+    cout << "\t\t ----------------------------\n";
+    cout << endl;
+    cout << endl;
+}

@@ -1,20 +1,21 @@
 #include <windows.h>
+
 #include <fstream>
 #include <iostream>
 #include <locale>
 #include <string>
 
+#include "../course_model/course.h"
 #include "admin.h"
 #include "global_file.h"
 #include "menu.cpp"
 #include "student.h"
 #include "teacher.h"
-#include "../course_model/course.h"
 
 using namespace std;
 
 void student_menu(Student*& stu) {
-     stu->init();            //首先初始化学生类
+    stu->init();  //首先初始化学生类
     while (true) {
         stu->operMenu();
         int op;
@@ -114,13 +115,14 @@ void login(string fileName, int type) {
     cin >> pwd;
 
     if (type == 1) {  //学生登录
-        string file_id, file_pwd, file_name,group_id;
-        while (ifs >> file_id >> file_pwd >> file_name>>group_id) {
+        string file_id, file_pwd, file_name, group_id;
+        while (ifs >> file_id >> file_pwd >> file_name >> group_id) {
             if (file_id == id && file_pwd == pwd) {
-                cout << "\n学生用户登录成功!\n" << endl;
+                cout << "\n学生用户登录成功!\n"
+                     << endl;
                 system("pause");
                 system("cls");
-                stu = new Student(id, file_name,group_id );
+                stu = new Student(id, file_name, group_id);
                 student_menu(stu);
                 return;
             }
@@ -129,10 +131,11 @@ void login(string fileName, int type) {
         string file_id, file_pwd, file_name;
         while (ifs >> file_id >> file_pwd >> file_name) {
             if (file_id == id && file_pwd == pwd) {
-                cout << "\n教师用户登录成功!\n" << endl;
+                cout << "\n教师用户登录成功!\n"
+                     << endl;
                 system("pause");
                 system("cls");
-                tea = new Teacher(id,file_name);
+                tea = new Teacher(id, file_name);
                 teacher_menu(tea);
                 return;
             }
@@ -142,7 +145,8 @@ void login(string fileName, int type) {
         string file_name, file_pwd;
         while (ifs >> file_name >> file_pwd) {
             if (file_name == id && file_pwd == pwd) {
-                cout << "\n管理员登录成功!\n" << endl;
+                cout << "\n管理员登录成功!\n"
+                     << endl;
                 system("pause");
                 system("cls");
                 Admin* admin = nullptr;
@@ -161,7 +165,7 @@ void login(string fileName, int type) {
 
 //学生用户注册
 void new_stu_reg() {
-    string stu_id, name, pwd,group;
+    string stu_id, name, pwd, group;
     cout << "\n请输入您的班级: ";
     cin >> group;
     cout << "\n请输入您的学号: ";
@@ -181,7 +185,7 @@ void new_stu_reg() {
         return;
     }
     //学号 密码 姓名
-    ofs << stu_id << ' ' << pwd << ' ' << name << ' '<<group<<endl;
+    ofs << stu_id << ' ' << pwd << ' ' << name << ' ' << group << endl;
     ofs.close();
     cout << "\n您已注册成功, 请登录使用本系统!\n\n";
     system("pause");
@@ -215,6 +219,7 @@ void new_teacher_reg() {
 
 int main() {
     //起始欢迎界面
+    /*
     system("cls");
     cout << "\n\n";
     Sleep(100);
@@ -231,30 +236,31 @@ int main() {
     cout << "\t\tWelcome to Course Assistance System \n";
     Sleep(1500);
     system("cls");
+    */
 
     int op;
     while (true) {
         cout << "\n\n";
-        cout << "\t\t -------------------------------\n";
-        cout << "\t\t|      欢迎来到课程辅助系统     |\n";
-        cout << "\t\t -------------------------------\n";
-        cout << "\t\t|                               |\n";
-        cout << "\t\t|          1.学生用户登录       |\n";
-        cout << "\t\t|                               |\n";
-        cout << "\t\t|          2.教师用户登录       |\n";
-        cout << "\t\t|                               |\n";
-        cout << "\t\t|          3.系统管理登录         |\n";
-        cout << "\t\t|                               |\n";
-        cout << "\t\t|          4.学生用户注册       |\n";
-        cout << "\t\t|                               |\n";
-        cout << "\t\t|          5.教师用户注册       |\n";
-        cout << "\t\t|                               |\n";
-        cout << "\t\t|          0.退出课程系统       |\n";
-        cout << "\t\t|                               |\n";
-        cout << "\t\t -------------------------------\n";
+        cout << "\t\t ----------------------------------\n";
+        cout << "\t\t|       欢迎来到课程辅助系统       |\n";
+        cout << "\t\t ----------------------------------\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          1.学生用户登录          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          2.教师用户登录          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          3.系统管理登录          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          4.学生用户注册          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          5.教师用户注册          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          0.退出课程系统          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t ----------------------------------\n";
         cout << "\n\n";
         cout << "请输入您的选择: ";
-        
+
         cin >> op;
         switch (op) {
             case 1:
@@ -287,4 +293,3 @@ int main() {
     system("pause");
     return 0;
 }
-
