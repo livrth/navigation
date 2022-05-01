@@ -5,6 +5,7 @@
 #include "admin.h"
 #include "student.h"
 #include "teacher.h"
+#include "guide.h"
 //#include "course.h"
 
 //实现除了登录界面之外所有的图形化打印菜单

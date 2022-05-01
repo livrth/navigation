@@ -5,12 +5,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -fexec-charset=GBK")
 
-# find sources
+# add model here
 add_subdirectory(model/identity_model)
-# add_subdirectory(model)
 add_subdirectory(model/homework_model)
-# add_subdirectory(model)
 add_subdirectory(model/course_model)
+add_subdirectory(model/navigation_model)
 
 add_executable(
 	${PROJECT_NAME}
@@ -23,5 +22,4 @@ target_link_libraries(
 	homework_model
 	course_model
 	navigation_model
-	campus_model
 )

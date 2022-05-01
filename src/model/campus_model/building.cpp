@@ -4,6 +4,9 @@
 #include <set>
 using namespace std;
 
+//地图都写死了
+//这个building 整个 campus_model 是否需要待定
+
 Building::Building() {
 
 }

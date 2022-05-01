@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <string>
 
+using namespace std;
+
 class Guide{
     public:
     int build_now; //现在所处的建筑位置
@@ -12,5 +14,10 @@ class Guide{
     */
 
     Guide();
-    void print_path(); //输出最短路导航路径
+    Guide(string in_campus); //现在所处的校区
+
+    void guideOperMenu(); //导航选择菜单
+    void print_path_by_course(); //输出最短路导航路径
+    void print_path_by_location();
+    void print_path_by_time();
 };

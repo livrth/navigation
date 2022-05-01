@@ -117,7 +117,7 @@ void login(string fileName, int type) {
         string file_id, file_pwd, file_name,group_id;
         while (ifs >> file_id >> file_pwd >> file_name>>group_id) {
             if (file_id == id && file_pwd == pwd) {
-                cout << "\n学生用户登录成功!" << endl;
+                cout << "\n学生用户登录成功!\n" << endl;
                 system("pause");
                 system("cls");
                 stu = new Student(id, file_name,group_id );
@@ -129,7 +129,7 @@ void login(string fileName, int type) {
         string file_id, file_pwd, file_name;
         while (ifs >> file_id >> file_pwd >> file_name) {
             if (file_id == id && file_pwd == pwd) {
-                cout << "\n教师用户登录成功!" << endl;
+                cout << "\n教师用户登录成功!\n" << endl;
                 system("pause");
                 system("cls");
                 tea = new Teacher(id,file_name);
@@ -142,7 +142,7 @@ void login(string fileName, int type) {
         string file_name, file_pwd;
         while (ifs >> file_name >> file_pwd) {
             if (file_name == id && file_pwd == pwd) {
-                cout << "\n管理员登录成功!" << endl;
+                cout << "\n管理员登录成功!\n" << endl;
                 system("pause");
                 system("cls");
                 Admin* admin = nullptr;
@@ -243,13 +243,13 @@ int main() {
         cout << "\t\t|                               |\n";
         cout << "\t\t|          2.教师用户登录       |\n";
         cout << "\t\t|                               |\n";
-        cout << "\t\t|          3.管理员登录         |\n";
+        cout << "\t\t|          3.系统管理登录         |\n";
         cout << "\t\t|                               |\n";
         cout << "\t\t|          4.学生用户注册       |\n";
         cout << "\t\t|                               |\n";
         cout << "\t\t|          5.教师用户注册       |\n";
         cout << "\t\t|                               |\n";
-        cout << "\t\t|          0.退出此系统         |\n";
+        cout << "\t\t|          0.退出课程系统       |\n";
         cout << "\t\t|                               |\n";
         cout << "\t\t -------------------------------\n";
         cout << "\n\n";
