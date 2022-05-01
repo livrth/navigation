@@ -109,9 +109,9 @@ void Student::init(){
     for(int j=1;j<=11;j++)
     my_course_table[i][j]="NULL";
     string date,place,course_name,course_id,campus;
-    int seq;
+    int seq,building_id;
     t1[root=++cnt1]=Node(0,0,1,2147483647);
-    while(ifs >>date>>seq>>place>>course_name>>campus>>course_id){
+    while(ifs >>date>>seq>>place>>course_name>>campus>>course_id>>building_id){
         int time=0;
         if(date.find("Mon")!=-1){
             time+=0;
