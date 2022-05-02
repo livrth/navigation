@@ -27,23 +27,6 @@ void Guide::build_graph(string campus_in) {
         system("pause");
         return;
     }
-
-    for (int i = 0; i < 25; i++) h[i] = -1;
-    //建图 加边
-    int a, b, c;
-    int to, from, weight;
-    while (ifs >> from >> to >> weight) {
-        a = from;
-        b = to;
-        c = weight;
-        e[idx] = b;
-        ne[idx] = h[a];
-        w[idx] = c;
-        h[a] = idx++;
-    }
-    
-    //Debug 建图是否成功
-    
 }
 
 void Guide::print_path_by_course() {
