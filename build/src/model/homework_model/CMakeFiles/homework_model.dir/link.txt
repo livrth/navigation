@@ -1,0 +1,2 @@
+C:\mingw64\bin\ar.exe qc libhomework_model.a CMakeFiles/homework_model.dir/homework.cpp.obj
+C:\mingw64\bin\ranlib.exe libhomework_model.a

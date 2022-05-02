@@ -67,7 +67,7 @@ void Student::guide_now() {
     cin >> campus_now_in;
 
     Guide guide(campus_now_in, this->stu_id);
-    guide.build_graph(campus_now_in);  //建图
+    // guide.build_graph(campus_now_in);  //建图
     guide.guideOperMenu();
     cout << "请输入您需要导航的模式: ";
     int op;

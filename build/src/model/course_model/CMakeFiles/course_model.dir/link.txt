@@ -1,0 +1,2 @@
+C:\mingw64\bin\ar.exe qc libcourse_model.a CMakeFiles/course_model.dir/course.cpp.obj
+C:\mingw64\bin\ranlib.exe libcourse_model.a

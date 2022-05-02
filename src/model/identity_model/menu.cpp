@@ -14,7 +14,6 @@ void Student::operMenu() {
     time_t now = time(0);
     char* dt = ctime(&now);
     cout << endl;
-    cout << endl;
     cout << "欢迎学生：" << this->stu_name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
     cout << "\t\t|                       |\n";
@@ -47,7 +46,6 @@ void Teacher::operMenu() {
     time_t now = time(0);
     char* dt = ctime(&now);
     cout << endl;
-    cout << endl;
     cout << "欢迎教师：" << this->name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
     cout << "\t\t|                       |\n";
@@ -65,7 +63,6 @@ void Admin::operMenu() {
     system("cls");
     time_t now = time(0);
     char* dt = ctime(&now);
-    cout << endl;
     cout << endl;
     cout << "欢迎管理员: " << this->user_name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
@@ -85,7 +82,6 @@ void Admin::operMenu() {
 
 void Guide::guideOperMenu() {
     system("cls");
-    cout << endl;
     cout << endl;
     cout << "\t\t ----------------------------\n";
     cout << "\t\t|                            |\n";

@@ -1,0 +1,2 @@
+C:\mingw64\bin\ar.exe qc libidentity_model.a CMakeFiles/identity_model.dir/admin.cpp.obj CMakeFiles/identity_model.dir/student.cpp.obj CMakeFiles/identity_model.dir/teacher.cpp.obj
+C:\mingw64\bin\ranlib.exe libidentity_model.a
