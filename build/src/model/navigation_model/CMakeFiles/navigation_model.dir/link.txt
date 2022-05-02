@@ -1,2 +1,0 @@
-C:\mingw64\bin\ar.exe qc libnavigation_model.a CMakeFiles/navigation_model.dir/guide.cpp.obj
-C:\mingw64\bin\ranlib.exe libnavigation_model.a
