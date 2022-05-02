@@ -79,7 +79,7 @@ void Student::guide_now() {
     } else if (op == 3) {
         guide.print_path_by_time();
     } else if (op == 0) {
-        cout << "退出成功" << endl;
+        cout << "\n退出成功\n\n" << endl;
         system("pause");
         system("cls");
         return;

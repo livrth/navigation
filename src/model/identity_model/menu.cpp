@@ -75,8 +75,7 @@ void Admin::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t|     0.注销登出账号    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t -----------------------\n";
-    cout << "\n";
+    cout << "\t\t -----------------------\n\n";
     cout << "请选择您的操作: ";
 }
 
@@ -93,7 +92,6 @@ void Guide::guideOperMenu() {
     cout << "\t\t|                            |\n";
     cout << "\t\t|     0.退出当前导航系统     |\n";
     cout << "\t\t|                            |\n";
-    cout << "\t\t ----------------------------\n";
-    cout << endl;
+    cout << "\t\t ----------------------------\n\n";
     cout << endl;
 }

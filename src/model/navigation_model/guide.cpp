@@ -1,5 +1,8 @@
 #include "guide.h"
 
+#include <windows.h>
+
+#include <cctype>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -55,7 +58,7 @@ void Guide::print_path_by_course() {
         mp[file_course_name] = file_building_id;
         all_course.insert(file_course_name);
     }
-    cout << "\n\n您的当前课程可选项为: \n\n";
+    cout << "\n\n您的当前课程可选项为: \n";
     cout << "-----------------------------------------------------" << endl;
     int cnt = 0;
     for (auto t : all_course) {
@@ -67,15 +70,14 @@ void Guide::print_path_by_course() {
     cout << "-----------------------------------------------------" << endl;
     ifs.close();
 
-    cout << "\n\n请输入您当前正在上的课程名称: ";
+    cout << "\n请输入您当前正在上的课程名称: ";
     string course_go_on;
     cin >> course_go_on;
 
-    cout << "\n\n请输入您将要上课的课程名称: ";
+    cout << "请输入您将要上课的课程名称: ";
     string course_name;
     cin >> course_name;
 
-    cout << "\n\n系统已为您规划好路线如下: \n\n";
     int now_build_id = mp[course_go_on];
     int next_build_id = mp[course_name];
     ifstream iifs;
@@ -90,13 +92,55 @@ void Guide::print_path_by_course() {
         system("pause");
         return;
     }
-    int file_from_id, file_to_id;
-    //ifstream getline
-    // while(iifs >> file_from_id >> file_to_id){
-    //     if(file_from_id == now_build_id && file_to_id == next_build_id){
+    Sleep(200);
+    cout << "\n......";
+    Sleep(200);
+    cout << "......";
+    Sleep(200);
+    cout << "......";
+    Sleep(200);
+    cout << "\n";
+    cout << "系统已识别到您当前在: " << now_build_id << "号 教学楼" << endl;
+    cout << "即将前往: " << next_build_id << "号 教学楼\n";
+    cout << "......";
+    Sleep(200);
+    cout << "......";
+    Sleep(200);
+    cout << "......";
+    Sleep(200);
+    cout << "\n";
+    cout << "\n系统已为您规划好路线如下: \n";
+    cout << "---------------------------------------------------------------------------\n";
+    for (std::string line; std::getline(iifs, line);) {
+        vector<string> v;  //去掉空格分开之后的所有单独建筑编号
+        string temp = "";
 
-    //     }
-    // }
+        for (int i = 0; line[i]; i++) {
+            if (!isspace(line[i]))
+                temp += line[i];
+            else {
+                while (isspace(line[i])) i++;
+                i--;
+                v.push_back(temp);
+                temp = "";
+            }
+        }
+        v.push_back(temp);
+
+        if (stoi(v[0]) == now_build_id && stoi(v[1]) == next_build_id) {
+            // cout << line << endl;
+            for (int i = 2; i < (int)(v.size() - 2); i++) cout << v[i] + " 号教学楼 -> ";
+            cout << v[v.size() - 2] + " 号教学楼" << endl;
+            cout << "---------------------------------------------------------------------------\n";
+            cout << "路线总长度: " << v[v.size() - 1] << " 米" << endl;
+            break;
+        }
+    }
+    cout << "---------------------------------------------------------------------------\n\n";
+    cout << "最短路径显示完毕!\n\n";
+    iifs.close();
+    system("pause");
+    system("cls");
 }
 
 void Guide::print_path_by_location() {
