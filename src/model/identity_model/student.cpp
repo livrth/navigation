@@ -354,9 +354,9 @@ void Student::activity_menu() {
         cout << "\t\t|                                  |\n";
         cout << "\t\t|          2.删除个人活动          |\n";
         cout << "\t\t|                                  |\n";
-        cout << "\t\t|          3.修改个人活动         |\n";
+        cout << "\t\t|          3.修改个人活动          |\n";
         cout << "\t\t|                                  |\n";
-        cout << "\t\t|          4.个人活动闹钟         |\n";
+        cout << "\t\t|          4.个人活动闹钟          |\n";
         cout << "\t\t|                                  |\n";
         cout << "\t\t|          0.返回个人主页          |\n";
         cout << "\t\t|                                  |\n";
@@ -424,10 +424,10 @@ void Student::set_activity() {
     ofstream ofs;
     string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
     ofs.open(activity_table_filename, ios::app);
-    ofs << number_to_date[date] <<" "<< x.sh <<" "<< x.sm <<" "<< x.fh <<" "<< x.fm <<" "<< x.place 
+    ofs << endl << number_to_date[date] <<" "<< x.sh <<" "<< x.sm <<" "<< x.fh <<" "<< x.fm <<" "<< x.place 
     <<" "<< x.name <<" "<< "no_clock" <<endl;
     ofs.close();
-    cout<<"活动设置完毕";
+    cout<<"活动设置完毕"<<endl;
 }
 void Student::delete_activity(){}
 void Student::change_activity() {}
