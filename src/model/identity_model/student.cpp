@@ -24,6 +24,8 @@ void Student::query_by_course_table() {
                                        << "第" << i << "节"
                                        << "    ";
     cout << endl;
+    cout <<"   |08:00-08:45 |08:50-09:35 |09:50-10:35 |10:40-11:25 |11:35-12:15 |13:00-13:45 ";
+    cout<<"|13:50-14:35 |14:45-15:30 |15:40-16:25 |16:35-17:20 |17:25-18:10 |"<<endl;
     for (int i = 1; i <= 5; i++) {
         cout << number_to_date[i] + "|";
         for (int seq = 1; seq <= 11; seq++) {
@@ -53,6 +55,8 @@ void Student::query_by_course_table() {
             break;
         }
     }
+    system("pause");
+    system("cls");
     course_menu(object_id, object_name, this->stu_id);
 }
 
@@ -338,16 +342,93 @@ void Student::query_by_activity_time() {
         cout << kind[it->porc] << " "
              << "闹钟属性：" << it->clock_state << endl;
     }
-    /*single_activity x=time_to_activity[close_t];
-    cout<<"活动时间："<<x.date<<x.sh<<":"<<x.sm<<"-"<<x.fh<<":"<<x.fm<<" ";
-        cout<<"活动地点:"<<x.place<<" "<<"活动名称："<<x.name<<" "<<"活动类型：";
-        cout<<kind[x.porc]<<" "<<"闹钟属性："<<x.clock_state<<endl;*/
 }
 
+void Student::activity_menu() {
+    system("pause");
+    system("cls");
+    while (true) {
+        cout << "\t\t ----------------------------------\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          1.添加个人活动          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          2.删除个人活动          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          3.修改个人活动         |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          4.个人活动闹钟         |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          0.返回个人主页          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t ----------------------------------\n";
+        cout << "\n\n";
+        cout << "请选择您的操作: ";
+        int op;
+        cin >> op;
+        if (op == 1) {
+            set_activity();
+        } else if (op == 2) {
+            delete_activity();
+        } else if (op == 3) {
+            change_activity();
+        } else if (op == 4) {
+            set_activity_alarm();
+        } else if (op == 0) {
+            cout << "返回成功" << endl;
+            system("pause");
+            system("cls");
+            return;
+        } else {
+            cout << "\n无法识别的操作, 请重新输入: ";
+            system("pause");
+            system("cls");
+        }
+    }
+}
 void Student::query_by_activity_name() {
 }
-void Student::activity_menu() {}
-void Student::set_activity() {}
-void Student::delete_activity() {}
+
+void Student::set_activity() {
+    cout<<"请输入活动的日期：";
+    single_activity x;
+    int sh, sm, fh, fm, time;
+    int date;
+    string place, name;
+    cout << "\n 1: 星期一";
+    cout << "\n 2: 星期二";
+    cout << "\n 3: 星期三";
+    cout << "\n 4: 星期四";
+    cout << "\n 5: 星期五";
+    cout << "\n 6: 星期六";
+    cout << "\n 7: 星期日";
+    cout << "\n请选择星期: ";
+    cin >> date;
+    cout << "\n请以格式 小时 ：分钟 输入活动开始时间,输入小时后按回车:\n";
+    cin >> x.sh;
+    cout << ":";
+    cin >> x.sm;
+    cout << "\n请以格式 小时 ：分钟 输入活动开始时间,输入小时后按回车:\n";
+    cin >> x.fh;
+    cout << ":";
+    cin >> x.fm;
+    time = (date - 1) * 1440 + 60 * x.sh + x.sm;
+    cout << "请输入活动地点：";
+    cin >> x.place;
+    cout<<"请输入活动描述：";
+    cin >> x.name;
+    x.clock_state = "no_clock";
+    x.porc = 'p';
+    insert(time, root, t2, cnt2);
+    name_to_activity[x.name].push_back(x);
+    time_to_activity[time].push_back(x);
+    ofstream ofs;
+    string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
+    ofs.open(activity_table_filename, ios::app);
+    ofs << number_to_date[date] <<" "<< x.sh <<" "<< x.sm <<" "<< x.fh <<" "<< x.fm <<" "<< x.place 
+    <<" "<< x.name <<" "<< "no_clock" <<endl;
+    ofs.close();
+    cout<<"活动设置完毕";
+}
+void Student::delete_activity(){}
 void Student::change_activity() {}
 void Student::set_activity_alarm() {}

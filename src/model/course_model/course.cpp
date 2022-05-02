@@ -19,7 +19,8 @@ void Course::init(){
     ifs>>times_per_week;
     for(int i=1;i<=times_per_week;i++){
       single_course a;
-      ifs>>a.date>>a.seq>>a.campus>>a.place;
+      string name,course_id,building_id;
+      ifs>>a.date>>a.seq>>a.place>>name>>a.campus>>course_id>>building_id;
       a.sh=course_start_time_table[a.seq]/60;
       a.sm=course_start_time_table[a.seq]%60;
       a.fh=course_finish_time_table[a.seq]/60;
@@ -99,9 +100,8 @@ void Course::operMenu(){
     cout<<"每周课时数目："<<times_per_week<<endl;
     for(int i=0;i<=times_per_week-1;i++){
       single_course a=number_table[i];
-      cout<<a.date<<"第"<<a.seq<<"节"<<a.sh<<":"<<a.sm<<"-"<<a.fh<<":"<<a.fm<<" "<<a.campus<<a.place<<endl;
+      cout<<" "<<a.date<<"第"<<a.seq<<"节"<<a.sh<<":"<<a.sm<<"-"<<a.fh<<":"<<a.fm<<" "<<a.campus<<a.place<<endl;
     }
-    cout<<endl;
     cout<<"任课教师："<<teacher_name<<endl;
     cout<<"课程群："<<course_qun<<endl;
     cout<<"当前进度："<<" "<<"/"<<total_weeks<<endl;
@@ -110,16 +110,19 @@ void Course::operMenu(){
     cout<<"考试地点："<<final.campus<<final.place<<endl;
     cout<<"课程参考书籍："<<endl;
     for(int i=0;i<=ref_book_number-1;i++){
-     cout<<ref_books[i]<<endl;
+     cout<<"  "<<ref_books[i]<<endl;
     }
+    if(ref_book_number==0)cout<<"暂无参考书籍";
     cout<<"课程电子资料："<<endl;
     for(int i=0;i<=material_number-1;i++){
-     cout<<materials[i].name<<"  权重:"<<materials[i].weight<<endl;
+     cout<<"  "<<materials[i].name<<"  权重:"<<materials[i].weight<<endl;
     }
+    if(material_number==0)cout<<"暂无资料";
     cout<<"课程作业："<<endl;
     for(int i=1;i<=homework_number;i++){
-     cout<<"第"<<i<<"次作业"<<"  "<<hws[i].first<<"  "<<"成绩："<<hws[i].second<<endl;
+     cout<<"  "<<"第"<<i<<"次作业"<<"  "<<hws[i].first<<"  "<<"成绩："<<hws[i].second<<endl;
     }
+    if(homework_number==0)cout<<"暂无作业";
     cout << "\t\t -----------------------\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t|     1.提交课程作业    |\n";
