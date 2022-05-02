@@ -25,7 +25,7 @@ void Student::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t|     4.活动名称查询    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t|     5.修改个人活动    |\n";
+    cout << "\t\t|     5.进入活动菜单    |\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t|     6.活动时间查询    |\n";
     cout << "\t\t|                       |\n";
@@ -82,6 +82,8 @@ void Admin::operMenu() {
 void Guide::guideOperMenu() {
     system("cls");
     cout << endl;
+    cout << "\t\t ----------------------------\n";
+    cout << "\t\t|           导航页面          |\n";
     cout << "\t\t ----------------------------\n";
     cout << "\t\t|                            |\n";
     cout << "\t\t|     1.根据课程名称导航     |\n";

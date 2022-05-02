@@ -186,7 +186,7 @@ void Student::init() {
     t2[root = ++cnt2] = Node(0, 0, 1, 2147483647);
     single_activity x;
     while (ifs1 >> x.date >> x.sh >> x.sm >> x.fh >> x.fm >> x.place >> x.name >> x.clock_state) {
-        x.porc = 'p';
+        x.state = 'p';
         name_to_activity[x.name].push_back(x);
         int time = x.sh * 60 + x.sm;
         if (x.date.find("Mon") != std::string::npos) {
@@ -221,7 +221,7 @@ void Student::init() {
     for (int i = 1; i <= ca_number; i++) {
         ifs2 >> x.date >> x.sh >> x.sm >> x.fh >> x.fm >> x.place >> x.name;
         x.clock_state = "circular_clock";
-        x.porc = 'c';
+        x.state = 'c';
         name_to_activity[x.name].push_back(x);
         int time = x.sh * 60 + x.sm;
         if (date.find("Mon") != std::string::npos) {
@@ -339,7 +339,7 @@ void Student::query_by_activity_time() {
         cout << "活动地点:" << it->place << " "
              << "活动名称：" << it->name << " "
              << "活动类型：";
-        cout << kind[it->porc] << " "
+        cout << kind[it->state] << " "
              << "闹钟属性：" << it->clock_state << endl;
     }
 }
@@ -347,7 +347,22 @@ void Student::query_by_activity_time() {
 void Student::activity_menu() {
     system("pause");
     system("cls");
+    cout << endl;
+    cout << "\t\t\t\t\t\t\t\t\t活动表" << endl;
+    for(int i=1;i<=cnt2;i++){
+        vector<single_activity> x=time_to_activity[t2[i].value];
+        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+        cout << "活动时间：" << it->date << it->sh << ":" << it->sm << "-" << it->fh << ":" << it->fm << " ";
+        cout << "活动地点:" << it->place << " "
+             << "活动名称：" << it->name << " "
+             << "活动类型：";
+        cout << kind[it->state] << " "
+             << "闹钟属性：" << it->clock_state << endl;
+        }    
+    }
     while (true) {
+        cout << "\t\t ----------------------------------\n";
+        cout << "\t\t|             活动页面              |\n";
         cout << "\t\t ----------------------------------\n";
         cout << "\t\t|                                  |\n";
         cout << "\t\t|          1.添加个人活动          |\n";
@@ -387,7 +402,6 @@ void Student::activity_menu() {
 }
 void Student::query_by_activity_name() {
 }
-
 void Student::set_activity() {
     cout<<"请输入活动的日期：";
     single_activity x;
@@ -407,7 +421,7 @@ void Student::set_activity() {
     cin >> x.sh;
     cout << ":";
     cin >> x.sm;
-    cout << "\n请以格式 小时 ：分钟 输入活动开始时间,输入小时后按回车:\n";
+    cout << "\n请以格式 小时 ：分钟 输入活动结束时间,输入小时后按回车:\n";
     cin >> x.fh;
     cout << ":";
     cin >> x.fm;
@@ -417,18 +431,173 @@ void Student::set_activity() {
     cout<<"请输入活动描述：";
     cin >> x.name;
     x.clock_state = "no_clock";
-    x.porc = 'p';
+    x.state = 'p';
+    x.date=number_to_date[date];
     insert(time, root, t2, cnt2);
     name_to_activity[x.name].push_back(x);
     time_to_activity[time].push_back(x);
     ofstream ofs;
     string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
     ofs.open(activity_table_filename, ios::app);
-    ofs << endl << number_to_date[date] <<" "<< x.sh <<" "<< x.sm <<" "<< x.fh <<" "<< x.fm <<" "<< x.place 
+    ofs << endl << x.date <<" "<< x.sh <<" "<< x.sm <<" "<< x.fh <<" "<< x.fm <<" "<< x.place 
     <<" "<< x.name <<" "<< "no_clock" <<endl;
     ofs.close();
+    clash_test(number_to_date[date],x.sh*60+x.sm,x.fh*60+x.fm);
     cout<<"活动设置完毕"<<endl;
 }
-void Student::delete_activity(){}
-void Student::change_activity() {}
+void Student::delete_activity(){
+    cout<<"请输入你想删除的活动的开始时间：";
+    int date,sh,sm,time;
+    cout << "\n 1: 星期一";
+    cout << "\n 2: 星期二";
+    cout << "\n 3: 星期三";
+    cout << "\n 4: 星期四";
+    cout << "\n 5: 星期五";
+    cout << "\n 6: 星期六";
+    cout << "\n 7: 星期日";
+    cout << "\n请选择星期: ";
+    cin >> date;
+    cout << "\n请以格式 小时 ：分钟 输入活动开始时间,输入小时后按回车:\n";
+    cin >> sh;
+    cout << ":";
+    cin >> sm;
+    time = (date - 1) * 1440 + 60 *sh + sm;
+    if(time_to_activity[time].empty()){
+        cout << "不存在这样的活动，请重试";
+        return;
+    }
+    vector<single_activity> x=time_to_activity[time];
+    string description;
+    cout << "请输入你想删除的活动的描述:";
+    bool flag=false;
+    while(!flag){
+        cin >>description;
+        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+            if(it->name == description && it->state=='p'){
+                it->state='d';
+                flag=true;
+                break;
+            }
+        }
+        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以删除:";
+    }
+    ofstream ofs;
+    string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
+    ofs.open(activity_table_filename);
+    for(int i=1;i<=cnt2;i++){
+        vector<single_activity> x=time_to_activity[t2[i].value];
+        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+            if(it->state=='p'){
+                 ofs << it->date <<" "<< it->sh <<" "<< it->sm << " " << it->fh << " " << it->fm << " ";
+                 ofs << it->place << " "<<it->name <<" " <<it->clock_state << endl;
+            } 
+        }
+    }
+    cout<<"活动删除完毕"<<endl;
+}
+void Student::change_activity() {
+    cout<<"请输入你想改变的活动的开始时间：";
+    int date,sh,sm,time;
+    cout << "\n 1: 星期一";
+    cout << "\n 2: 星期二";
+    cout << "\n 3: 星期三";
+    cout << "\n 4: 星期四";
+    cout << "\n 5: 星期五";
+    cout << "\n 6: 星期六";
+    cout << "\n 7: 星期日";
+    cout << "\n请选择星期: ";
+    cin >> date;
+    cout << "\n请以格式 小时 ：分钟 输入活动开始时间,输入小时后按回车:\n";
+    cin >> sh;
+    cout << ":";
+    cin >> sm;
+    time = (date - 1) * 1440 + 60 *sh + sm;
+    if(time_to_activity[time].empty()){
+        cout << "不存在这样的活动，请重试";
+        return;
+    }
+    vector<single_activity> x=time_to_activity[time];
+    string name, place ;
+    cout << "请输入你想改变的活动的描述:";
+    bool flag = false;
+    while(!flag){
+        cin >> name;
+        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+            if(it->name == name && it->state == 'p'){
+                it->state='d';
+                flag=true;
+                break;
+            }
+        }
+        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以更改:";
+    }
+    single_activity y;
+    cout << "请输入改变后活动的地点:";
+    cin >> y.place;
+    cout<<"请输入改变后的活动的开始时间：";
+    cout << "\n 1: 星期一";
+    cout << "\n 2: 星期二";
+    cout << "\n 3: 星期三";
+    cout << "\n 4: 星期四";
+    cout << "\n 5: 星期五";
+    cout << "\n 6: 星期六";
+    cout << "\n 7: 星期日";
+    cout << "\n请选择星期: ";
+    cin >> date;
+    cout << "\n请以格式 小时 ：分钟 输入活动开始时间,输入小时后按回车:\n";
+    cin >> y.sh;
+    cout << ":";
+    cin >> y.sm;
+    cout << "\n请以格式 小时 ：分钟 输入活动结束时间,输入小时后按回车:\n";
+    cin >> y.fh;
+    cout << ":";
+    cin >> y.fm;
+    y.name = name;
+    y.state = 'p';
+    y.clock_state = "no_clock";
+    y.date = number_to_date[date];
+    time = (date - 1) * 1440 + 60 *y.sh + y.sm;
+    insert(time,root,t2,cnt2);
+    name_to_activity[y.name].push_back(y);
+    time_to_activity[time].push_back(y);
+    ofstream ofs;
+    string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
+    ofs.open(activity_table_filename);
+    for(int i=1;i<=cnt2;i++){
+        vector<single_activity> x=time_to_activity[t2[i].value];
+        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+            if(it->state=='p'){
+                 ofs << it->date <<" "<< it->sh <<" "<< it->sm << " " << it->fh << " " << it->fm << " ";
+                 ofs << it->place << " "<<it->name <<" " << it->clock_state << endl;
+            } 
+        }
+    }
+    clash_test(y.date,y.sh*60+sm,y.fh*60+y.fm);
+    cout<<"活动改变完毕"<<endl;
+}
 void Student::set_activity_alarm() {}
+void Student::clash_test(string date, int st, int ft){
+    for(int i=1;i<=cnt2;i++){
+        vector<single_activity> x=time_to_activity[t2[i].value];
+        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+            if(it->state != 'd' && it->date == date && interact(it->sh*60+it->sm,it->fh*60+it->fm,st,ft)){
+              cout << "检测到冲突!"<<endl;
+              return;  
+            } 
+        }
+    }
+    for(int i=1;i<=5;i++){
+            if(number_to_date[i] == date){
+                for (int seq = 1; seq <= 11 ; seq ++) {
+                     if(my_course_table[6][12]!="NULL" && interact(course_start_time_table[seq],course_finish_time_table[seq],st,ft) ){
+                         cout << "检测到冲突!"<<endl;
+                         return;  
+                     }
+                } 
+            }
+        }
+    cout << "未检测到与课程或者活动的冲突"<<endl;
+}
+ bool Student::interact(int x1,int x2,int y1 ,int y2){
+    return (x1+y1-x2-y2 <= x1+x2-y1-y2) && (x1+x2-y1-y2 <= x2+y2-x1-y1); 
+ }
