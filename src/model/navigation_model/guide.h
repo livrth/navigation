@@ -10,10 +10,6 @@ class Guide {
     string campus_now;  //现在所处的校区 沙河 西土城
     string stu_id;      //当前操作的学生的学号
 
-    // const int N = 22, M = 450;  //点数 边数
-    vector<int> h, e, ne, w; //邻接表
-    int idx = 0;
-
     /*
     TODO:考虑交通工具 地图加入道路拥挤程度(按照时间不同 这个是动态的...)
     TODO:选做的算法

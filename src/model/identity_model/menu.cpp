@@ -14,7 +14,6 @@ void Student::operMenu() {
     time_t now = time(0);
     char* dt = ctime(&now);
     cout << endl;
-    cout << endl;
     cout << "欢迎学生：" << this->stu_name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
     cout << "\t\t|                       |\n";
@@ -47,7 +46,6 @@ void Teacher::operMenu() {
     time_t now = time(0);
     char* dt = ctime(&now);
     cout << endl;
-    cout << endl;
     cout << "欢迎教师：" << this->name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
     cout << "\t\t|                       |\n";
@@ -66,7 +64,6 @@ void Admin::operMenu() {
     time_t now = time(0);
     char* dt = ctime(&now);
     cout << endl;
-    cout << endl;
     cout << "欢迎管理员: " << this->user_name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
     cout << "\t\t|                       |\n";
@@ -78,14 +75,12 @@ void Admin::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t|     0.注销登出账号    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t -----------------------\n";
-    cout << "\n";
+    cout << "\t\t -----------------------\n\n";
     cout << "请选择您的操作: ";
 }
 
 void Guide::guideOperMenu() {
     system("cls");
-    cout << endl;
     cout << endl;
     cout << "\t\t ----------------------------\n";
     cout << "\t\t|                            |\n";
@@ -97,7 +92,6 @@ void Guide::guideOperMenu() {
     cout << "\t\t|                            |\n";
     cout << "\t\t|     0.退出当前导航系统     |\n";
     cout << "\t\t|                            |\n";
-    cout << "\t\t ----------------------------\n";
-    cout << endl;
+    cout << "\t\t ----------------------------\n\n";
     cout << endl;
 }

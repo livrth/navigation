@@ -71,7 +71,7 @@ void Student::guide_now() {
     cin >> campus_now_in;
 
     Guide guide(campus_now_in, this->stu_id);
-    guide.build_graph(campus_now_in);  //建图
+    // guide.build_graph(campus_now_in);  //建图
     guide.guideOperMenu();
     cout << "请输入您需要导航的模式: ";
     int op;
@@ -83,7 +83,7 @@ void Student::guide_now() {
     } else if (op == 3) {
         guide.print_path_by_time();
     } else if (op == 0) {
-        cout << "退出成功" << endl;
+        cout << "\n退出成功\n\n" << endl;
         system("pause");
         system("cls");
         return;
