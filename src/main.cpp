@@ -77,7 +77,7 @@ void admin_menu(Admin*& admin) {
         int op;
         cin >> op;
         if (op == 1) {
-            admin->release_exam();
+            admin->change_activity();
         } else if (op == 2) {
             admin->release_new_course();
         } else if (op == 3) {

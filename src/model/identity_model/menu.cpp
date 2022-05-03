@@ -67,9 +67,9 @@ void Admin::operMenu() {
     cout << "欢迎管理员: " << this->user_name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t|     1.发布考试信息    |\n";
+    cout << "\t\t|     1.班级活动管理    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t|     2.设置新的课程    |\n";
+    cout << "\t\t|     2.发布新的课程    |\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t|     3.修改原有课程    |\n";
     cout << "\t\t|                       |\n";

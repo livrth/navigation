@@ -10,9 +10,10 @@ Admin::Admin(string user_name) {
 }
 
 void Admin::change_course() {
+    
 }
 
-void Admin::release_exam() {
+void Admin::change_activity() {
 }
 
 void Admin::release_new_course() {

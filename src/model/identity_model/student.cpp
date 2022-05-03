@@ -134,6 +134,9 @@ void Student::insert(int x, int root, Node *t, int &cnt) {
     update(root, t);
 }
 
+  
+      
+   
 void Student::init() {
     string courese_table_filename = "../../src/model/identity_model/course_table/" + stu_id + "_course_table.txt";
     ifstream ifs;
@@ -240,10 +243,11 @@ void Student::init() {
             time += 144 * 60;
         }
         insert(time, root, t2, cnt2);
-        time_to_activity[x.sh * 60 + x.sm].push_back(x);
+        time_to_activity[time].push_back(x);
     }
     ifs2.close();
 }
+
 
 void Student::query_by_course_time() {
     int hour;
@@ -259,7 +263,7 @@ void Student::query_by_course_time() {
     cout << "\n 7: 星期日";
     cout << "\n请选择星期: ";
     cin >> date;
-    cout << "\n请以格式 小时 ：分钟 输入时间,输入小时后按回车:\n";
+    cout << "\n请以格式 小时 ：分钟 输入时间,输入小时后请按回车:\n";
     cin >> hour;
     cout << ":";
     cin >> min;
@@ -347,22 +351,23 @@ void Student::query_by_activity_time() {
 void Student::activity_menu() {
     system("pause");
     system("cls");
+    while (true) {
     cout << endl;
     cout << "\t\t\t\t\t\t\t\t\t活动表" << endl;
-    for(int i=1;i<=cnt2;i++){
+    for(int i=2;i<=cnt2;i++){
         vector<single_activity> x=time_to_activity[t2[i].value];
         for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
-        cout << "活动时间：" << it->date << it->sh << ":" << it->sm << "-" << it->fh << ":" << it->fm << " ";
-        cout << "活动地点:" << it->place << " "
-             << "活动名称：" << it->name << " "
+        cout << "活动时间：" << it->date << it->sh << ":" << it->sm << "-" << it->fh << ":" << it->fm << "    ";
+        cout << "活动地点:" << it->place << "    "
+             << "活动名称：" << it->name << "    "
              << "活动类型：";
-        cout << kind[it->state] << " "
+        cout << kind[it->state] << "     "
              << "闹钟属性：" << it->clock_state << endl;
+             clash_test(it->date,it->sh*60+it->sm,it->fh*60+it->fm);
         }    
     }
-    while (true) {
         cout << "\t\t ----------------------------------\n";
-        cout << "\t\t|             活动页面              |\n";
+        cout << "\t\t|             活动页面             |\n";
         cout << "\t\t ----------------------------------\n";
         cout << "\t\t|                                  |\n";
         cout << "\t\t|          1.添加个人活动          |\n";
@@ -577,7 +582,7 @@ void Student::change_activity() {
 }
 void Student::set_activity_alarm() {}
 void Student::clash_test(string date, int st, int ft){
-    for(int i=1;i<=cnt2;i++){
+    /*for(int i=1;i<=cnt2;i++){
         vector<single_activity> x=time_to_activity[t2[i].value];
         for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
             if(it->state != 'd' && it->date == date && interact(it->sh*60+it->sm,it->fh*60+it->fm,st,ft)){
@@ -585,11 +590,11 @@ void Student::clash_test(string date, int st, int ft){
               return;  
             } 
         }
-    }
+    }*/
     for(int i=1;i<=5;i++){
             if(number_to_date[i] == date){
                 for (int seq = 1; seq <= 11 ; seq ++) {
-                     if(my_course_table[6][12]!="NULL" && interact(course_start_time_table[seq],course_finish_time_table[seq],st,ft) ){
+                     if(my_course_table[i][seq]!="NULL" && interact(course_start_time_table[seq],course_finish_time_table[seq],st,ft) ){
                          cout << "检测到冲突!"<<endl;
                          return;  
                      }
@@ -601,3 +606,5 @@ void Student::clash_test(string date, int st, int ft){
  bool Student::interact(int x1,int x2,int y1 ,int y2){
     return (x1+y1-x2-y2 <= x1+x2-y1-y2) && (x1+x2-y1-y2 <= x2+y2-x1-y1); 
  }
+
+    

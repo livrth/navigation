@@ -25,7 +25,7 @@ void Course::init(){
       a.sm=course_start_time_table[a.seq]%60;
       a.fh=course_finish_time_table[a.seq]/60;
       a.fm=course_finish_time_table[a.seq]%60;
-      number_table.push_back(a);
+      course_table.push_back(a);
     }
     ifs>>teacher_name>>teacher_id>>course_qun>>total_weeks;
     ifs>>final.week>>final.date>>final.st_hour>>final.st_min>>final.fi_hour>>final.fi_min>>final.campus>>final.place;
@@ -44,21 +44,37 @@ void Course::init(){
     }
     ifs>>homework_number;
     for(int i=1;i<=homework_number;i++){
-      ifs>>hws[i].first;
+      ifs>>hws[i].name;
     }
-    ifs>>student_number;
+    /*ifs>>student_number;
     string object_id;
     for(int i=1;i<=student_number;i++){
         ifs>>object_id;
-        if(object_id==user_id){
+             if(object_id==user_id){
              for(int i=1;i<=homework_number;i++){
-                ifs>>hws[i].second; 
+               ifs>>hws[i].second; 
                 order_hws.push_back(i);         
                 }
         break;
         }
-    }
+    }*/
     ifs.close();
+    //ifstream ifss[10];
+    string target,base="../../src/model/identity_model/homework_set/"+teacher_id+"_teacher/"+course_id+"_course/";
+    for(int i=1;i<=homework_number;i++){
+       target=base+to_string(i)+"_times/"+user_id+"_stu/"+"info.txt";
+       //cout << target<<endl;
+       ifs.open(target,ios::in);
+       if (!ifs.is_open()) {
+        cout << "作业文件不存在" << endl;
+        ifs.close();
+        return;
+      }
+       ifs>>hws[i].grades>>hws[i].state;
+       order_hws.push_back(i);
+       ifs.close();  
+    }
+   
 }
 
 void Course::submit_homework(){
@@ -74,7 +90,8 @@ void Course::query_material_by_name(){
 void Course::query_homework_by_grades(){
 qsort_h(1,homework_number) ;
 for(int i=1;i<=homework_number;i++){
-cout<<"第"<<order_hws[i]<<"次作业"<<"  "<<hws[order_hws[i]].first<<"  "<<"成绩："<<hws[order_hws[i]].second<<endl;    
+cout<<"第"<<order_hws[i]<<"次作业"<<"  "<<hws[order_hws[i]].name<<"  "<<"成绩："<<hws[order_hws[i]].grades;
+cout<<" 状态："<<hws[order_hws[i]].state<<endl;    
 }
 cout<<"请输入Yes来提交作业或者输入No来退出:";
 string opt;
@@ -99,7 +116,7 @@ void Course::operMenu(){
     cout<<"课程名称："<<course_name<<endl;
     cout<<"每周课时数目："<<times_per_week<<endl;
     for(int i=0;i<=times_per_week-1;i++){
-      single_course a=number_table[i];
+      single_course a=course_table[i];
       cout<<" "<<a.date<<"第"<<a.seq<<"节"<<a.sh<<":"<<a.sm<<"-"<<a.fh<<":"<<a.fm<<" "<<a.campus<<a.place<<endl;
     }
     cout<<"任课教师："<<teacher_name<<endl;
@@ -120,9 +137,12 @@ void Course::operMenu(){
     if(material_number==0)cout<<"暂无资料";
     cout<<"课程作业："<<endl;
     for(int i=1;i<=homework_number;i++){
-     cout<<"  "<<"第"<<i<<"次作业"<<"  "<<hws[i].first<<"  "<<"成绩："<<hws[i].second<<endl;
+       cout<<"第"<<i<<"次作业"<<"  "<<hws[i].name<<"  "<<"成绩："<<hws[i].grades;
+       cout<<" 状态："<<hws[i].state<<endl;  
+     //cout<<"  "<<"第"<<i<<"次作业"<<"  "<<hws[i].first<<"  "<<"成绩："<<hws[i].second<<endl;
     }
     if(homework_number==0)cout<<"暂无作业";
+    cout << endl;
     cout << "\t\t -----------------------\n";
     cout << "\t\t|       课程页面         |\n";
     cout << "\t\t -----------------------\n";
@@ -148,10 +168,10 @@ void Course::operMenu(){
 }
 
 void Course::qsort_h(int l,int r){
-int i=l,j=r,flag=hws[order_hws[(l+r)/2]].second,tmp;
+int i=l,j=r,flag=hws[order_hws[(l+r)/2]].grades,tmp;
 do{
-    while(hws[order_hws[i]].second>flag)i++;
-    while(hws[order_hws[j]].second<flag)j--;
+    while(hws[order_hws[i]].grades>flag)i++;
+    while(hws[order_hws[j]].grades<flag)j--;
     if(i<=j){
         tmp=order_hws[i];order_hws[i]=order_hws[j];order_hws[j]=tmp;
         i++;j--;

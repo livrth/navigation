@@ -1,6 +1,5 @@
 #ifndef NAVIGATION_COURSE_H
 #define NAVIGATION_COURSE_H
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -26,6 +25,11 @@ struct material{
     string name;
     string id;
 };
+struct hw{
+    int grades;
+    string name;
+    string state;
+};
 class Course {
     public:
     string course_id; //课程编号
@@ -34,8 +38,8 @@ class Course {
     int course_finish_time_table[12]={0,8*60+45,9*60+35,10*60+35,11*60+25,12*60+15,13*60+45,14*60+35,15*60+30,16*60+25,17*60+25,18*60+10};
     int times_per_week,homework_number,material_number,ref_book_number,total_weeks,student_number;
     vector<string> ref_books;
-    vector<single_course> number_table;
-    map<int,pair<string,int> > hws;
+    vector<single_course> course_table;
+    map<int,hw > hws;
     vector<int> order_hws={0};
     vector<material> materials;
     vector<int> order_materials;

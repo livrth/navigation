@@ -2,6 +2,8 @@ Sun 20 10 22 10 S6 sleep once_clock
 Sar 21 20 23 20 S6 take_a_shower circular_clock 
 Mon 6 0 7 0 playground run no_clock 
 
-Mon 10 20 11 20 playground play no_clock
+Mon 6 0 11 20 playground play no_clock
 
-Tue 10 20 11 20 ÀºÇò³¡ ´òÀºÇò no_clock
+Tue 10 30 11 20 ÀºÇò³¡ ´òÀºÇò no_clock
+
+Mon 3 3 4 4 ËÞÉá Ë¯¾õ no_clock
