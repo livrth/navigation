@@ -5,9 +5,9 @@ using namespace std;
 
 class Teacher {
    public:
-    string teacher_id;  //教职工号
-    string name;        //教师姓名
-    string teaching_course; //目前正在上的课
+    string teacher_id;       //教职工号
+    string name;             //教师姓名
+    string teaching_course;  //目前正在上的课
 
     Teacher();
     Teacher(string id, string name);

@@ -87,6 +87,7 @@ void admin_menu(Admin*& admin) {
             cout << "注销成功" << endl;
             system("pause");
             system("cls");
+            return;
         } else {
             cout << "\n无法识别的操作, 请重新输入: ";
             system("pause");

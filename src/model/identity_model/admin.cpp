@@ -39,7 +39,7 @@ void Admin::change_activity() {
         int opt;
         cin >> opt;
         if (opt == 1) {
-            cout << "请输入删除的这个活动的日期和开始时间";
+            cout << "请输入删除的这个活动的日期和开始时间" << endl;
             string date;
             int h, m;
             cin >> date >> h >> m;
@@ -51,7 +51,7 @@ void Admin::change_activity() {
                 }
             }
         } else if (opt == 2) {
-            cout << "请输入增加的活动的日期,时间区间，地点和名字";
+            cout << "请输入增加的活动的日期,时间区间,地点和名字" << endl;
             single_activity_a n;
             cin >> n.date >> n.sh >> n.sm >> n.sh >> n.sm >> n.place >> n.name;
             activities.push_back(n);
@@ -209,7 +209,7 @@ void Admin::change_course() {
 
 void Admin::release_new_course() {
     whole_course t;
-    cout << "请输入课程的名字，节数, id, 每节课的构成,老师姓名，老师id,课程群，课时，考试信息，参考书目数目，参考书目，学生数目，学生id：" << endl;
+    cout << "请输入课程的名字,节数,id,每节课的构成,老师姓名,老师id,课程群，课时，考试信息,参考书目数目,参考书目,学生数目,学生id：" << endl;
     cin >> t.course_name >> t.number >> t.course_id;
     //输入
     for (int i = 1; i <= t.number; i++) {
@@ -224,7 +224,6 @@ void Admin::release_new_course() {
         string book_name;
         cin >> book_name;
         t.ref_books.push_back(book_name);
-        cout << book_name << endl;
     }
     t.material_number = 0;
     t.homework_number = 0;
@@ -281,6 +280,15 @@ void Admin::release_new_course() {
             add_course_table_term(t.stu_ids[i], n);
         }
     }
+    string teacher_info_file = "../../src/identity_model/homework_set/" + t.teacher_id + "_teacher/course_collection.txt";
+    ofs.open(teacher_info_file, ios::app);  //创建文件
+    if (!ofs.is_open()) {
+        cout << "教师文件打开失败" << endl;
+        ofs.close();
+        return;
+    }
+    ofs << t.course_id << endl;
+    ofs.close();
 }
 
 void Admin::delete_course_table_term(string stu_id, string date, int seq) {
