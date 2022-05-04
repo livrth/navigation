@@ -6,9 +6,9 @@ Course::Course(string course_id, string course_name,string id) {
     this->user_id=id;
 }
 void Course::init(){
-    string courese_filename="../../src/model/course_model/course_set/"+course_id+"_course.txt";
+    string course_filename="../../src/model/course_model/course_set/"+course_id+"_course.txt";
     ifstream ifs;
-    ifs.open(courese_filename, ios::in);
+    ifs.open(course_filename, ios::in);
 
     if (!ifs.is_open()) {
         cout << "课程文件不存在" << endl;
@@ -16,7 +16,7 @@ void Course::init(){
         return;
     }
 
-    ifs>>times_per_week;
+    ifs>>course_name>>times_per_week;
     for(int i=1;i<=times_per_week;i++){
       single_course a;
       string name,course_id,building_id;
@@ -46,24 +46,10 @@ void Course::init(){
     for(int i=1;i<=homework_number;i++){
       ifs>>hws[i].name;
     }
-    /*ifs>>student_number;
-    string object_id;
-    for(int i=1;i<=student_number;i++){
-        ifs>>object_id;
-             if(object_id==user_id){
-             for(int i=1;i<=homework_number;i++){
-               ifs>>hws[i].second; 
-                order_hws.push_back(i);         
-                }
-        break;
-        }
-    }*/
     ifs.close();
-    //ifstream ifss[10];
     string target,base="../../src/model/identity_model/homework_set/"+teacher_id+"_teacher/"+course_id+"_course/";
     for(int i=1;i<=homework_number;i++){
        target=base+to_string(i)+"_times/"+user_id+"_stu/"+"info.txt";
-       //cout << target<<endl;
        ifs.open(target,ios::in);
        if (!ifs.is_open()) {
         cout << "作业文件不存在" << endl;

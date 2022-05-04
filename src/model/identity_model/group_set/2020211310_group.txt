@@ -1,5 +1,5 @@
-10
-Mon 12 20 14 20 class study 
+11
+Mon 12 20 14 20 class study
 Tue 13 20 14 20 kfc eat
 Mon 6 2 7 0 kfc drink
 Thu 8 0 9 0 library clean
@@ -8,4 +8,5 @@ Fri 16 0 17 0 N101 meeting
 Wed 19 10 20 10 library seminar
 Wed 21 10 21 10 lab experiment
 Mon 6 10 7 10 playground rise_flag
-Thu 12 0 13 0 square music_festival  
+Thu 12 0 13 0 square music_festival
+Mon 2 0 13 0 ËÞÉá Ë¯¾õ
