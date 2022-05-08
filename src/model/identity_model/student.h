@@ -17,6 +17,11 @@ struct single_activity {
     string name;
     string clock_state;
     char state;
+    int len;
+    vector<string> words;
+    bool operator<(const single_activity &a) const {
+        return (a.date < date || a.sh < sh || a.sm < sm || a.place < place);
+    }
     /*single_activity(string d,int sh,int sm,int fh,int fm, string p,string n,string c,string i):date(d),
     sh(sh),sm(sm),fh(fh),fm(fm),place(p),name(n),clock_state(c),activity_id(i){}
     single_activity(){}*/
@@ -45,6 +50,7 @@ class Student {
     int cnt2 = 0;
 
     map<string, set<string>> word_to_sen;
+    map<string, set<string>> word_to_par;
 
     int ca_number;  //班级活动数目
     string number_to_date[8] = {"No", "Mon", "Tue", "Wed", "Thu", "Fri", "Sar", "Sun"};

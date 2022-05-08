@@ -44,12 +44,16 @@ struct whole_course {
     string course_qun;
     vector<string> stu_ids;
     int student_number;
+    int len;
+    vector<string> words;
 };
 struct single_activity_a {
     string date;
     int sh, sm, fh, fm;
     string place;
     string name;
+    int len;
+    vector<string> words;
 };
 class Admin {
    public:

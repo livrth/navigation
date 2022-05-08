@@ -218,7 +218,13 @@ void Student::init() {
     }
     t2[root = ++cnt2] = Node(0, 0, 1, 2147483647);
     single_activity x;
-    while (ifs1 >> x.date >> x.sh >> x.sm >> x.fh >> x.fm >> x.place >> x.name >> x.clock_state) {
+    while (ifs1 >> x.date >> x.sh >> x.sm >> x.fh >> x.fm >> x.place >> x.name >> x.clock_state >> x.len) {
+        for (int i = 0; i <= x.len - 1; i++) {
+            ifs1 >> word;
+            x.words.push_back(word);
+            word_to_par[word].insert(x.name);
+            // cout << word << x.name << endl;
+        }
         x.state = 'p';
         name_to_activity[x.name].push_back(x);
         int time = x.sh * 60 + x.sm;
@@ -252,7 +258,13 @@ void Student::init() {
     }
     ifs2 >> ca_number;
     for (int i = 1; i <= ca_number; i++) {
-        ifs2 >> x.date >> x.sh >> x.sm >> x.fh >> x.fm >> x.place >> x.name;
+        ifs2 >> x.date >> x.sh >> x.sm >> x.fh >> x.fm >> x.place >> x.name >> x.len;
+        for (int i = 0; i <= x.len - 1; i++) {
+            ifs2 >> word;
+            x.words.push_back(word);
+            word_to_par[word].insert(x.name);
+            // cout << word << x.name << endl;
+        }
         x.clock_state = "circular_clock";
         x.state = 'c';
         name_to_activity[x.name].push_back(x);
@@ -435,13 +447,33 @@ void Student::activity_menu() {
     }
 }
 void Student::query_by_activity_name() {
+    string word;
+    cout << "\n请输入您要搜索的活动名（请在任意两个字符之间加空格）:";
+    set<single_activity> notes;
+    do {
+        cin >> word;
+        for (auto p = word_to_par[word].begin(); p != word_to_par[word].end(); p++) {
+            vector<single_activity> to_find = name_to_activity[*p];
+            for (auto it = to_find.begin(); it != to_find.end(); it++) {
+                if (notes.find(*it) == notes.end()) {
+                    notes.insert(*it);
+                    cout << "活动时间：" << it->date << it->sh << ":" << it->sm << "-" << it->fh << ":" << it->fm << " ";
+                    cout << "活动地点:" << it->place << " "
+                         << "活动名称：" << it->name << " "
+                         << "活动类型：";
+                    cout << kind[it->state] << " "
+                         << "闹钟属性：" << it->clock_state << endl;
+                }
+            }
+        }
+    } while (cin.get() != '\n');
 }
 void Student::set_activity() {
     cout << "请输入活动的日期：";
     single_activity x;
     int sh, sm, fh, fm, time;
     int date;
-    string place, name;
+    string place, name, word;
     cout << "\n 1: 星期一";
     cout << "\n 2: 星期二";
     cout << "\n 3: 星期三";
@@ -462,8 +494,17 @@ void Student::set_activity() {
     time = (date - 1) * 1440 + 60 * x.sh + x.sm;
     cout << "请输入活动地点：";
     cin >> x.place;
-    cout << "请输入活动描述：";
-    cin >> x.name;
+    cout << "请输入活动名字（请将任意字符用空格分离）：";
+    x.len = 0;
+    x.name = "";
+    do {
+        cin >> word;
+        cout << word << endl;
+        x.words.push_back(word);
+        x.name += x.words[x.len];
+        x.len++;
+
+    } while (cin.get() != '\n');
     x.clock_state = "no_clock";
     x.state = 'p';
     x.date = number_to_date[date];
@@ -476,7 +517,12 @@ void Student::set_activity() {
     ofs << endl
         << x.date << " " << x.sh << " " << x.sm << " " << x.fh << " " << x.fm << " " << x.place
         << " " << x.name << " "
-        << "no_clock" << endl;
+        << "no_clock"
+        << " " << x.len;
+    for (int i = 0; i <= x.len - 1; i++) {
+        ofs << " " << x.words[i];
+    }
+    ofs << endl;
     ofs.close();
     clash_test(number_to_date[date], x.sh * 60 + x.sm, x.fh * 60 + x.fm);
     cout << "活动设置完毕" << endl;
@@ -525,7 +571,11 @@ void Student::delete_activity() {
         for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
             if (it->state == 'p') {
                 ofs << it->date << " " << it->sh << " " << it->sm << " " << it->fh << " " << it->fm << " ";
-                ofs << it->place << " " << it->name << " " << it->clock_state << endl;
+                ofs << it->place << " " << it->name << " " << it->clock_state << " " << it->len;
+                for (int i = 0; i <= it->len - 1; i++) {
+                    ofs << " " << it->words[i];
+                }
+                ofs << endl;
             }
         }
     }
@@ -604,7 +654,11 @@ void Student::change_activity() {
         for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
             if (it->state == 'p') {
                 ofs << it->date << " " << it->sh << " " << it->sm << " " << it->fh << " " << it->fm << " ";
-                ofs << it->place << " " << it->name << " " << it->clock_state << endl;
+                ofs << it->place << " " << it->name << " " << it->clock_state << " " << it->len;
+                for (int i = 0; i <= it->len - 1; i++) {
+                    ofs << " " << it->words[i];
+                }
+                ofs << endl;
             }
         }
     }
