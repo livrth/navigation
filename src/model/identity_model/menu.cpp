@@ -83,7 +83,7 @@ void Guide::guideOperMenu() {
     system("cls");
     cout << endl;
     cout << "\t\t ----------------------------\n";
-    cout << "\t\t|           导航页面          |\n";
+    cout << "\t\t|           导航页面         |\n";
     cout << "\t\t ----------------------------\n";
     cout << "\t\t|                            |\n";
     cout << "\t\t|     1.根据课程名称导航     |\n";
