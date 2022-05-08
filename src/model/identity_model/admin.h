@@ -13,17 +13,17 @@ struct single_course_a {
     int building_id;
     string course_name, course_id;
 };
+struct material_a {
+    int weight;
+    string name;
+    string id;
+};
 struct exam_a {
     int week;
     string date;
     int sh, sm, fh, fm;
     string campus;
     string place;
-};
-struct material_a {
-    int weight;
-    string name;
-    string id;
 };
 struct whole_course {
     int ref_book_number;

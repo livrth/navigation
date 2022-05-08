@@ -34,19 +34,21 @@ class Student {
     string stu_id;    //学号 唯一区分学生
     string group_id;  //班级
 
-    map<string, string> name_to_id;                          //在找到正确的名字后必须通过名字找到对应的下标
-    map<int, pair<string, string> > time_to_place;           //在找到合理的时间后必须通过时间查找到对应的地名（校区+建筑）
-    string my_course_table[6][12];                           //我的课程表
-    Node t1[1000];                                           //课程时间表
-    int cnt1 = 0;                                            //二叉树节点数
-    map<string, vector<single_activity> > name_to_activity;  //在找到正确的名字后必须通过名字找到对应的活动
-    map<int, vector<single_activity> > time_to_activity;     //在找到合理的时间后必须通过时间查找到对应的地名（校区+建筑）
+    map<string, string> name_to_id;                         //在找到正确的名字后必须通过名字找到对应的下标
+    map<int, pair<string, string>> time_to_place;           //在找到合理的时间后必须通过时间查找到对应的地名（校区+建筑）
+    string my_course_table[6][12];                          //我的课程表
+    Node t1[1000];                                          //课程时间表
+    int cnt1 = 0;                                           //二叉树节点数
+    map<string, vector<single_activity>> name_to_activity;  //在找到正确的名字后必须通过名字找到对应的活动
+    map<int, vector<single_activity>> time_to_activity;     //在找到合理的时间后必须通过时间查找到对应的活动
     Node t2[1000];
     int cnt2 = 0;
 
+    map<string, set<string>> word_to_sen;
+
     int ca_number;  //班级活动数目
     string number_to_date[8] = {"No", "Mon", "Tue", "Wed", "Thu", "Fri", "Sar", "Sun"};
-    map<char, string> kind = {{'p', "个人"}, {'c', "班级"},{'d',"最近删除"}};
+    map<char, string> kind = {{'p', "个人"}, {'c', "班级"}, {'d', "最近删除"}};
     int root = 0;  //根
     int course_start_time_table[12] = {0, 8 * 60, 8 * 60 + 50, 9 * 60 + 50, 10 * 60 + 40, 11 * 60 + 30, 13 * 60, 13 * 60 + 50, 14 * 60 + 45, 15 * 60 + 40, 16 * 60 + 35, 17 * 60 + 25};
     int course_finish_time_table[12] = {0, 8 * 60 + 45, 9 * 60 + 35, 10 * 60 + 35, 11 * 60 + 25, 12 * 60 + 15, 13 * 60 + 45, 14 * 60 + 35, 15 * 60 + 30, 16 * 60 + 25, 17 * 60 + 20, 18 * 60 + 10};
@@ -88,6 +90,6 @@ class Student {
 
     void course_menu(string object_id, string object_name, string student_id);
     void activity_menu();
-    void clash_test(string date,int st,int ft);
-    bool interact(int x1,int x2,int y1 ,int y2);
+    void clash_test(string date, int st, int ft);
+    bool interact(int x1, int x2, int y1, int y2);
 };
