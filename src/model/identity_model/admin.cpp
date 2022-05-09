@@ -13,7 +13,7 @@ Admin::Admin(string user_name) {
 
 void Admin::change_activity() {
     int ca_number;
-    string group_id;
+    string group_id, word;
     vector<single_activity_a> activities;
     cout << "请输入你想改变的班级的id:";
     cin >> group_id;
@@ -29,7 +29,12 @@ void Admin::change_activity() {
     ifs >> ca_number;
     for (int i = 1; i <= ca_number; i++) {
         single_activity_a a;
-        ifs >> a.date >> a.sh >> a.sm >> a.fh >> a.fm >> a.place >> a.name;
+        a.name = "";
+        ifs >> a.date >> a.sh >> a.sm >> a.fh >> a.fm >> a.place >> a.name >> a.len;
+        for (int i = 0; i <= a.len - 1; i++) {
+            ifs >> word;
+            a.words.push_back(word);
+        }
         activities.push_back(a);
     }
     while (true) {
@@ -51,9 +56,15 @@ void Admin::change_activity() {
                 }
             }
         } else if (opt == 2) {
-            cout << "请输入增加的活动的日期,时间区间,地点和名字" << endl;
+            cout << "请输入增加的活动的日期,时间区间,地点,名字长度,名字（名字的任意字符之间请加空格）" << endl;
             single_activity_a n;
-            cin >> n.date >> n.sh >> n.sm >> n.sh >> n.sm >> n.place >> n.name;
+            n.name = "";
+            cin >> n.date >> n.sh >> n.sm >> n.sh >> n.sm >> n.place >> n.len;
+            for (int i = 0; i <= n.len - 1; i++) {
+                cin >> word;
+                n.words.push_back(word);
+                n.name += word;
+            }
             activities.push_back(n);
             ca_number++;
         } else if (opt == 3) {
@@ -67,14 +78,17 @@ void Admin::change_activity() {
             ofs << ca_number << endl;
             for (int i = 0; i <= ca_number - 1; i++) {
                 single_activity_a a = activities[i];
-                ofs << a.date << " " << a.sh << " " << a.sm << " " << a.fh << " " << a.fm << " " << a.place << " " << a.name << endl;
+                ofs << a.date << " " << a.sh << " " << a.sm << " " << a.fh << " " << a.fm << " " << a.place << " " << a.name << " " << a.len;
+                for (int i = 0; i <= a.len - 1; i++) {
+                    ofs << " " << a.words[i];
+                }
+                ofs << endl;
             }
             ofs.close();
             return;
         }
     }
 }
-
 void Admin::change_course() {
     whole_course t;
     cout << "请输入你想改变的课程的id:";
@@ -105,17 +119,26 @@ void Admin::change_course() {
     }
     // cout<<"fine"<<endl;
     ifs >> t.material_number;
+    string word;
     for (int i = 1; i <= t.material_number; i++) {
         material_a a;
-        ifs >> a.weight >> a.name >> a.id;
+        ifs >> a.weight >> a.name >> a.id >> a.len;
+        for (int i = 0; i <= a.len - 1; i++) {
+            ifs >> word;
+            a.words.push_back(word);
+        }
         t.materials.push_back(a);
-        cout << a.name << endl;
+        // cout << a.name << endl;
     }
     ifs >> t.homework_number;
     for (int i = 1; i <= t.homework_number; i++) {
-        string homework_instruc;
-        ifs >> homework_instruc;
-        t.hws.push_back(homework_instruc);
+        hw_a a;
+        ifs >> a.name >> a.len;
+        for (int i = 0; i <= a.len - 1; i++) {
+            ifs >> word;
+            a.words.push_back(word);
+        }
+        t.hws.push_back(a);
     }
     // cout<<"ok"<<endl;
     ifs >> t.student_number;
@@ -189,12 +212,20 @@ void Admin::change_course() {
             ofs << t.material_number << endl;
             for (int i = 0; i <= t.material_number - 1; i++) {
                 material_a a = t.materials[i];
-                ofs << a.weight << " " << a.name << " " << a.id << " " << endl;
+                ofs << a.weight << " " << a.name << " " << a.id << " " << a.len;
+                for (int i = 0; i <= a.len - 1; i++) {
+                    ofs << " " << a.words[i];
+                }
+                ofs << endl;
             }
             ofs << t.homework_number << endl;
             for (int i = 0; i <= t.homework_number - 1; i++) {
-                string homework_instruc = t.hws[i];
-                ofs << homework_instruc << " " << endl;
+                hw_a a = t.hws[i];
+                ofs << a.name << " " << a.len;
+                for (int i = 0; i <= a.len - 1; i++) {
+                    ofs << " " << a.words[i];
+                }
+                ofs << endl;
             }
             ofs << t.student_number << endl;
             for (int i = 0; i <= t.student_number - 1; i++) {
@@ -214,7 +245,12 @@ void Admin::release_new_course() {
     //输入
     for (int i = 1; i <= t.number; i++) {
         single_course_a a;
-        cin >> a.date >> a.seq >> a.place >> a.course_name >> a.campus >> a.course_id >> a.building_id;
+        string word;
+        cin >> a.date >> a.seq >> a.place >> a.course_name >> a.campus >> a.course_id >> a.building_id >> a.len;
+        for (int i = 0; i <= a.len - 1; i++) {
+            cin >> word;
+            a.words.push_back(word);
+        }
         t.course_table.push_back(a);
     }
     cin >> t.teacher_name >> t.teacher_id >> t.course_qun >> t.total_weeks;
@@ -258,15 +294,15 @@ void Admin::release_new_course() {
         ofs << book_name << " " << endl;
     }
     ofs << t.material_number << endl;
-    for (int i = 0; i <= t.material_number - 1; i++) {
+    /*for (int i = 0; i <= t.material_number - 1; i++) {
         material_a a = t.materials[i];
         ofs << a.weight << " " << a.name << " " << a.id << " " << endl;
-    }
+    }*/
     ofs << t.homework_number << endl;
-    for (int i = 0; i <= t.homework_number - 1; i++) {
+    /*for (int i = 0; i <= t.homework_number - 1; i++) {
         string homework_instruc = t.hws[i];
         ofs << homework_instruc << " " << endl;
-    }
+    }*/
     ofs << t.student_number << endl;
     for (int i = 0; i <= t.student_number - 1; i++) {
         string stu_id = t.stu_ids[i];
@@ -302,8 +338,13 @@ void Admin::delete_course_table_term(string stu_id, string date, int seq) {
     }
     vector<single_course_a> course_table;
     single_course_a a;
+    string word;
     int cnt = 0;
-    while (ifs >> a.date >> a.seq >> a.place >> a.course_name >> a.campus >> a.course_id >> a.building_id) {
+    while (ifs >> a.date >> a.seq >> a.place >> a.course_name >> a.campus >> a.course_id >> a.building_id >> a.len) {
+        for (int i = 0; i <= a.len - 1; i++) {
+            ifs >> word;
+            a.words.push_back(word);
+        }
         if (a.date != date && a.seq != seq) {
             course_table.push_back(a);
             cnt++;
@@ -319,14 +360,18 @@ void Admin::delete_course_table_term(string stu_id, string date, int seq) {
     }
     for (int i = 0; i <= cnt - 1; i++) {
         a = course_table[i];
-        ofs << a.date << " " << a.seq << " " << a.place << " " << a.course_name << " " << a.campus << " " << a.course_id << " " << a.building_id << endl;
+        ofs << a.date << " " << a.seq << " " << a.place << " " << a.course_name << " " << a.campus << " " << a.course_id << " " << a.building_id << " " << a.len;
+        for (int j = 0; j <= a.len - 1; j++) {
+            ofs << " " << a.words[j];
+        }
+        ofs << endl;
     }
     ofs.close();
 }
 
 void Admin::add_course_table_term(string stu_id, single_course_a n) {
     string filename = "../../src/model/identity_model/course_table/" + stu_id + "_course_table.txt";
-    ifstream ifs;
+    /*ifstream ifs;
     ifs.open(filename, ios::in);
     if (!ifs.is_open()) {
         cout << "学生" + stu_id + "课程文件不存在" << endl;
@@ -340,18 +385,20 @@ void Admin::add_course_table_term(string stu_id, single_course_a n) {
         course_table.push_back(a);
         cnt++;
     }
-    ifs.close();
-    course_table.push_back(n);
+    ifs.close();*/
+    // course_table.push_back(n);
     ofstream ofs;
-    ofs.open(filename, ios::out);
+    ofs.open(filename, ios::app);
     if (!ofs.is_open()) {
         cout << "学生" + stu_id + "课程文件不存在" << endl;
         ofs.close();
         return;
     }
-    for (int i = 0; i <= cnt; i++) {
-        a = course_table[i];
-        ofs << a.date << " " << a.seq << " " << a.place << " " << a.course_name << " " << a.campus << " " << a.course_id << " " << a.building_id << endl;
+    cout << endl;
+    ofs << n.date << " " << n.seq << " " << n.place << " " << n.course_name << " " << n.campus << " " << n.course_id << " " << n.building_id << " " << n.len;
+    for (int j = 0; j <= n.len - 1; j++) {
+        ofs << " " << n.words[j];
     }
+    ofs << endl;
     ofs.close();
 }

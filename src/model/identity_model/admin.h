@@ -12,11 +12,20 @@ struct single_course_a {
     string campus;
     int building_id;
     string course_name, course_id;
+    int len;
+    vector<string> words;
 };
 struct material_a {
     int weight;
     string name;
     string id;
+    int len;
+    vector<string> words;
+};
+struct hw_a {
+    string name;
+    int len;
+    vector<string> words;
 };
 struct exam_a {
     int week;
@@ -38,14 +47,16 @@ struct whole_course {
     vector<string> ref_books;
     vector<single_course_a> course_table;
     vector<material_a> materials;
-    vector<string> hws;
+    vector<hw_a> hws;
     string teacher_name;
     string teacher_id;
     string course_qun;
     vector<string> stu_ids;
     int student_number;
-    int len;
-    vector<string> words;
+    vector<int> hw_len;
+    vector<vector<string> > hw_words;
+    vector<int> ma_len;
+    vector<vector<string> > ma_words;
 };
 struct single_activity_a {
     string date;
