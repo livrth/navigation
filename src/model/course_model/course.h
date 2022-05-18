@@ -2,6 +2,7 @@
 #define NAVIGATION_COURSE_H
 #include <iostream>
 #include <map>
+#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -25,14 +26,14 @@ struct material {
     string name;
     string id;
     int len;
-    vector<string> words;
+    set<string> words;
 };
 struct hw {
     int grades;
     string name;
     string state;
     int len;
-    vector<string> words;
+    set<string> words;
 };
 class Course {
    public:
@@ -52,6 +53,7 @@ class Course {
     string user_id;
     string course_qun;
     exam final;
+    map<string, string> name_to_id;
     Course();
     Course(string course_id, string course_name, string sdudent_id);
     void init();

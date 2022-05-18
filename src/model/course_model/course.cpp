@@ -38,22 +38,24 @@ void Course::init() {
     }
     ifs >> material_number;
     string word;
-    for (int i = 1; i <= material_number; i++) {
+    for (int i = 0; i <= material_number - 1; i++) {
         material a;
         ifs >> a.weight >> a.name >> a.id >> a.len;
-        for (int i = 0; i <= a.len - 1; i++) {
+        for (int j = 0; j <= a.len - 1; j++) {
             ifs >> word;
-            a.words.push_back(word);
+            a.words.insert(word);
         }
         materials.push_back(a);
+        name_to_id[a.name] = a.id;
         order_materials.push_back(i - 1);
     }
     ifs >> homework_number;
+
     for (int i = 1; i <= homework_number; i++) {
         ifs >> hws[i].name >> hws[i].len;
-        for (int i = 0; i <= hws[i].len - 1; i++) {
+        for (int j = 0; j <= hws[i].len - 1; j++) {
             ifs >> word;
-            hws[i].words.push_back(word);
+            hws[i].words.insert(word);
         }
     }
     ifs.close();
@@ -79,8 +81,56 @@ void Course::submit_material() {
 void Course::download_material() {
 }
 void Course::query_homework_by_name() {
+    string word;
+    cout << "\n请输入您要搜索的作业名（请在任意两个字符之间加空格）:";
+    vector<string> notes;
+    do {
+        cin >> word;
+        notes.push_back(word);
+    } while (cin.get() != '\n');
+    cout << "\n作业查询结果：" << endl;
+    bool empty = true;
+    for (int i = 1; i <= homework_number; i++) {
+        for (auto j = notes.begin(); j != notes.end(); j++) {
+            bool flag = false;
+            for (auto k = hws[i].words.begin(); k != hws[i].words.end(); k++) {
+                if (*j == *k) {
+                    flag = true;
+                    empty = false;
+                    cout << "作业名:" << hws[i].name << "  成绩:" << hws[i].grades << "  状态:" << hws[i].state << endl;
+                    break;
+                }
+            }
+            if (flag) break;
+        }
+    }
+    if (empty) cout << "没有找到相关条目" << endl;
 }
 void Course::query_material_by_name() {
+    string word;
+    cout << "\n请输入您要搜索的资料名（请在任意两个字符之间加空格）:";
+    vector<string> notes;
+    do {
+        cin >> word;
+        notes.push_back(word);
+    } while (cin.get() != '\n');
+    cout << "\n资料查询结果：" << endl;
+    bool empty = true;
+    for (auto i = materials.begin(); i != materials.end(); i++) {
+        for (auto j = notes.begin(); j != notes.end(); j++) {
+            bool flag = false;
+            for (auto k = i->words.begin(); k != i->words.end(); k++) {
+                if (*j == *k) {
+                    flag = true;
+                    empty = false;
+                    cout << "资料名:" << i->name << "  权重:" << i->weight << endl;
+                    break;
+                }
+            }
+            if (flag) break;
+        }
+    }
+    if (empty) cout << "没有找到相关条目" << endl;
 }
 void Course::query_homework_by_grades() {
     qsort_h(1, homework_number);
