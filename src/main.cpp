@@ -1,9 +1,12 @@
 #include <windows.h>
-
+#include <string>
+#include <cstring>
+#include <algorithm>
+#include <map>
+#include <typeinfo>
 #include <fstream>
 #include <iostream>
 #include <locale>
-#include <string>
 
 #include "../course_model/course.h"
 #include "admin.h"
