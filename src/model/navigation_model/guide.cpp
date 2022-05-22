@@ -36,7 +36,7 @@ void Guide::build_graph(string campus_in) {
 }
 
 void Guide::print_path_by_course() {
-    string table_path = "../../src/model/identity_model/course_table/" + this->stu_id + "_course_table.txt";
+    string table_path = "../../src/model/navigation_model/course_table/" + this->stu_id + "_course_table.txt";
     ifstream ifs;
     ifs.open(table_path, ios::in);
     if (!ifs.is_open()) {
@@ -109,7 +109,7 @@ void Guide::print_path_by_course() {
     cout << "......";
     Sleep(200);
     cout << "\n";
-    cout << "\n系统已为您规划好路线如下: \n";
+    cout << "\n已为您规划好最短距离路线如下: \n";
     cout << "---------------------------------------------------------------------------\n";
     for (std::string line; std::getline(iifs, line);) {
         vector<string> v;  //去掉空格分开之后的所有单独建筑编号
@@ -137,8 +137,14 @@ void Guide::print_path_by_course() {
         }
     }
     cout << "---------------------------------------------------------------------------\n\n";
-    cout << "最短路径显示完毕!\n\n";
+    // cout << "最短路径显示完毕!\n\n";
     iifs.close();
+
+    //最短时间策略，重新生成地图考虑拥挤度 不考虑跨校区 步行不考虑交通方式
+    
+
+    //交通工具策略 考虑新地图 自行车道 考虑拥挤度
+
     system("pause");
     system("cls");
 }
@@ -147,4 +153,8 @@ void Guide::print_path_by_location() {
 }
 
 void Guide::print_path_by_time() {
+}
+
+void Guide::print_path_by_fixed_building(){ //选做算法  经过固定地点
+
 }
