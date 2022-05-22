@@ -18,3 +18,13 @@ Thu 6 8号楼playgroud 体育 沙河 0006 8 2 体 育
 Thu 7 8号楼playgroud 体育 沙河 0006 8 2 体 育
 Thu 8 9号楼510 形式语言 沙河 0007 9 4 形 式 语 言
 Thu 9 9号楼510 形式语言 沙河 0007 9 4 形 式 语 言
+Fri 1 1号楼333 go 西土城 0008 1 2 g o
+Fri 2 2号楼333 go 西土城 0008 2 2 g o
+Fri 3 3号楼333 php 西土城 0009 3 3 p h p
+Fri 4 4号楼333 php 西土城 0009 4 3 p h p
+Fri 5 5号楼333 vhdl 西土城 0010 5 4 v h d l
+Fri 6 6号楼333 vhdl 西土城 0010 6 4 v h d l
+Fri 7 8号楼333 java 西土城 0011 8 4 j a v a
+Fri 8 8号楼333 java 西土城 0011 8 4 j a v a
+Fri 9 8号楼333 java 西土城 0011 8 4 j a v a
+Fri 10 7号楼333 python 西土城 0012 7 6 p y t h o n
