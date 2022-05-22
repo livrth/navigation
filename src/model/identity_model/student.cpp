@@ -471,7 +471,8 @@ void Student::query_by_activity_name() {
 void Student::set_activity() {
     cout << "请输入活动的日期：";
     single_activity x;
-    int sh, sm, fh, fm, time;
+    // int sh, sm, fh, fm;  //unused variable warning
+    int time;
     int date;
     string place, name, word;
     cout << "\n 1: 星期一";
