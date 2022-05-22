@@ -16,6 +16,10 @@ using namespace std;
 Guide::Guide() {
 }
 
+Guide::Guide(string stu_id) {
+    this->stu_id = stu_id;
+}
+
 Guide::Guide(string campus, string stu_id) {
     this->campus_now = campus;
     this->stu_id = stu_id;
@@ -70,13 +74,16 @@ void Guide::print_path_by_course() {
     cout << "-----------------------------------------------------" << endl;
     ifs.close();
 
-    cout << "\n请输入您当前正在上的课程名称: ";
+    cout << "\n请输入您正在上的课程名称: ";
     string course_go_on;
     cin >> course_go_on;
 
     cout << "请输入您将要上课的课程名称: ";
     string course_name;
     cin >> course_name;
+
+    //TODO: 查询课表判断是否需要跨校区上课
+    cout << "\n已查询到您不需要跨校区上课, 当前为沙河校区内的导航: \n\n";
 
     int now_build_id = mp[course_go_on];
     int next_build_id = mp[course_name];

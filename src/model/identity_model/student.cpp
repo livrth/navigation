@@ -97,35 +97,36 @@ void Student::query_by_course_table() {
 
 //和 navigation_model 交互
 void Student::guide_now() {
-    cout << endl;
-    cout << "请输入您当前所在的校区(沙河/西土城): ";
-    string campus_now_in;
-    cin >> campus_now_in;
+    // cout << endl;
+    // cout << "请输入您当前所在的校区(沙河/西土城): ";
+    // string campus_now_in;
+    // cin >> campus_now_in;
 
-    Guide guide(campus_now_in, this->stu_id);
-    // guide.build_graph(campus_now_in);  //建图
-    guide.guideOperMenu();
-    cout << "请输入您需要导航的模式: ";
-    int op;
-    cin >> op;
-    if (op == 1) {
-        guide.print_path_by_course();
-    } else if (op == 2) {
-        guide.print_path_by_location();
-    } else if (op == 3) {
-        guide.print_path_by_time();
-    } else if (op == 4) {
-        guide.print_path_by_fixed_building();
-    } else if (op == 0) {
-        cout << "\n退出成功\n\n"
-             << endl;
-        system("pause");
-        system("cls");
-        return;
-    } else {
-        cout << "\n无法识别的操作, 请重新输入: ";
-        system("pause");
-        system("cls");
+    Guide guide(this->stu_id);
+    while (true) {
+        guide.guideOperMenu();
+        cout << "请输入您的操作: ";
+        int op;
+        cin >> op;
+        if (op == 1) {
+            guide.print_path_by_course();
+        } else if (op == 2) {
+            guide.print_path_by_location();
+        } else if (op == 3) {
+            guide.print_path_by_time();
+        } else if (op == 4) {
+            guide.print_path_by_fixed_building();
+        } else if (op == 0) {
+            cout << "\n退出成功!\n"
+                 << endl;
+            system("pause");
+            system("cls");
+            return;
+        } else {
+            cout << "\n无法识别的操作, 请重新输入: ";
+            system("pause");
+            system("cls");
+        }
     }
 }
 
