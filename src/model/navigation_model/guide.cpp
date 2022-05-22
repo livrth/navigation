@@ -40,7 +40,7 @@ void Guide::build_graph(string campus_in) {
 }
 
 void Guide::print_path_by_course() {
-    string table_path = "../../src/model/navigation_model/course_table/" + this->stu_id + "_course_table.txt";
+    string table_path = "../../src/model/identity_model/course_table/" + this->stu_id + "_course_table.txt";
     ifstream ifs;
     ifs.open(table_path, ios::in);
     if (!ifs.is_open()) {
@@ -55,10 +55,13 @@ void Guide::print_path_by_course() {
     set<string> all_course;
     //星期 第几节 教室 课程名称 所在校区 课程编号 教室所在建筑
     string file_date, file_classroom, file_course_name, file_campus;
-    int file_class_number;
-    string file_course_id;
+    int file_class_number, name_length;
+    string file_course_id, garbage;
     int file_building_id;
-    while (ifs >> file_date >> file_class_number >> file_classroom >> file_course_name >> file_campus >> file_course_id >> file_building_id) {
+    while (ifs >> file_date >> file_class_number >> file_classroom >> file_course_name >> file_campus >> file_course_id >> file_building_id >> name_length) {
+        for (int z = 1; z <= name_length; z++) {
+            ifs >> garbage;
+        }
         mp[file_course_name] = file_building_id;
         all_course.insert(file_course_name);
     }
@@ -82,7 +85,7 @@ void Guide::print_path_by_course() {
     string course_name;
     cin >> course_name;
 
-    //TODO: 查询课表判断是否需要跨校区上课
+    // TODO: 查询课表判断是否需要跨校区上课
     cout << "\n已查询到您不需要跨校区上课, 当前为沙河校区内的导航: \n\n";
 
     int now_build_id = mp[course_go_on];
