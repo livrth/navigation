@@ -4,6 +4,7 @@
 # Folder
 build
 .vscode
+.idea
 
 # Compiled Object files
 *.slo
