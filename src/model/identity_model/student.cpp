@@ -1,9 +1,13 @@
 #include "student.h"
 
 #include <fstream>
+#include <iostream>
 
 #include "course.h"
 #include "guide.h"
+
+using namespace std;
+
 Student::Student() {
 }
 
@@ -15,7 +19,7 @@ Student::Student(string id, string name, string group) {
 
 void Student::query_by_course_name() {
     string word;
-    cout << "\n请输入您要搜索的课程名（请在任意两个字符之间加空格）:";
+    cout << "\n请输入您要搜索的课程名(请在任意两个字符之间加空格):";
     set<string> notes;
     do {
         cin >> word;
@@ -110,6 +114,8 @@ void Student::guide_now() {
         guide.print_path_by_location();
     } else if (op == 3) {
         guide.print_path_by_time();
+    } else if (op == 4) {
+        guide.print_path_by_fixed_building();
     } else if (op == 0) {
         cout << "\n退出成功\n\n"
              << endl;

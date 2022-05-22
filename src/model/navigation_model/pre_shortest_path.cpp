@@ -28,7 +28,7 @@ void floyd() {
                 }
 }
 
-int main__() {
+int main() {
     n = 20, m = 210;
     for (int i = 1; i <= n; i++)
         for (int j = 1; j <= n; j++)
@@ -38,7 +38,7 @@ int main__() {
                 d[i][j] = INF;
 
     //读入地图
-    string map_file = "map2.txt";
+    string map_file = "map2_crowd.txt";
     ifstream ifs;
     ifs.open(map_file, ios::in);
     if (!ifs.is_open()) {
@@ -58,7 +58,7 @@ int main__() {
 
     //求出的最短路和路径放在 path1.txt path2.txt
     ofstream ofs;
-    ofs.open("path2.txt", ios::app);
+    ofs.open("path2_crowd.txt");
     for (int i = 1; i <= n; i++)
         for (int j = 1; j <= n; j++) {  //之后改为j=1开始的无向图
             if (i == j)
