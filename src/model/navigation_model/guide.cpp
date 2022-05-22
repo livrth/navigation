@@ -89,6 +89,8 @@ void Guide::print_path_by_course() {
     int next_build_id = mp[course_name];
     ifstream iifs;
     string path_file;
+    //重写逻辑判断
+    //赋值给 this->campus_now
     if (this->campus_now == "沙河")
         path_file = "../../src/model/navigation_model/path1.txt";  //沙河校区
     else
