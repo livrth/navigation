@@ -22,6 +22,7 @@ class Guide {
 
     void guideOperMenu();           //导航选择菜单
     void print_path_by_course();    //根据课程名称导航
-    void print_path_by_location();  //根据教室导航
-    void print_path_by_time();      //根据时间导航
+    void print_path_by_location();  //根据上课地点导航 考虑不同校区
+    void print_path_by_time();      //根据上课时间导航
+    void print_path_by_fixed_building(); //选做算法 经过固定建筑(同校区内的建筑)
 };
