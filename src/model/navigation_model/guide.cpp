@@ -872,6 +872,47 @@ void Guide::print_path_by_location() {
 }
 
 void Guide::print_path_by_time() {
+    string table_path = "../../src/model/identity_model/course_table/" + this->stu_id + "_course_table.txt";
+    ifstream ifs;
+    ifs.open(table_path, ios::in);
+    if (!ifs.is_open()) {
+        cout << "学生课表文件读取失败!\n\n";
+        system("pause");
+        return;
+    }
+
+    map<pair<string, int>, pair<string, int> > mp;  //<{Mon, 1}, {计网,5}> 星期 课程节号 课程名称 建筑编号
+    map<string, string> campus_map;                 //课程 课程所在校区
+    set<string> all_course;
+    //星期 第几节 教室 课程名称 所在校区 课程编号 教室所在建筑
+    string file_date, file_classroom, file_course_name, file_campus;
+    int file_class_number, name_length;
+    string file_course_id, garbage;
+    int file_building_id;
+    while (ifs >> file_date >> file_class_number >> file_classroom >> file_course_name >> file_campus >> file_course_id >> file_building_id >> name_length) {
+        for (int z = 1; z <= name_length; z++) {
+            ifs >> garbage;
+        }
+        mp[{file_date, file_class_number}] = {file_course_name, file_building_id};
+        campus_map[file_course_name] = file_campus;  //所在校区
+        all_course.insert(file_course_name);
+    }
+
+    int now_build_id;
+    int next_build_id;
+    // cout << "请输入当前您当前所在时间(例如 Fri 08:30): ";
+    cout << "请输入您当前所在校区以及建筑/教学楼编号(例如 沙河 5): ";
+    cin >> now_build_id;
+    cout << "请输入您要查询的上课时间(例如 Fri 10:30): ";
+    string query_date;
+    int query_hour, query_minute;
+    cin >> query_date;
+    scanf("%d:%d", &query_hour, &query_minute);
+
+    // TODO: 根据时间转换为 课程的节号
+    //在 mp 里面{星期, 节次} 查到课程名称和建筑编号(next_build_id)
+    //然后在 campus_map 根课程名称查到校区 考虑是否需要跨校区
+    //这样就转换为根据位置查询的完全一样的逻辑了
 }
 
 void Guide::print_path_by_fixed_building() {  //选做算法  经过固定地点
