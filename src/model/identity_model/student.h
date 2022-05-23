@@ -2,7 +2,7 @@
 #include <math.h>
 #include <pthread.h>
 #include <windows.h>
-
+#include <cstring>
 #include <iostream>
 #include <map>
 #include <set>
@@ -127,3 +127,7 @@ class Student {
     void clash_test(string date, int st, int ft);
     bool interact(int x1, int x2, int y1, int y2);
 };
+
+
+
+
