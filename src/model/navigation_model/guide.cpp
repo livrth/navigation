@@ -302,6 +302,146 @@ void Guide::print_path_by_course() {
 }
 
 void Guide::print_path_by_location() {
+    /*
+    同校区内直接导航
+    跨校区: 当前建筑->当前校区1号建筑(校门) -> 另外一个校区1号建筑->另外一个校区目的建筑
+    */
+
+    string table_path = "../../src/model/identity_model/course_table/" + this->stu_id + "_course_table.txt";
+    ifstream ifs;
+    ifs.open(table_path, ios::in);
+    if (!ifs.is_open()) {
+        cout << "学生课表文件读取失败!\n\n";
+        system("pause");
+        return;
+    }
+
+    //课程表信息
+    //存入课程对应的建筑编号
+    map<string, int> mp;  //具体教室 教室所在建筑编号
+    // map<string, string> campus_map;  //具体教室 教室所在校区
+    set<string> all_course;
+    //星期 第几节 教室 课程名称 所在校区 课程编号 教室所在建筑
+    string file_date, file_classroom, file_course_name, file_campus;
+    int file_class_number, name_length;
+    string file_course_id, garbage;
+    int file_building_id;
+    while (ifs >> file_date >> file_class_number >> file_classroom >> file_course_name >> file_campus >> file_course_id >> file_building_id >> name_length) {
+        for (int z = 1; z <= name_length; z++) {
+            ifs >> garbage;
+        }
+        mp[file_classroom] = file_building_id;
+        // campus_map[file_course_name] = file_campus;  //所在校区
+        all_course.insert(file_course_name);
+    }
+    ifs.close();
+
+    string campus_now, classroom_now;    //现在所在校区 教室
+    string campus_next, classroom_next;  //要去的校区 教室
+    cout << "请输入您当前所在教室(例如 沙河 2号楼208): ";
+    cin >> campus_now >> classroom_now;
+    cout << "请输入您将要去的教室(例如 西土城 2号楼301): ";
+    cin >> campus_next >> classroom_next;
+
+    if (campus_now == campus_next) {  //都在同一校区 包括都在沙河和都在西土城
+        cout << "\n识别到您不需要跨校区, " << campus_now << "校区内的导航如下:\n";
+        string path_file;
+        ifstream iifs;
+        if (campus_now == "沙河")
+            path_file = "../../src/model/navigation_model/path1.txt";  //沙河校区
+        else
+            path_file = "../../src/model/navigation_model/path2.txt";  //西土城
+
+        int now_build_id = mp[classroom_now];
+        int next_build_id = mp[classroom_next];
+        string cps_next = campus_now;
+
+        iifs.open(path_file, ios::in);
+        if (!iifs.is_open()) {
+            cout << "路径寻找文件不存在!" << endl;
+            system("pause");
+            return;
+        }
+
+        cout << "\n最短步行距离路线如下: \n";
+        cout << "---------------------------------------------------------------------------\n";
+        for (std::string line; std::getline(iifs, line);) {
+            vector<string> v;  //去掉空格分开之后的所有单独建筑编号
+            string temp = "";
+
+            for (int i = 0; line[i]; i++) {
+                if (!isspace(line[i]))
+                    temp += line[i];
+                else {
+                    while (isspace(line[i])) i++;
+                    i--;
+                    v.push_back(temp);
+                    temp = "";
+                }
+            }
+            v.push_back(temp);
+
+            if (stoi(v[0]) == now_build_id && stoi(v[1]) == next_build_id) {
+                for (int i = 2; i < (int)(v.size() - 2); i++) cout << (v[i] == "1" ? (cps_next + "校门 -> ") : v[i] + " 号教学楼 -> ");
+                cout << v[v.size() - 2] + " 号教学楼" << endl;
+                cout << "---------------------------------------------------------------------------\n";
+                cout << "最短步行路线总长度: " << v[v.size() - 1] << " 米" << endl;
+                break;
+            }
+        }
+        cout << "---------------------------------------------------------------------------\n\n";
+        iifs.close();
+
+        //最短步行时间(拥挤度地图)
+        string crowd_path_file;
+        if (campus_now == "沙河")
+            crowd_path_file = "../../src/model/navigation_model/path1_crowd.txt";  //沙河校区
+        else
+            crowd_path_file = "../../src/model/navigation_model/path2_crowd.txt";
+
+        ifstream ifs_crowd;
+        ifs_crowd.open(crowd_path_file, ios::in);
+        if (!ifs_crowd.is_open()) {
+            cout << "拥挤度路径寻找文件不存在!" << endl;
+            system("pause");
+            return;
+        }
+
+        cout << "最短步行时间路线如下: \n";
+        cout << "---------------------------------------------------------------------------\n";
+        for (std::string line; std::getline(ifs_crowd, line);) {
+            vector<string> v;  //去掉空格分开之后的所有单独建筑编号
+            string temp = "";
+
+            for (int i = 0; line[i]; i++) {
+                if (!isspace(line[i]))
+                    temp += line[i];
+                else {
+                    while (isspace(line[i])) i++;
+                    i--;
+                    v.push_back(temp);
+                    temp = "";
+                }
+            }
+            v.push_back(temp);
+
+            if (stoi(v[0]) == now_build_id && stoi(v[1]) == next_build_id) {
+                // cout << line << endl;
+                for (int i = 2; i < (int)(v.size() - 2); i++) cout << (v[i] == "1" ? (cps_next + "校门 -> ") : v[i] + " 号教学楼 -> ");
+                cout << v[v.size() - 2] + " 号教学楼" << endl;
+                cout << "---------------------------------------------------------------------------\n";
+                cout << "最少步行所需时长约 " << stoi(v[v.size() - 1]) * 1.0 / 1.5 << " 秒" << endl;
+                break;
+            }
+        }
+        cout << "---------------------------------------------------------------------------\n\n";
+        ifs_crowd.close();
+
+        //自行车道时间
+    }
+
+    system("pause");
+    system("cls");
 }
 
 void Guide::print_path_by_time() {
