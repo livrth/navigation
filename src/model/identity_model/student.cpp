@@ -8,9 +8,6 @@
 
 using namespace std;
 
-Student::Student() {
-}
-
 Student::Student(string id, string name, string group) {
     this->stu_id = id;
     this->stu_name = name;

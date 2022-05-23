@@ -55,13 +55,6 @@ struct weekly_real_time {
     }
 };
 
-int weekly_sys_time;
-weekly_real_time T[5];
-double diff1 = 0;
-double diff2 = 0;
-bool fast = false;
-bool out = false;
-
 class Student {
    public:
     string stu_name;  //学生姓名

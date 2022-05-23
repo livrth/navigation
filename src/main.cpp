@@ -16,7 +16,14 @@
 #include "menu.cpp"
 #include "student.h"
 #include "teacher.h"
-
+int weekly_sys_time;
+weekly_real_time T[5];
+double diff1 = 0;
+double diff2 = 0;
+bool fast = false;
+bool out = false;
+Student::Student() {
+}
 void trial(Student*& stu) {
     SYSTEMTIME sys;
     GetLocalTime(&sys);
@@ -62,7 +69,7 @@ void student_menu(Student*& stu) {
         cin >> op;
         if (op == 1) {  //课程名称查询
             stu->query_by_course_name();
-            // -> log 
+            // -> log
         } else if (op == 2) {
             stu->query_by_course_table();
         } else if (op == 3) {
