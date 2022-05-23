@@ -1,8 +1,13 @@
 #pragma once
+#include <math.h>
+#include <pthread.h>
+#include <windows.h>
+
 #include <iostream>
 #include <map>
 #include <set>
 #include <string>
+#include <thread>
 #include <vector>
 using namespace std;
 #define MAX_LENGTH 12;
@@ -32,6 +37,30 @@ struct Node {
     Node(int l, int r, int s, int v) : left(l), right(r), size(s), value(v), num(1) {}
     Node() {}
 };
+
+struct weekly_real_time {
+    double day;
+    double hour;
+    double min;
+    double sec;
+    double result;
+    double fix;
+    weekly_real_time() {}
+    weekly_real_time(double d, double h, double m, double s) {
+        day = d;
+        hour = h;
+        min = m;
+        sec = s;
+        result = (d - 1) * 1440 + h * 60 + m + sec / 60;
+    }
+};
+
+int weekly_sys_time;
+weekly_real_time T[5];
+double diff1 = 0;
+double diff2 = 0;
+bool fast = false;
+bool out = false;
 
 class Student {
    public:

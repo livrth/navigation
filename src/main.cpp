@@ -1,12 +1,14 @@
 #include <windows.h>
-#include <string>
-#include <cstring>
+
 #include <algorithm>
-#include <map>
-#include <typeinfo>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <locale>
+#include <map>
+#include <string>
+#include <thread>
+#include <typeinfo>
 
 #include "../course_model/course.h"
 #include "admin.h"
@@ -15,10 +17,45 @@
 #include "student.h"
 #include "teacher.h"
 
-using namespace std;
-
+void trial(Student*& stu) {
+    SYSTEMTIME sys;
+    GetLocalTime(&sys);
+    T[0] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
+    while (!out) {
+        Sleep(1000);
+        GetLocalTime(&sys);
+        if (fast) {
+            T[2] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
+            T[2].fix = T[2].result - diff1 - diff2;
+            weekly_sys_time = int(ceil(T[0].result + (T[1].fix - T[0].result) * 6 + (T[2].fix - T[1].fix) * 60)) % 10080;
+        } else {
+            T[1] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
+            T[1].fix = T[1].result - diff1;
+            weekly_sys_time = int(ceil(T[0].result + (T[1].fix - T[0].result) * 6)) % 10080;
+        }
+    }
+    for (int r = 1; r <= stu->cnt2; r++) {
+        int t = stu->kth(r, stu->root, stu->t2);
+        if (weekly_sys_time == t) {
+            vector<single_activity> result = stu->time_to_activity[t];
+            for (vector<single_activity>::iterator it = result.begin(); it != result.end(); ++it) {
+                if (it->clock_state == "circular_clock") {
+                    cout << '\a';
+                    Sleep(600);
+                }
+                if (it->clock_state == "once_clock") {
+                    cout << '\a';
+                    Sleep(600);
+                    it->clock_state = "no_clock";
+                }
+            }
+        }
+    }
+}
 void student_menu(Student*& stu) {
     stu->init();  //首先初始化学生类
+    thread going(trial, std::ref(stu));
+    going.detach();
     while (true) {
         stu->operMenu();
         int op;
@@ -38,7 +75,10 @@ void student_menu(Student*& stu) {
         } else if (op == 7) {
             stu->guide_now();
         } else if (op == 0) {
+            out = true;
+            Sleep(100);
             delete stu;
+            out = false;
             cout << "注销成功" << endl;
             system("pause");
             system("cls");
@@ -295,5 +335,5 @@ int main() {
         }
     }
     system("pause");
-    return 0;
+    exit(0);
 }
