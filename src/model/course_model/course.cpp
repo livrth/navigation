@@ -200,7 +200,7 @@ void Course::operMenu() {
     if (homework_number == 0) cout << "暂无作业";
     cout << endl;
     cout << "\t\t -----------------------\n";
-    cout << "\t\t|       课程页面         |\n";
+    cout << "\t\t|       课程页面        |\n";
     cout << "\t\t -----------------------\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t|     1.提交课程作业    |\n";

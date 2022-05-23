@@ -20,7 +20,7 @@ void gen() {
     // int result = dist(rand);
 
     ofstream ofs;
-    ofs.open("map2.txt", ios::app);
+    ofs.open("bike_map2.txt", ios::app);
 
     //选210条边
     //建筑距离>50m的才符合实际

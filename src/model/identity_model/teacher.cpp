@@ -1,5 +1,5 @@
 #include "teacher.h"
-#include "homework.h"
+// #include "homework.h"
 #include <iostream>
 
 using namespace std;
@@ -20,7 +20,7 @@ void Teacher::set_homework() {
     cin >> course_name;
     cout << "请输入该课程的编号: ";
     cin >> course_id;
-    Homework temp_hw(this->teacher_id, course_id, course_name);
+    // Homework temp_hw(this->teacher_id, course_id, course_name);
     
 }
 

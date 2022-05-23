@@ -13,5 +13,3 @@ endif(APPLE)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/build)
 
 add_subdirectory(src)
-enable_testing()
-#add_executable(navigation )

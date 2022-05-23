@@ -7,7 +7,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -fexec-charset=GBK")
 
 # add model here
 add_subdirectory(model/identity_model)
-add_subdirectory(model/homework_model)
+# add_subdirectory(model/homework_model)
 add_subdirectory(model/course_model)
 add_subdirectory(model/navigation_model)
 
@@ -19,7 +19,7 @@ add_executable(
 target_link_libraries(
 	${PROJECT_NAME}
 	identity_model
-	homework_model
+	# homework_model
 	course_model
 	navigation_model
 )

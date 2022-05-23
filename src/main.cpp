@@ -62,6 +62,7 @@ void student_menu(Student*& stu) {
         cin >> op;
         if (op == 1) {  //课程名称查询
             stu->query_by_course_name();
+            // -> log 
         } else if (op == 2) {
             stu->query_by_course_table();
         } else if (op == 3) {
