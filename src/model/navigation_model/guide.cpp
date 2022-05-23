@@ -250,6 +250,52 @@ void Guide::print_path_by_course() {
     ifs_crowd.close();
 
     //交通工具策略 考虑新地图 自行车道 考虑拥挤度
+    //自行车道重新生成地图
+    //只需要最短时间，行驶速度为 4m/s
+    //自行车道地图 bike_map1.txt bike_map2.txt bike_path1.txt bike_path2.txt
+    string bike_path_file;
+    if (this->campus_now == "沙河")
+        bike_path_file = "../../src/model/navigation_model/bike_path1.txt";  //沙河校区
+    else
+        bike_path_file = "../../src/model/navigation_model/bike_path2.txt";
+
+    ifstream ifs_bike;
+    ifs_bike.open(bike_path_file, ios::in);
+    if (!ifs_bike.is_open()) {
+        cout << "自行车道路径寻找文件不存在!" << endl;
+        system("pause");
+        return;
+    }
+
+    cout << "自行车道最短时间路线如下: \n";
+    cout << "---------------------------------------------------------------------------\n";
+    for (std::string line; std::getline(ifs_bike, line);) {
+        vector<string> v;  //去掉空格分开之后的所有单独建筑编号
+        string temp = "";
+
+        for (int i = 0; line[i]; i++) {
+            if (!isspace(line[i]))
+                temp += line[i];
+            else {
+                while (isspace(line[i])) i++;
+                i--;
+                v.push_back(temp);
+                temp = "";
+            }
+        }
+        v.push_back(temp);
+
+        if (stoi(v[0]) == now_build_id && stoi(v[1]) == next_build_id) {
+            // cout << line << endl;
+            for (int i = 2; i < (int)(v.size() - 2); i++) cout << (v[i] == "1" ? (cps_next + "校门 -> ") : v[i] + " 号教学楼 -> ");
+            cout << v[v.size() - 2] + " 号教学楼" << endl;
+            cout << "---------------------------------------------------------------------------\n";
+            cout << "最少骑车所需时长约 " << stoi(v[v.size() - 1]) * 1.0 / 4.0 << " 秒" << endl;
+            break;
+        }
+    }
+    cout << "---------------------------------------------------------------------------\n\n";
+    ifs_bike.close();
 
     system("pause");
     system("cls");
