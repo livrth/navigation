@@ -1,7 +1,7 @@
 #ifndef CODE
 #define CODE
 
-//函数原型 void CODE()  
+//函数原型 void CODE()  文件名修改在第148和213行
 //读入一个中文或英文文件并且转化为哈夫曼编码写入压缩文件
 
 #include <string>
@@ -143,7 +143,7 @@ void Huff_Code_print(Node huffTree[], int n,string key)
 {
 	int i, j=0, k;
 	
-    std::ofstream os;
+        std::ofstream os;
 	
 	// ++++++++++++++++++++++++++
 	//在此修改压缩地址
