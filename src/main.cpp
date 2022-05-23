@@ -16,34 +16,27 @@
 #include "menu.cpp"
 #include "student.h"
 #include "teacher.h"
-int weekly_sys_time;
-weekly_real_time T[5];
-double diff1 = 0;
-double diff2 = 0;
-bool fast = false;
-bool out = false;
-Student::Student() {
-}
+
 void trial(Student*& stu) {
     SYSTEMTIME sys;
     GetLocalTime(&sys);
-    T[0] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
-    while (!out) {
+    stu->T[0] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
+    while (!stu->out) {
         Sleep(1000);
         GetLocalTime(&sys);
-        if (fast) {
-            T[2] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
-            T[2].fix = T[2].result - diff1 - diff2;
-            weekly_sys_time = int(ceil(T[0].result + (T[1].fix - T[0].result) * 6 + (T[2].fix - T[1].fix) * 60)) % 10080;
+        if (stu->fast) {
+            stu->T[2] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
+            stu->T[2].fix = stu->T[2].result - stu->diff1 - stu->diff2;
+            stu->weekly_sys_time = int(ceil(stu->T[0].result + (stu->T[1].fix - stu->T[0].result) * 6 + (stu->T[2].fix - stu->T[1].fix) * 60)) % 10080;
         } else {
-            T[1] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
-            T[1].fix = T[1].result - diff1;
-            weekly_sys_time = int(ceil(T[0].result + (T[1].fix - T[0].result) * 6)) % 10080;
+            stu->T[1] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
+            stu->T[1].fix = stu->T[1].result - stu->diff1;
+            stu->weekly_sys_time = int(ceil(stu->T[0].result + (stu->T[1].fix - stu->T[0].result) * 6)) % 10080;
         }
     }
     for (int r = 1; r <= stu->cnt2; r++) {
         int t = stu->kth(r, stu->root, stu->t2);
-        if (weekly_sys_time == t) {
+        if (stu->weekly_sys_time == t) {
             vector<single_activity> result = stu->time_to_activity[t];
             for (vector<single_activity>::iterator it = result.begin(); it != result.end(); ++it) {
                 if (it->clock_state == "circular_clock") {
@@ -63,6 +56,7 @@ void student_menu(Student*& stu) {
     stu->init();  //首先初始化学生类
     thread going(trial, std::ref(stu));
     going.detach();
+
     while (true) {
         stu->operMenu();
         int op;
@@ -83,10 +77,10 @@ void student_menu(Student*& stu) {
         } else if (op == 7) {
             stu->guide_now();
         } else if (op == 0) {
-            out = true;
+            stu->out = true;
             Sleep(100);
+            going.~thread();
             delete stu;
-            out = false;
             cout << "注销成功" << endl;
             system("pause");
             system("cls");
