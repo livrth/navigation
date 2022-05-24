@@ -24,15 +24,15 @@ void trial(Student*& stu) {
     stu->T[0] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
     while (true) {
         // cout << '\a' << stu->out;
-        m_lock.lock();
+        stu->m_lock.lock();
         if (stu->out) {
-            m_lock.unlock();
+            stu->m_lock.unlock();
             return;
         } else
-            m_lock.unlock();
+            stu->m_lock.unlock();
         Sleep(100);
         GetLocalTime(&sys);
-        m_lock.lock();
+        stu->m_lock.lock();
         if (stu->fast) {
             stu->T[2] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
             stu->T[2].fix = stu->T[2].result - stu->diff1 - stu->diff2;
@@ -59,7 +59,7 @@ void trial(Student*& stu) {
                 }
             }
         }
-        m_lock.unlock();
+        stu->m_lock.unlock();
     }
 }
 void student_menu(Student*& stu) {
@@ -94,16 +94,16 @@ void student_menu(Student*& stu) {
         } else if (op == 7) {
             stu->guide_now();
         } else if (op == 8) {
-            m_lock.lock();
+            stu->m_lock.lock();
             stu->fast = true;
-            m_lock.unlock();
+            stu->m_lock.unlock();
             cout << "速率已经加倍!" << endl;
             system("pause");
             system("cls");
         } else if (op == 0) {
-            m_lock.lock();
+            stu->m_lock.lock();
             stu->out = true;
-            m_lock.unlock();
+            stu->m_lock.unlock();
             Sleep(100);
             // going.~thread();
             //   delete going;

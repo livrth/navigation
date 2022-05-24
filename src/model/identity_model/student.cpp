@@ -499,7 +499,7 @@ void Student::delete_activity() {
     cin >> sm;
     time = (date - 1) * 1440 + 60 * sh + sm;
     if (time_to_activity[time].empty()) {
-        cout << "不存在这样的活动，请重试";
+        cout << "不存在这样的活动，请重试" << endl;
         return;
     }
     vector<single_activity> x = time_to_activity[time];
@@ -646,4 +646,62 @@ void Student::clash_test(string date, int st, int ft) {
 }
 bool Student::interact(int x1, int x2, int y1, int y2) {
     return (x1 + y1 - x2 - y2 <= x1 + x2 - y1 - y2) && (x1 + x2 - y1 - y2 <= x2 + y2 - x1 - y1);
+}
+void Student::set_activity_alarm() {
+    cout << "请输入你想改变的活动的开始时间：";
+    int date, sh, sm, time;
+    cout << "\n 1: 星期一";
+    cout << "\n 2: 星期二";
+    cout << "\n 3: 星期三";
+    cout << "\n 4: 星期四";
+    cout << "\n 5: 星期五";
+    cout << "\n 6: 星期六";
+    cout << "\n 7: 星期日";
+    cout << "\n请选择星期: ";
+    cin >> date;
+    cout << "\n请以格式 小时 ：分钟 输入活动开始时间,输入小时后按回车:\n";
+    cin >> sh;
+    cout << ":";
+    cin >> sm;
+    time = (date - 1) * 1440 + 60 * sh + sm;
+    if (time_to_activity[time].empty()) {
+        cout << "不存在这样的活动，请重试" << endl;
+        return;
+    }
+    vector<single_activity> x = time_to_activity[time];
+    string name, place;
+    cout << "请输入你想改变的活动的描述:";
+    bool flag = false;
+    while (!flag) {
+        cin >> name;
+        if (name == "0") return;
+        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+            if (it->name == name && it->state == 'p') {
+                cout << "请输入改变后的闹钟类型(只有no_clock,circular_clock,once_clock三种选项):";
+                this->m_lock.lock();
+                cin >> it->clock_state;
+                this->m_lock.unlock();
+                flag = true;
+                break;
+            }
+        }
+        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以更改(输入0可退出):";
+    }
+    ofstream ofs;
+    string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
+    ofs.open(activity_table_filename);
+    for (int i = 1; i <= cnt2; i++) {
+        vector<single_activity> x = time_to_activity[t2[i].value];
+        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+            if (it->state == 'p') {
+                ofs << it->date << " " << it->sh << " " << it->sm << " " << it->fh << " " << it->fm << " ";
+                ofs << it->place << " " << it->name << " " << it->clock_state << " " << it->len;
+                for (int i = 0; i <= it->len - 1; i++) {
+                    ofs << " " << it->words[i];
+                }
+                ofs << endl;
+            }
+        }
+    }
+    cout << "闹钟设置完毕" << endl;
 }

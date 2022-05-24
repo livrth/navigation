@@ -6,12 +6,14 @@
 #include <cstring>
 #include <iostream>
 #include <map>
+#include <mutex>
 #include <set>
 #include <string>
 #include <thread>
 #include <vector>
 using namespace std;
 #define MAX_LENGTH 12;
+
 /*int starttime_h;
    int starttime_m;
    int finishitime_h;
@@ -33,12 +35,11 @@ struct single_activity {
     single_activity(){}*/
 };
 
-struct tree
-{
-	double weight;
-	string ch;
-	string code;
-	int lchild, rchild, parent;
+struct tree {
+    double weight;
+    string ch;
+    string code;
+    int lchild, rchild, parent;
 };
 
 struct Node {
@@ -69,7 +70,7 @@ class Student {
     string stu_name;  //学生姓名
     string stu_id;    //学号 唯一区分学生
     string group_id;  //班级
-
+    mutex m_lock;
     map<string, string> name_to_id;                         //在找到正确的名字后必须通过名字找到对应的下标
     map<int, pair<string, string>> time_to_place;           //在找到合理的时间后必须通过时间查找到对应的地名（校区+建筑）
     string my_course_table[6][12];                          //我的课程表

@@ -1,7 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <cstdlib>
 #include <ctime>
-#include <mutex>
 
 #include "../course_model/course.h"
 #include "admin.h"
@@ -10,7 +9,7 @@
 #include "teacher.h"
 
 //实现除了登录界面之外所有的图形化打印菜单
-mutex m_lock;
+
 void Teacher::operMenu() {
     system("cls");
     time_t now = time(0);
@@ -149,9 +148,8 @@ void Student::activity_menu() {
         cout << "\t\t|          0.返回个人主页          |\n";
         cout << "\t\t|                                  |\n";
         cout << "\t\t ----------------------------------\n";
-        cout << "\n\n";
         cout << endl;
-        cout << "\t\t\t\t\t\t\t\t\t活动表" << endl;
+        cout << "\t\t\t\t\t\t\t活动表" << endl;
         for (int i = 2; i <= cnt2; i++) {
             vector<single_activity> x = time_to_activity[t2[i].value];
             for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
@@ -164,6 +162,7 @@ void Student::activity_menu() {
                 clash_test(it->date, it->sh * 60 + it->sm, it->fh * 60 + it->fm);
             }
         }
+        cout << "\n\n";
         cout << "请选择您的操作: ";
         int op;
         cin >> op;
@@ -222,62 +221,4 @@ void Student::operMenu() {
 
 void Student::operMenuSub() {
     //
-}
-void Student::set_activity_alarm() {
-    cout << "请输入你想改变的活动的开始时间：";
-    int date, sh, sm, time;
-    cout << "\n 1: 星期一";
-    cout << "\n 2: 星期二";
-    cout << "\n 3: 星期三";
-    cout << "\n 4: 星期四";
-    cout << "\n 5: 星期五";
-    cout << "\n 6: 星期六";
-    cout << "\n 7: 星期日";
-    cout << "\n请选择星期: ";
-    cin >> date;
-    cout << "\n请以格式 小时 ：分钟 输入活动开始时间,输入小时后按回车:\n";
-    cin >> sh;
-    cout << ":";
-    cin >> sm;
-    time = (date - 1) * 1440 + 60 * sh + sm;
-    if (time_to_activity[time].empty()) {
-        cout << "不存在这样的活动，请重试" << endl;
-        return;
-    }
-    vector<single_activity> x = time_to_activity[time];
-    string name, place;
-    cout << "请输入你想改变的活动的描述:";
-    bool flag = false;
-    while (!flag) {
-        cin >> name;
-        if (name == "0") return;
-        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
-            if (it->name == name && it->state == 'p') {
-                cout << "请输入改变后的闹钟类型(只有no_clock,circular_clock,once_clock三种选项):";
-                m_lock.lock();
-                cin >> it->clock_state;
-                m_lock.unlock();
-                flag = true;
-                break;
-            }
-        }
-        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以更改(输入0可退出):";
-    }
-    ofstream ofs;
-    string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
-    ofs.open(activity_table_filename);
-    for (int i = 1; i <= cnt2; i++) {
-        vector<single_activity> x = time_to_activity[t2[i].value];
-        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
-            if (it->state == 'p') {
-                ofs << it->date << " " << it->sh << " " << it->sm << " " << it->fh << " " << it->fm << " ";
-                ofs << it->place << " " << it->name << " " << it->clock_state << " " << it->len;
-                for (int i = 0; i <= it->len - 1; i++) {
-                    ofs << " " << it->words[i];
-                }
-                ofs << endl;
-            }
-        }
-    }
-    cout << "闹钟设置完毕" << endl;
 }
