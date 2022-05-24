@@ -2,11 +2,11 @@
 #include <cstdlib>
 #include <ctime>
 
+#include "../course_model/course.h"
 #include "admin.h"
 #include "guide.h"
 #include "student.h"
 #include "teacher.h"
-//#include "course.h"
 
 //实现除了登录界面之外所有的图形化打印菜单
 
@@ -98,4 +98,65 @@ void Guide::guideOperMenu() {
     cout << "\t\t|                            |\n";
     cout << "\t\t ----------------------------\n\n";
     cout << endl;
+}
+
+void Course::operMenu() {
+    cout << endl;
+    cout << "课程名称：" << course_name << endl;
+    cout << "每周课时数目：" << times_per_week << endl;
+    for (int i = 0; i <= times_per_week - 1; i++) {
+        single_course a = course_table[i];
+        cout << " " << a.date << "第" << a.seq << "节" << a.sh << ":" << a.sm << "-" << a.fh << ":" << a.fm << " " << a.campus << a.place << endl;
+    }
+    cout << "任课教师：" << teacher_name << endl;
+    cout << "课程群：" << course_qun << endl;
+    cout << "当前进度："
+         << " "
+         << "/" << total_weeks << endl;
+    cout << "考试时间："
+         << "第" << final.week << "周" << final.date;
+    cout << final.st_hour << ":" << final.st_min << "-" << final.fi_hour << ":" << final.fi_min << endl;
+    cout << "考试地点：" << final.campus << final.place << endl;
+    cout << "课程参考书籍：" << endl;
+    for (int i = 0; i <= ref_book_number - 1; i++) {
+        cout << "  " << ref_books[i] << endl;
+    }
+    if (ref_book_number == 0) cout << "暂无参考书籍";
+    cout << "课程电子资料：" << endl;
+    for (int i = 0; i <= material_number - 1; i++) {
+        cout << "  " << materials[i].name << "  权重:" << materials[i].weight << endl;
+    }
+    if (material_number == 0) cout << "暂无资料";
+    cout << "课程作业：" << endl;
+    for (int i = 1; i <= homework_number; i++) {
+        cout << "第" << i << "次作业"
+             << "  " << hws[i].name << "  "
+             << "成绩：" << hws[i].grades;
+        cout << " 状态：" << hws[i].state << endl;
+        // cout<<"  "<<"第"<<i<<"次作业"<<"  "<<hws[i].first<<"  "<<"成绩："<<hws[i].second<<endl;
+    }
+    if (homework_number == 0) cout << "暂无作业";
+    cout << endl;
+    cout << "\t\t -----------------------\n";
+    cout << "\t\t|       课程页面        |\n";
+    cout << "\t\t -----------------------\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     1.提交课程作业    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     2.提交课程资料    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     3.下载课程资料    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     4.作业名称查询    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     5.作业成绩排序    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     6.资料名称查询    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     7.资料权重排序    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     0.退出课程页面    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t -----------------------\n";
+    cout << "请选择您的操作: ";
 }

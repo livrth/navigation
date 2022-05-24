@@ -6,6 +6,7 @@
 #include <iostream>
 #include <locale>
 #include <map>
+#include <mutex>
 #include <string>
 #include <thread>
 #include <typeinfo>
@@ -16,13 +17,19 @@
 #include "menu.cpp"
 #include "student.h"
 #include "teacher.h"
-
+mutex m_lock;
 void trial(Student*& stu) {
     SYSTEMTIME sys;
     GetLocalTime(&sys);
     stu->T[0] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
-    while (!stu->out) {
-        Sleep(1000);
+    while (true) {
+        m_lock.lock();
+        if (stu->out) {
+            m_lock.unlock();
+            return;
+        } else
+            m_lock.unlock();
+        Sleep(100);
         GetLocalTime(&sys);
         if (stu->fast) {
             stu->T[2] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
@@ -33,20 +40,20 @@ void trial(Student*& stu) {
             stu->T[1].fix = stu->T[1].result - stu->diff1;
             stu->weekly_sys_time = int(ceil(stu->T[0].result + (stu->T[1].fix - stu->T[0].result) * 6)) % 10080;
         }
-    }
-    for (int r = 1; r <= stu->cnt2; r++) {
-        int t = stu->kth(r, stu->root, stu->t2);
-        if (stu->weekly_sys_time == t) {
-            vector<single_activity> result = stu->time_to_activity[t];
-            for (vector<single_activity>::iterator it = result.begin(); it != result.end(); ++it) {
-                if (it->clock_state == "circular_clock") {
-                    cout << '\a';
-                    Sleep(600);
-                }
-                if (it->clock_state == "once_clock") {
-                    cout << '\a';
-                    Sleep(600);
-                    it->clock_state = "no_clock";
+        for (int r = 1; r <= stu->cnt2; r++) {
+            int t = stu->kth(r, stu->root, stu->t2);
+            if (stu->weekly_sys_time == t) {
+                vector<single_activity> result = stu->time_to_activity[t];
+                for (vector<single_activity>::iterator it = result.begin(); it != result.end(); ++it) {
+                    if (it->clock_state == "circular_clock") {
+                        cout << '\a' << "该去做事情了！" << endl;
+                        Sleep(600);
+                    }
+                    if (it->clock_state == "once_clock") {
+                        cout << '\a' << "该去做事情了！" << endl;
+                        Sleep(600);
+                        it->clock_state = "no_clock";
+                    }
                 }
             }
         }
@@ -56,7 +63,6 @@ void student_menu(Student*& stu) {
     stu->init();  //首先初始化学生类
     thread going(trial, std::ref(stu));
     going.detach();
-
     while (true) {
         stu->operMenu();
         int op;
@@ -77,9 +83,11 @@ void student_menu(Student*& stu) {
         } else if (op == 7) {
             stu->guide_now();
         } else if (op == 0) {
+            m_lock.lock();
             stu->out = true;
-            Sleep(100);
-            going.~thread();
+            m_lock.unlock();
+            Sleep(1000);
+            // delete going;
             delete stu;
             cout << "注销成功" << endl;
             system("pause");
