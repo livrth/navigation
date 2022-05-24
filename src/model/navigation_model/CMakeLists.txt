@@ -9,6 +9,7 @@ add_library(
 	STATIC
     guide.h
     guide.cpp
+	bonus_algo.cpp
 )
 
 target_link_libraries(
