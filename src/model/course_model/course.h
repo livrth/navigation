@@ -55,6 +55,8 @@ class Course {
     exam final;
     map<string, string> name_to_id;
     Course();
+    double* adddiff1;
+    double* adddiff2;
     Course(string course_id, string course_name, string sdudent_id);
     void init();
     void operMenu();

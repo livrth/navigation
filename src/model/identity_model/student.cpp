@@ -18,15 +18,21 @@ void Student::query_by_course_name() {
     string word;
     cout << "\n请输入您要搜索的课程名(请在任意两个字符之间加空格):";
     set<string> notes;
+    bool empty = true;
     do {
         cin >> word;
         for (auto it = word_to_sen[word].begin(); it != word_to_sen[word].end(); it++) {
             if (notes.find(*it) == notes.end()) {
                 notes.insert(*it);
                 cout << *it << endl;
+                empty = false;
             }
         }
     } while (cin.get() != '\n');
+    if (empty) {
+        cout << "没有找到相关条目" << endl;
+        return;
+    }
     string object_id, object_name;
     cout << endl
          << "现在请输入完整的课程名：" << endl;
@@ -393,63 +399,6 @@ void Student::query_by_activity_time() {
     }
 }
 
-void Student::activity_menu() {
-    system("pause");
-    system("cls");
-    while (true) {
-        cout << endl;
-        cout << "\t\t\t\t\t\t\t\t\t活动表" << endl;
-        for (int i = 2; i <= cnt2; i++) {
-            vector<single_activity> x = time_to_activity[t2[i].value];
-            for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
-                cout << "活动时间：" << it->date << it->sh << ":" << it->sm << "-" << it->fh << ":" << it->fm << "    ";
-                cout << "活动地点:" << it->place << "    "
-                     << "活动名称：" << it->name << "    "
-                     << "活动类型：";
-                cout << kind[it->state] << "     "
-                     << "闹钟属性：" << it->clock_state << endl;
-                clash_test(it->date, it->sh * 60 + it->sm, it->fh * 60 + it->fm);
-            }
-        }
-        cout << "\t\t ----------------------------------\n";
-        cout << "\t\t|             活动页面             |\n";
-        cout << "\t\t ----------------------------------\n";
-        cout << "\t\t|                                  |\n";
-        cout << "\t\t|          1.添加个人活动          |\n";
-        cout << "\t\t|                                  |\n";
-        cout << "\t\t|          2.删除个人活动          |\n";
-        cout << "\t\t|                                  |\n";
-        cout << "\t\t|          3.修改个人活动          |\n";
-        cout << "\t\t|                                  |\n";
-        cout << "\t\t|          4.个人活动闹钟          |\n";
-        cout << "\t\t|                                  |\n";
-        cout << "\t\t|          0.返回个人主页          |\n";
-        cout << "\t\t|                                  |\n";
-        cout << "\t\t ----------------------------------\n";
-        cout << "\n\n";
-        cout << "请选择您的操作: ";
-        int op;
-        cin >> op;
-        if (op == 1) {
-            set_activity();
-        } else if (op == 2) {
-            delete_activity();
-        } else if (op == 3) {
-            change_activity();
-        } else if (op == 4) {
-            set_activity_alarm();
-        } else if (op == 0) {
-            cout << "返回成功" << endl;
-            system("pause");
-            system("cls");
-            return;
-        } else {
-            cout << "\n无法识别的操作, 请重新输入: ";
-            system("pause");
-            system("cls");
-        }
-    }
-}
 void Student::query_by_activity_name() {
     string word;
     cout << "\n请输入您要搜索的活动名（请在任意两个字符之间加空格）:";

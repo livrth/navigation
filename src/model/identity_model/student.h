@@ -2,6 +2,7 @@
 #include <math.h>
 #include <pthread.h>
 #include <windows.h>
+
 #include <cstring>
 #include <iostream>
 #include <map>
@@ -70,13 +71,12 @@ class Student {
     map<int, vector<single_activity>> time_to_activity;     //在找到合理的时间后必须通过时间查找到对应的活动
     Node t2[1000];
     int cnt2 = 0;
-    int weekly_sys_time;
+    int weekly_sys_time = 0;
     weekly_real_time T[5];
     double diff1 = 0;
     double diff2 = 0;
     bool fast = false;
     bool out = false;
-
     map<string, set<string>> word_to_sen;
     map<string, set<string>> word_to_par;
 
@@ -127,7 +127,3 @@ class Student {
     void clash_test(string date, int st, int ft);
     bool interact(int x1, int x2, int y1, int y2);
 };
-
-
-
-

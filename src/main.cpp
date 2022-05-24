@@ -1,3 +1,4 @@
+#include <pthread.h>
 #include <windows.h>
 
 #include <algorithm>
@@ -23,6 +24,7 @@ void trial(Student*& stu) {
     GetLocalTime(&sys);
     stu->T[0] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
     while (true) {
+        // cout << '\a' << stu->out;
         m_lock.lock();
         if (stu->out) {
             m_lock.unlock();
@@ -60,6 +62,7 @@ void trial(Student*& stu) {
     }
 }
 void student_menu(Student*& stu) {
+    SYSTEMTIME now;
     stu->init();  //首先初始化学生类
     thread going(trial, std::ref(stu));
     going.detach();
@@ -68,8 +71,15 @@ void student_menu(Student*& stu) {
         int op;
         cin >> op;
         if (op == 1) {  //课程名称查询
+            // GetLocalTime(&now);
+            // T[3] = weekly_real_time(now.wDayOfWeek, now.wHour, now.wMinute, now.wSecond + (now.wMilliseconds % 10) / (double)100);
             stu->query_by_course_name();
-            // -> log
+            // GetLocalTime(&now);
+            // T[4] = weekly_real_time(now.wDayOfWeek, now.wHour, now.wMinute, now.wSecond + (now.wMilliseconds % 10) / (double)100);
+            // if (fast)
+            //     diff2 += T[4].result - T[3].result;
+            // else
+            //     diff1 += T[4].result - T[3].result;
         } else if (op == 2) {
             stu->query_by_course_table();
         } else if (op == 3) {
@@ -82,12 +92,20 @@ void student_menu(Student*& stu) {
             stu->query_by_activity_time();
         } else if (op == 7) {
             stu->guide_now();
+        } else if (op == 8) {
+            m_lock.lock();
+            stu->fast = true;
+            m_lock.unlock();
+            cout << "速率已经加倍!" << endl;
+            system("pause");
+            system("cls");
         } else if (op == 0) {
             m_lock.lock();
             stu->out = true;
             m_lock.unlock();
-            Sleep(1000);
-            // delete going;
+            Sleep(100);
+            // going.~thread();
+            //   delete going;
             delete stu;
             cout << "注销成功" << endl;
             system("pause");

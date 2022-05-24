@@ -10,37 +10,6 @@
 
 //实现除了登录界面之外所有的图形化打印菜单
 
-void Student::operMenu() {
-    time_t now = time(0);
-    char* dt = ctime(&now);
-    cout << endl;
-    cout << "欢迎学生：" << this->stu_name << " 登录! " << dt << endl;
-    cout << "\t\t -----------------------\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     1.课程名称查询    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     2.课表课程查询    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     3.课程时间查询    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     4.活动名称查询    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     5.进入活动菜单    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     6.活动时间查询    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     7.进行路径导航    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     0.注销登出账号    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t -----------------------\n\n";
-    cout << "请选择您的操作: ";
-}
-
-void Student::operMenuSub() {
-    //
-}
-
 void Teacher::operMenu() {
     system("cls");
     time_t now = time(0);
@@ -102,6 +71,28 @@ void Guide::guideOperMenu() {
 
 void Course::operMenu() {
     cout << endl;
+    cout << "\t\t -----------------------\n";
+    cout << "\t\t|       课程页面        |\n";
+    cout << "\t\t -----------------------\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     1.提交课程作业    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     2.提交课程资料    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     3.下载课程资料    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     4.作业名称查询    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     5.作业成绩排序    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     6.资料名称查询    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     7.资料权重排序    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     0.退出课程页面    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t -----------------------\n";
+    cout << endl;
     cout << "课程名称：" << course_name << endl;
     cout << "每周课时数目：" << times_per_week << endl;
     for (int i = 0; i <= times_per_week - 1; i++) {
@@ -136,27 +127,98 @@ void Course::operMenu() {
         // cout<<"  "<<"第"<<i<<"次作业"<<"  "<<hws[i].first<<"  "<<"成绩："<<hws[i].second<<endl;
     }
     if (homework_number == 0) cout << "暂无作业";
-    cout << endl;
-    cout << "\t\t -----------------------\n";
-    cout << "\t\t|       课程页面        |\n";
-    cout << "\t\t -----------------------\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     1.提交课程作业    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     2.提交课程资料    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     3.下载课程资料    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     4.作业名称查询    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     5.作业成绩排序    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     6.资料名称查询    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     7.资料权重排序    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t|     0.退出课程页面    |\n";
-    cout << "\t\t|                       |\n";
-    cout << "\t\t -----------------------\n";
     cout << "请选择您的操作: ";
+}
+void Student::activity_menu() {
+    system("pause");
+    system("cls");
+    while (true) {
+        cout << "\t\t ----------------------------------\n";
+        cout << "\t\t|             活动页面             |\n";
+        cout << "\t\t ----------------------------------\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          1.添加个人活动          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          2.删除个人活动          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          3.修改个人活动          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          4.个人活动闹钟          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t|          0.返回个人主页          |\n";
+        cout << "\t\t|                                  |\n";
+        cout << "\t\t ----------------------------------\n";
+        cout << "\n\n";
+        cout << endl;
+        cout << "\t\t\t\t\t\t\t\t\t活动表" << endl;
+        for (int i = 2; i <= cnt2; i++) {
+            vector<single_activity> x = time_to_activity[t2[i].value];
+            for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+                cout << "活动时间：" << it->date << it->sh << ":" << it->sm << "-" << it->fh << ":" << it->fm << "    ";
+                cout << "活动地点:" << it->place << "    "
+                     << "活动名称：" << it->name << "    "
+                     << "活动类型：";
+                cout << kind[it->state] << "     "
+                     << "闹钟属性：" << it->clock_state << endl;
+                clash_test(it->date, it->sh * 60 + it->sm, it->fh * 60 + it->fm);
+            }
+        }
+        cout << "请选择您的操作: ";
+        int op;
+        cin >> op;
+        if (op == 1) {
+            set_activity();
+        } else if (op == 2) {
+            delete_activity();
+        } else if (op == 3) {
+            change_activity();
+        } else if (op == 4) {
+            set_activity_alarm();
+        } else if (op == 0) {
+            cout << "返回成功" << endl;
+            system("pause");
+            system("cls");
+            return;
+        } else {
+            cout << "\n无法识别的操作, 请重新输入: ";
+            system("pause");
+            system("cls");
+        }
+    }
+}
+void Student::operMenu() {
+    time_t now = time(0);
+    char* dt = ctime(&now);
+    int a = this->weekly_sys_time / 1440;
+    int b = this->weekly_sys_time % 1440 / 60;
+    int c = this->weekly_sys_time % 1440 % 60;
+    cout << "                     系统时间:" << number_to_date[a + 1] << " " << b << ":" << c;
+    cout << endl;
+    cout << "欢迎学生：" << this->stu_name << " 登录! " << dt << endl;
+    cout << "\t\t -----------------------\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     1.课程名称查询    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     2.课表课程查询    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     3.课程时间查询    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     4.活动名称查询    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     5.进入活动菜单    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     6.活动时间查询    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     7.进行路径导航    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     8.时间快进二倍    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     0.注销登出账号    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t -----------------------\n\n";
+    cout << "请选择您的操作: ";
+}
+
+void Student::operMenuSub() {
+    //
 }
