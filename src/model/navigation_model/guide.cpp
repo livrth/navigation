@@ -972,7 +972,9 @@ void Guide::print_path_by_time() {
     string course_name = mp[{query_date, class_number}].first;
     campus_next = campus_map[course_name];
     if (next_build_id == 0) {
-        cout << "您查询的当天已无要上课程, 您可以查询其他时间!\n";
+        cout << "\n您查询的当天已无要上课程, 您可以查询其他时间!\n\n";
+        system("pause");
+        return;
     } else {
         cout << "\n";
         for (int i = 0; i < 3; i++) {
