@@ -508,6 +508,7 @@ void Student::delete_activity() {
     bool flag = false;
     while (!flag) {
         cin >> description;
+        if (description == "0") return;
         for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
             if (it->name == description && it->state == 'p') {
                 it->state = 'd';
@@ -515,7 +516,7 @@ void Student::delete_activity() {
                 break;
             }
         }
-        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以删除:";
+        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以删除(输入0可退出):";
     }
     ofstream ofs;
     string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
@@ -553,7 +554,7 @@ void Student::change_activity() {
     cin >> sm;
     time = (date - 1) * 1440 + 60 * sh + sm;
     if (time_to_activity[time].empty()) {
-        cout << "不存在这样的活动，请重试";
+        cout << "不存在这样的活动，请重试" << endl;
         return;
     }
     vector<single_activity> x = time_to_activity[time];
@@ -562,6 +563,7 @@ void Student::change_activity() {
     bool flag = false;
     while (!flag) {
         cin >> name;
+        if (name == "0") return;
         for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
             if (it->name == name && it->state == 'p') {
                 it->state = 'd';
@@ -569,7 +571,7 @@ void Student::change_activity() {
                 break;
             }
         }
-        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以更改:";
+        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以更改(输入0可退出):";
     }
     single_activity y;
     cout << "请输入改变后活动的地点:";
@@ -619,7 +621,7 @@ void Student::change_activity() {
     clash_test(y.date, y.sh * 60 + sm, y.fh * 60 + y.fm);
     cout << "活动改变完毕" << endl;
 }
-void Student::set_activity_alarm() {}
+
 void Student::clash_test(string date, int st, int ft) {
     /*for(int i=1;i<=cnt2;i++){
         vector<single_activity> x=time_to_activity[t2[i].value];

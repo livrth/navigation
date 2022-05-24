@@ -7,7 +7,6 @@
 #include <iostream>
 #include <locale>
 #include <map>
-#include <mutex>
 #include <string>
 #include <thread>
 #include <typeinfo>
@@ -18,7 +17,7 @@
 #include "menu.cpp"
 #include "student.h"
 #include "teacher.h"
-mutex m_lock;
+
 void trial(Student*& stu) {
     SYSTEMTIME sys;
     GetLocalTime(&sys);
@@ -33,6 +32,7 @@ void trial(Student*& stu) {
             m_lock.unlock();
         Sleep(100);
         GetLocalTime(&sys);
+        m_lock.lock();
         if (stu->fast) {
             stu->T[2] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
             stu->T[2].fix = stu->T[2].result - stu->diff1 - stu->diff2;
@@ -59,10 +59,11 @@ void trial(Student*& stu) {
                 }
             }
         }
+        m_lock.unlock();
     }
 }
 void student_menu(Student*& stu) {
-    SYSTEMTIME now;
+    // SYSTEMTIME now;
     stu->init();  //首先初始化学生类
     thread going(trial, std::ref(stu));
     going.detach();
