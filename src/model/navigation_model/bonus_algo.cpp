@@ -46,6 +46,7 @@ void Guide::print_path_by_fixed_building() {  //选做算法  经过固定地点
     int n = 210;
     int d[N][N];
     int P[N][N];  //记录DP过程中间点, 还要记录路径
+    memset(P, 0, sizeof P);
     // init dist
     for (int i = 1; i <= n; i++)
         for (int j = 1; j <= n; j++)
