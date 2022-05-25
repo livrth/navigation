@@ -71,4 +71,12 @@ class Course {
     void qsort_h(int l, int r);
 };
 
+struct Tree
+{
+	double weight;
+	string ch;
+	string code;
+	int lchild, rchild, parent;
+};
+
 #endif  // NAVIGATION_COURSE_H
