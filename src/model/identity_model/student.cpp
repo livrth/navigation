@@ -459,7 +459,7 @@ void Student::set_activity() {
         x.len++;
 
     } while (cin.get() != '\n');
-    x.clock_state = "no_clock";
+    x.clock_state = "circular_clock";
     x.state = 'p';
     x.date = number_to_date[date];
     insert(time, root, t2, cnt2);
@@ -567,7 +567,7 @@ void Student::change_activity() {
     cin >> y.fm;
     y.name = name;
     y.state = 'p';
-    y.clock_state = "no_clock";
+    y.clock_state = "circular_clock";
     y.date = number_to_date[date];
     time = (date - 1) * 1440 + 60 * y.sh + y.sm;
     insert(time, root, t2, cnt2);
