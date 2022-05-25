@@ -44,16 +44,20 @@ void trial(Student*& stu) {
         }
         for (int r = 1; r <= stu->cnt2; r++) {
             int t = stu->kth(r, stu->root, stu->t2);
-            if (stu->weekly_sys_time == t) {
+            // cout << t / 1440 + 1 << " " << t % 1440 / 60 << " " << t % 1440 % 60 << "\a" << endl;
+            Sleep(100);
+            if (abs(stu->weekly_sys_time - t) < 10) {
                 vector<single_activity> result = stu->time_to_activity[t];
                 for (vector<single_activity>::iterator it = result.begin(); it != result.end(); ++it) {
                     if (it->clock_state == "circular_clock") {
-                        cout << '\a' << "该去做事情了！" << endl;
-                        Sleep(600);
+                        cout << "\a"
+                             << "该去做事情了！" << endl;
+                        Sleep(100);
                     }
                     if (it->clock_state == "once_clock") {
-                        cout << '\a' << "该去做事情了！" << endl;
-                        Sleep(600);
+                        cout << "\a"
+                             << "该去做事情了！" << endl;
+                        Sleep(100);
                         it->clock_state = "no_clock";
                     }
                 }
@@ -102,6 +106,7 @@ void student_menu(Student*& stu) {
             system("cls");
         } else if (op == 0) {
             stu->m_lock.lock();
+            stu->submit_activity();
             stu->out = true;
             stu->m_lock.unlock();
             Sleep(100);

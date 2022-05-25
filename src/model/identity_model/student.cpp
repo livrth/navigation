@@ -465,19 +465,6 @@ void Student::set_activity() {
     insert(time, root, t2, cnt2);
     name_to_activity[x.name].push_back(x);
     time_to_activity[time].push_back(x);
-    ofstream ofs;
-    string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
-    ofs.open(activity_table_filename, ios::app);
-    ofs << endl
-        << x.date << " " << x.sh << " " << x.sm << " " << x.fh << " " << x.fm << " " << x.place
-        << " " << x.name << " "
-        << "no_clock"
-        << " " << x.len;
-    for (int i = 0; i <= x.len - 1; i++) {
-        ofs << " " << x.words[i];
-    }
-    ofs << endl;
-    ofs.close();
     clash_test(number_to_date[date], x.sh * 60 + x.sm, x.fh * 60 + x.fm);
     cout << "活动设置完毕" << endl;
 }
@@ -517,22 +504,6 @@ void Student::delete_activity() {
             }
         }
         cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以删除(输入0可退出):";
-    }
-    ofstream ofs;
-    string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
-    ofs.open(activity_table_filename);
-    for (int i = 1; i <= cnt2; i++) {
-        vector<single_activity> x = time_to_activity[t2[i].value];
-        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
-            if (it->state == 'p') {
-                ofs << it->date << " " << it->sh << " " << it->sm << " " << it->fh << " " << it->fm << " ";
-                ofs << it->place << " " << it->name << " " << it->clock_state << " " << it->len;
-                for (int i = 0; i <= it->len - 1; i++) {
-                    ofs << " " << it->words[i];
-                }
-                ofs << endl;
-            }
-        }
     }
     cout << "活动删除完毕" << endl;
 }
@@ -602,22 +573,6 @@ void Student::change_activity() {
     insert(time, root, t2, cnt2);
     name_to_activity[y.name].push_back(y);
     time_to_activity[time].push_back(y);
-    ofstream ofs;
-    string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
-    ofs.open(activity_table_filename);
-    for (int i = 1; i <= cnt2; i++) {
-        vector<single_activity> x = time_to_activity[t2[i].value];
-        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
-            if (it->state == 'p') {
-                ofs << it->date << " " << it->sh << " " << it->sm << " " << it->fh << " " << it->fm << " ";
-                ofs << it->place << " " << it->name << " " << it->clock_state << " " << it->len;
-                for (int i = 0; i <= it->len - 1; i++) {
-                    ofs << " " << it->words[i];
-                }
-                ofs << endl;
-            }
-        }
-    }
     clash_test(y.date, y.sh * 60 + sm, y.fh * 60 + y.fm);
     cout << "活动改变完毕" << endl;
 }
@@ -687,6 +642,9 @@ void Student::set_activity_alarm() {
         }
         cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以更改(输入0可退出):";
     }
+    cout << "闹钟设置完毕" << endl;
+}
+void Student::submit_activity() {
     ofstream ofs;
     string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
     ofs.open(activity_table_filename);
@@ -703,5 +661,5 @@ void Student::set_activity_alarm() {
             }
         }
     }
-    cout << "闹钟设置完毕" << endl;
+    ofs.close();
 }

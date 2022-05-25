@@ -135,4 +135,5 @@ class Student {
     void activity_menu();
     void clash_test(string date, int st, int ft);
     bool interact(int x1, int x2, int y1, int y2);
+    void submit_activity();
 };
