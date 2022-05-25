@@ -35,13 +35,6 @@ struct single_activity {
     single_activity(){}*/
 };
 
-struct tree {
-    double weight;
-    string ch;
-    string code;
-    int lchild, rchild, parent;
-};
-
 struct Node {
     int left, right, size, value, num;
     Node(int l, int r, int s, int v) : left(l), right(r), size(s), value(v), num(1) {}
