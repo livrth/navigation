@@ -7,6 +7,7 @@
 #include <iostream>
 #include <locale>
 #include <map>
+#include <mutex>
 #include <string>
 #include <thread>
 #include <typeinfo>
@@ -17,57 +18,58 @@
 #include "menu.cpp"
 #include "student.h"
 #include "teacher.h"
-
+mutex m_lock;
 void trial(Student*& stu) {
     SYSTEMTIME sys;
     GetLocalTime(&sys);
     stu->T[0] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
     while (true) {
-        // cout << '\a' << stu->out;
-        stu->m_lock.lock();
+        m_lock.lock();
         if (stu->out) {
-            stu->m_lock.unlock();
+            m_lock.unlock();
             return;
         } else
-            stu->m_lock.unlock();
-        Sleep(100);
-        GetLocalTime(&sys);
-        stu->m_lock.lock();
-        if (stu->fast) {
-            stu->T[2] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
-            stu->T[2].fix = stu->T[2].result - stu->diff1 - stu->diff2;
-            stu->weekly_sys_time = int(ceil(stu->T[0].result + (stu->T[1].fix - stu->T[0].result) * 6 + (stu->T[2].fix - stu->T[1].fix) * 60)) % 10080;
-        } else {
-            stu->T[1] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
-            stu->T[1].fix = stu->T[1].result - stu->diff1;
-            stu->weekly_sys_time = int(ceil(stu->T[0].result + (stu->T[1].fix - stu->T[0].result) * 6)) % 10080;
-        }
-        for (int r = 1; r <= stu->cnt2; r++) {
-            int t = stu->kth(r, stu->root, stu->t2);
-            // cout << t / 1440 + 1 << " " << t % 1440 / 60 << " " << t % 1440 % 60 << "\a" << endl;
-            Sleep(100);
-            if (abs(stu->weekly_sys_time - t) < 10) {
-                vector<single_activity> result = stu->time_to_activity[t];
-                for (vector<single_activity>::iterator it = result.begin(); it != result.end(); ++it) {
-                    if (it->clock_state == "circular_clock") {
-                        cout << "\a"
-                             << "该去做事情了！" << endl;
-                        Sleep(100);
-                    }
-                    if (it->clock_state == "once_clock") {
-                        cout << "\a"
-                             << "该去做事情了！" << endl;
-                        Sleep(100);
-                        it->clock_state = "no_clock";
+            m_lock.unlock();
+        Sleep(50);
+        if (!stu->stop) {
+            GetLocalTime(&sys);
+            m_lock.lock();
+            if (stu->fast) {
+                stu->T[2] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
+                stu->T[2].fix = stu->T[2].result - stu->diff1 - stu->diff2;
+                stu->weekly_sys_time = int(ceil(stu->T[0].result + (stu->T[1].fix - stu->T[0].result) * 6 + (stu->T[2].fix - stu->T[1].fix) * 60)) % 10080;
+            } else {
+                stu->T[1] = weekly_real_time(sys.wDayOfWeek, sys.wHour, sys.wMinute, sys.wSecond + (sys.wMilliseconds % 10) / (double)100);
+                stu->T[1].fix = stu->T[1].result - stu->diff1;
+                stu->weekly_sys_time = int(ceil(stu->T[0].result + (stu->T[1].fix - stu->T[0].result) * 6)) % 10080;
+            }
+            for (int r = 1; r <= stu->cnt2; r++) {
+                int t = stu->kth(r, stu->root, stu->t2);
+                // cout << t / 1440 + 1 << " " << t % 1440 / 60 << " " << t % 1440 % 60 << "\a" << endl;
+                Sleep(50);
+                if (abs(stu->weekly_sys_time - t) < 2) {
+                    vector<single_activity> result = stu->time_to_activity[t];
+                    for (vector<single_activity>::iterator it = result.begin(); it != result.end(); ++it) {
+                        if (it->clock_state == "circular_clock") {
+                            cout << "\a"
+                                 << "该去做事情了！" << endl;
+                            Sleep(100);
+                        }
+                        if (it->clock_state == "once_clock") {
+                            cout << "\a"
+                                 << "该去做事情了！" << endl;
+                            Sleep(100);
+                            it->clock_state = "no_clock";
+                        }
                     }
                 }
             }
+            m_lock.unlock();
         }
-        stu->m_lock.unlock();
     }
 }
 void student_menu(Student*& stu) {
-    // SYSTEMTIME now;
+    SYSTEMTIME now;
     stu->init();  //首先初始化学生类
     thread going(trial, std::ref(stu));
     going.detach();
@@ -76,15 +78,9 @@ void student_menu(Student*& stu) {
         int op;
         cin >> op;
         if (op == 1) {  //课程名称查询
-            // GetLocalTime(&now);
-            // T[3] = weekly_real_time(now.wDayOfWeek, now.wHour, now.wMinute, now.wSecond + (now.wMilliseconds % 10) / (double)100);
+
             stu->query_by_course_name();
-            // GetLocalTime(&now);
-            // T[4] = weekly_real_time(now.wDayOfWeek, now.wHour, now.wMinute, now.wSecond + (now.wMilliseconds % 10) / (double)100);
-            // if (fast)
-            //     diff2 += T[4].result - T[3].result;
-            // else
-            //     diff1 += T[4].result - T[3].result;
+
         } else if (op == 2) {
             stu->query_by_course_table();
         } else if (op == 3) {
@@ -98,18 +94,44 @@ void student_menu(Student*& stu) {
         } else if (op == 7) {
             stu->guide_now();
         } else if (op == 8) {
-            stu->m_lock.lock();
+            m_lock.lock();
             stu->fast = true;
-            stu->m_lock.unlock();
+            m_lock.unlock();
             cout << "速率已经加倍!" << endl;
             system("pause");
             system("cls");
+        } else if (op == 9) {
+            if (!stu->stop) {
+                GetLocalTime(&now);
+                m_lock.lock();
+                stu->T[3] = weekly_real_time(now.wDayOfWeek, now.wHour, now.wMinute, now.wSecond + (now.wMilliseconds % 10) / (double)100);
+                stu->stop = true;
+                m_lock.unlock();
+                cout << "时钟已经暂停!" << endl;
+
+            } else {
+                GetLocalTime(&now);
+                m_lock.lock();
+                stu->T[4] = weekly_real_time(now.wDayOfWeek, now.wHour, now.wMinute, now.wSecond + (now.wMilliseconds % 10) / (double)100);
+                if (stu->fast) {
+                    stu->diff2 += stu->T[4].result - stu->T[3].result;
+
+                }
+
+                else {
+                    stu->diff1 += stu->T[4].result - stu->T[3].result;
+                }
+
+                stu->stop = false;
+                m_lock.unlock();
+                cout << "时钟解除暂停!" << endl;
+            }
         } else if (op == 0) {
-            stu->m_lock.lock();
             stu->submit_activity();
+            m_lock.lock();
             stu->out = true;
-            stu->m_lock.unlock();
-            Sleep(100);
+            m_lock.unlock();
+            Sleep(1000);
             // going.~thread();
             //   delete going;
             delete stu;

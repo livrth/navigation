@@ -50,11 +50,14 @@ struct weekly_real_time {
     double fix;
     weekly_real_time() {}
     weekly_real_time(double d, double h, double m, double s) {
-        day = d;
+        if (d == 0)
+            day = 7;
+        else
+            day = d;
         hour = h;
         min = m;
         sec = s;
-        result = (d - 1) * 1440 + h * 60 + m + sec / 60;
+        result = (day - 1) * 1440 + hour * 60 + min + sec / 60;
     }
 };
 
@@ -63,7 +66,7 @@ class Student {
     string stu_name;  //学生姓名
     string stu_id;    //学号 唯一区分学生
     string group_id;  //班级
-    mutex m_lock;
+
     map<string, string> name_to_id;                         //在找到正确的名字后必须通过名字找到对应的下标
     map<int, pair<string, string>> time_to_place;           //在找到合理的时间后必须通过时间查找到对应的地名（校区+建筑）
     string my_course_table[6][12];                          //我的课程表
@@ -79,9 +82,10 @@ class Student {
     double diff2 = 0;
     bool fast = false;
     bool out = false;
+    bool stop = false;
+    bool show_new_time = true;
     map<string, set<string>> word_to_sen;
     map<string, set<string>> word_to_par;
-
     int ca_number;  //班级活动数目
     string number_to_date[8] = {"No", "Mon", "Tue", "Wed", "Thu", "Fri", "Sar", "Sun"};
     map<char, string> kind = {{'p', "个人"}, {'c', "班级"}, {'d', "最近删除"}};
@@ -90,11 +94,11 @@ class Student {
     int course_finish_time_table[12] = {0, 8 * 60 + 45, 9 * 60 + 35, 10 * 60 + 35, 11 * 60 + 25, 12 * 60 + 15, 13 * 60 + 45, 14 * 60 + 35, 15 * 60 + 30, 16 * 60 + 25, 17 * 60 + 20, 18 * 60 + 10};
     Student();
     Student(string id, string name, string group);
-
+    vector<string> notes;
     //学生界面操作的菜单
     void operMenu();
     void operMenuSub();
-
+    int nowday, nowhour, nowmin;
     // void upload_course_material();  //上传课程资料
     // void upload_home_work();        //上传作业
 
@@ -129,4 +133,5 @@ class Student {
     void clash_test(string date, int st, int ft);
     bool interact(int x1, int x2, int y1, int y2);
     void submit_activity();
+    void log(string op);
 };

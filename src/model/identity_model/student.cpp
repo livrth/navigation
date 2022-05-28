@@ -597,7 +597,7 @@ void Student::clash_test(string date, int st, int ft) {
             }
         }
     }
-    cout << "未检测到与课程或者活动的冲突" << endl;
+    cout << "未检测到与课程的冲突" << endl;
 }
 bool Student::interact(int x1, int x2, int y1, int y2) {
     return (x1 + y1 - x2 - y2 <= x1 + x2 - y1 - y2) && (x1 + x2 - y1 - y2 <= x2 + y2 - x1 - y1);
@@ -633,9 +633,9 @@ void Student::set_activity_alarm() {
         for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
             if (it->name == name && it->state == 'p') {
                 cout << "请输入改变后的闹钟类型(只有no_clock,circular_clock,once_clock三种选项):";
-                this->m_lock.lock();
+                // m_lock.lock();
                 cin >> it->clock_state;
-                this->m_lock.unlock();
+                // m_lock.unlock();
                 flag = true;
                 break;
             }
@@ -662,4 +662,6 @@ void Student::submit_activity() {
         }
     }
     ofs.close();
+}
+void Student::log(string op) {
 }

@@ -189,10 +189,14 @@ void Student::activity_menu() {
 void Student::operMenu() {
     time_t now = time(0);
     char* dt = ctime(&now);
-    int a = this->weekly_sys_time / 1440;
-    int b = this->weekly_sys_time % 1440 / 60;
-    int c = this->weekly_sys_time % 1440 % 60;
-    cout << "                     系统时间:" << number_to_date[a + 1] << " " << b << ":" << c;
+    if (!stop) show_new_time = true;
+    if (show_new_time) {
+        nowday = this->weekly_sys_time / 1440;
+        nowhour = this->weekly_sys_time % 1440 / 60;
+        nowmin = this->weekly_sys_time % 1440 % 60;
+        if (stop) show_new_time = false;
+    }
+    cout << "                     模拟时间:" << number_to_date[nowday + 1] << " " << nowhour << ":" << nowmin;
     cout << endl;
     cout << "欢迎学生：" << this->stu_name << " 登录! " << dt << endl;
     cout << "\t\t -----------------------\n";
@@ -212,6 +216,8 @@ void Student::operMenu() {
     cout << "\t\t|     7.进行路径导航    |\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t|     8.时间快进二倍    |\n";
+    cout << "\t\t|                       |\n";
+    cout << "\t\t|     9.系统时间暂停    |\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t|     0.注销登出账号    |\n";
     cout << "\t\t|                       |\n";
