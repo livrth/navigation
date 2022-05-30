@@ -70,11 +70,25 @@ struct single_activity_a {
     vector<string> words;
 };
 
+struct logger_a {
+    string now;
+    string kind;
+    string id;
+    string sth;
+    logger_a(string k, string i, string s) {
+        time_t timep;
+        time(&timep);
+        now = asctime(gmtime(&timep));
+        kind = k;
+        id = i;
+        sth = s;
+    }
+};
+
 class Admin {
    public:
     string user_name, pwd;
-
-        Admin();
+    Admin();
     Admin(string user_name);
 
     //管理员菜单
@@ -88,6 +102,8 @@ class Admin {
 
     //修改原有课程
     void change_course();
+
+    void log(string sth);
 
     //对学生个人文件夹的操作
     void delete_course_table_term(string stu_id, string date, int seq);

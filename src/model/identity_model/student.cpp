@@ -46,6 +46,7 @@ void Student::query_by_course_name() {
             break;
         }
     }
+    log("query_by_course_name");
     system("pause");
     system("cls");
     course_menu(object_id, object_name, this->stu_id);
@@ -90,6 +91,7 @@ void Student::query_by_course_table() {
             break;
         }
     }
+    log("query_by_course_table");
     system("pause");
     system("cls");
     course_menu(object_id, object_name, this->stu_id);
@@ -326,6 +328,7 @@ void Student::query_by_course_time() {
     else
         close_t = kth(1, root, t1);
     cout << time_to_place[close_t].first << " " << time_to_place[close_t].second;
+    log("query_by_course_time");
 }
 
 void Student::course_menu(string object_id, string object_name, string stu_id) {
@@ -336,20 +339,28 @@ void Student::course_menu(string object_id, string object_name, string stu_id) {
         int op;
         cin >> op;
         if (op == 1) {
+            log("submit_homework");
             cou->submit_homework();
         } else if (op == 2) {
+            log("submit_material");
             cou->submit_material();
         } else if (op == 3) {
+            log("download_material");
             cou->download_material();
         } else if (op == 4) {
+            log("query_homework_by_name");
             cou->query_homework_by_name();
         } else if (op == 5) {
+            log("query_homework_by_grades");
             cou->query_homework_by_grades();
         } else if (op == 6) {
+            log("query_material_by_name");
             cou->query_material_by_name();
         } else if (op == 7) {
+            log("query_material_by_weight");
             cou->query_material_by_weight();
         } else if (op == 0) {
+            // cou->submit();
             delete cou;
             cout << "退出成功" << endl;
             system("pause");
@@ -397,6 +408,7 @@ void Student::query_by_activity_time() {
         cout << kind[it->state] << " "
              << "闹钟属性：" << it->clock_state << endl;
     }
+    log("query_by_activity_time");
 }
 
 void Student::query_by_activity_name() {
@@ -420,6 +432,7 @@ void Student::query_by_activity_name() {
             }
         }
     } while (cin.get() != '\n');
+    log("query_by_activity_name");
 }
 void Student::set_activity() {
     cout << "请输入活动的日期：";
@@ -467,6 +480,7 @@ void Student::set_activity() {
     time_to_activity[time].push_back(x);
     clash_test(number_to_date[date], x.sh * 60 + x.sm, x.fh * 60 + x.fm);
     cout << "活动设置完毕" << endl;
+    log("set_activity");
 }
 void Student::delete_activity() {
     cout << "请输入你想删除的活动的开始时间：";
@@ -506,6 +520,7 @@ void Student::delete_activity() {
         cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以删除(输入0可退出):";
     }
     cout << "活动删除完毕" << endl;
+    log("delete_activity");
 }
 void Student::change_activity() {
     cout << "请输入你想改变的活动的开始时间：";
@@ -575,6 +590,7 @@ void Student::change_activity() {
     time_to_activity[time].push_back(y);
     clash_test(y.date, y.sh * 60 + sm, y.fh * 60 + y.fm);
     cout << "活动改变完毕" << endl;
+    log("change_activity");
 }
 
 void Student::clash_test(string date, int st, int ft) {
@@ -643,6 +659,8 @@ void Student::set_activity_alarm() {
         cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以更改(输入0可退出):";
     }
     cout << "闹钟设置完毕" << endl;
+
+    log("set_activity_alarm");
 }
 void Student::submit() {
     ofstream ofs;

@@ -1,7 +1,22 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
+struct logger_t {
+    string now;
+    string kind;
+    string id;
+    string sth;
+    logger_t(string k, string i, string s) {
+        time_t timep;
+        time(&timep);
+        now = asctime(gmtime(&timep));
+        kind = k;
+        id = i;
+        sth = s;
+    }
+};
 
 class Teacher {
    public:
@@ -20,4 +35,5 @@ class Teacher {
 
     //教师批改作业
     void check_homework();
+    void log(string sth);
 };

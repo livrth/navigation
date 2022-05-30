@@ -35,6 +35,7 @@ struct hw {
     int len;
     set<string> words;
 };
+
 class Course {
    public:
     string course_id;    //课程编号
@@ -54,9 +55,8 @@ class Course {
     string course_qun;
     exam final;
     map<string, string> name_to_id;
+    // vector<logger> loggers;
     Course();
-    double* adddiff1;
-    double* adddiff2;
     Course(string course_id, string course_name, string sdudent_id);
     void init();
     void operMenu();
@@ -69,14 +69,15 @@ class Course {
     void query_material_by_weight();
     void qsort_m(int l, int r);
     void qsort_h(int l, int r);
+    // void log(string sth);
+    // void submit();
 };
 
-struct Tree
-{
-	double weight;
-	string ch;
-	string code;
-	int lchild, rchild, parent;
+struct Tree {
+    double weight;
+    string ch;
+    string code;
+    int lchild, rchild, parent;
 };
 
 #endif  // NAVIGATION_COURSE_H

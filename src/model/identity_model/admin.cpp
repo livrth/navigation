@@ -55,6 +55,9 @@ void Admin::change_activity() {
                     break;
                 }
             }
+
+            log("delete_activity_for_class" + group_id);
+
         } else if (opt == 2) {
             cout << "请输入增加的活动的日期,时间区间,地点,名字长度,名字（名字的任意字符之间请加空格）" << endl;
             single_activity_a n;
@@ -67,11 +70,14 @@ void Admin::change_activity() {
             }
             activities.push_back(n);
             ca_number++;
+
+            log("add_activity_to_class" + group_id);
+
         } else if (opt == 3) {
             ofstream ofs;
             ofs.open(group_filename, ios::out);
             if (!ofs.is_open()) {
-                cout << "活动文件不存在" << endl;
+                cout << "班级文件不存在" << endl;
                 ofs.close();
                 return;
             }
@@ -157,9 +163,15 @@ void Admin::change_course() {
         if (opt == 1) {
             cout << "请输入考试的新时间：";
             cin >> t.final.date >> t.final.sh >> t.final.sm >> t.final.fh >> t.final.fm;
+
+            log("change_exam_time");
+
         } else if (opt == 2) {
             cout << "请输入考试的新地点:";
             cin >> t.final.campus >> t.final.place;
+
+            log("change_exam_place");
+
         } else if (opt == 3) {
             cout << "请输入删除的这堂课的日期和课序";
             string date;
@@ -175,6 +187,9 @@ void Admin::change_course() {
             for (int i = 0; i <= t.student_number - 1; i++) {
                 delete_course_table_term(t.stu_ids[i], date, seq);
             }
+
+            log("delete_a_single_course");
+
         } else if (opt == 4) {
             cout << "请输入增加的这堂课的日期,课序，教室，校区,建筑编号";
             single_course_a n;
@@ -186,6 +201,9 @@ void Admin::change_course() {
             for (int i = 0; i <= t.student_number - 1; i++) {
                 add_course_table_term(t.stu_ids[i], n);
             }
+
+            log("add_a_single_course");
+
         } else if (opt == 5) {
             ofstream ofs;
             ofs.open(course_filename, ios::out);
@@ -325,6 +343,8 @@ void Admin::release_new_course() {
     }
     ofs << t.course_id << endl;
     ofs.close();
+
+    log("add_a_new_whole_course");
 }
 
 void Admin::delete_course_table_term(string stu_id, string date, int seq) {
@@ -371,22 +391,6 @@ void Admin::delete_course_table_term(string stu_id, string date, int seq) {
 
 void Admin::add_course_table_term(string stu_id, single_course_a n) {
     string filename = "../../src/model/identity_model/course_table/" + stu_id + "_course_table.txt";
-    /*ifstream ifs;
-    ifs.open(filename, ios::in);
-    if (!ifs.is_open()) {
-        cout << "学生" + stu_id + "课程文件不存在" << endl;
-        ifs.close();
-        return;
-    }
-    vector<single_course_a> course_table;
-    single_course_a a;
-    int cnt = 0;
-    while (ifs >> a.date >> a.seq >> a.place >> a.course_name >> a.campus >> a.course_id >> a.building_id) {
-        course_table.push_back(a);
-        cnt++;
-    }
-    ifs.close();*/
-    // course_table.push_back(n);
     ofstream ofs;
     ofs.open(filename, ios::app);
     if (!ofs.is_open()) {
@@ -401,4 +405,13 @@ void Admin::add_course_table_term(string stu_id, single_course_a n) {
     }
     ofs << endl;
     ofs.close();
+}
+
+void Admin::log(string sth) {
+    logger_a addition = logger_a("admin", user_name, sth);
+    ofstream ofs1;
+    string log_file = "../../doc/admin";
+    ofs1.open(log_file, ios::app);
+    ofs1 << addition.now << " " << addition.kind << " " << addition.id << " " << addition.sth << endl;
+    ofs1.close();
 }

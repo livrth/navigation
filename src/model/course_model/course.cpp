@@ -141,26 +141,26 @@ void Course::query_homework_by_grades() {
              << "成绩：" << hws[order_hws[i]].grades;
         cout << " 状态：" << hws[order_hws[i]].state << endl;
     }
-    cout << "请输入Yes来提交作业或者输入No来退出:";
+    /*cout << "请输入Yes来提交作业或者输入No来退出:";
     string opt;
     cin >> opt;
     if (opt == "No")
         return;
     else
-        submit_homework();
+        submit_homework();*/
 }
 void Course::query_material_by_weight() {
     qsort_m(0, material_number - 1);
     for (int i = 0; i <= material_number - 1; i++) {
         cout << materials[order_materials[i]].name << "  权重：" << materials[order_materials[i]].weight << endl;
     }
-    cout << "请输入Yes来下载某份资料或者输入No来退出:";
+    /*cout << "请输入Yes来下载某份资料或者输入No来退出:";
     string opt;
     cin >> opt;
     if (opt == "No")
         return;
     else
-        download_material();
+        download_material();*/
 }
 
 void Course::qsort_h(int l, int r) {
@@ -196,3 +196,16 @@ void Course::qsort_m(int l, int r) {
     if (l < j) qsort_m(l, j);
     if (i < r) qsort_m(i, r);
 }
+/*void Course::log(string sth) {
+    logger addition = logger("stu", user_id, sth);
+    loggers.push_back(addition);
+}
+void Course::submit() {
+    ofstream ofs1;
+    string log_file = "../../doc/stu";
+    ofs1.open(log_file, ios::app);
+    for (auto it = loggers.begin(); it != loggers.end(); it++) {
+        ofs1 << it->now << " " << it->kind << " " << it->id << " " << it->sth << endl;
+    }
+    ofs1.close();
+}*/

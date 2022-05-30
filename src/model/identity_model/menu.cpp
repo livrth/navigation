@@ -9,7 +9,7 @@
 #include "teacher.h"
 
 //实现除了登录界面之外所有的图形化打印菜单
-
+int week = 15;
 void Teacher::operMenu() {
     system("cls");
     time_t now = time(0);
@@ -102,7 +102,7 @@ void Course::operMenu() {
     cout << "任课教师：" << teacher_name << endl;
     cout << "课程群：" << course_qun << endl;
     cout << "当前进度："
-         << " "
+         << week
          << "/" << total_weeks << endl;
     cout << "考试时间："
          << "第" << final.week << "周" << final.date;
@@ -190,11 +190,17 @@ void Student::operMenu() {
     time_t now = time(0);
     char* dt = ctime(&now);
     if (!stop) show_new_time = true;
+    bool week_counter = true;
+    if (nowday == 6) week_counter = true;
     if (show_new_time) {
         nowday = this->weekly_sys_time / 1440;
         nowhour = this->weekly_sys_time % 1440 / 60;
         nowmin = this->weekly_sys_time % 1440 % 60;
         if (stop) show_new_time = false;
+    }
+    if (nowday == 0 && week_counter) {
+        week++;
+        week_counter = false;
     }
     cout << "                     模拟时间:" << number_to_date[nowday + 1] << " " << nowhour << ":" << nowmin;
     cout << endl;
@@ -203,7 +209,7 @@ void Student::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t|     1.课程名称查询    |\n";
     cout << "\t\t|                       |\n";
-    cout << "\t\t|     2.课表课程查询    |\n";
+    cout << "\t\t|     2.课程课表查询    |\n";
     cout << "\t\t|                       |\n";
     cout << "\t\t|     3.课程时间查询    |\n";
     cout << "\t\t|                       |\n";
@@ -223,8 +229,4 @@ void Student::operMenu() {
     cout << "\t\t|                       |\n";
     cout << "\t\t -----------------------\n\n";
     cout << "请选择您的操作: ";
-}
-
-void Student::operMenuSub() {
-    //
 }
