@@ -127,7 +127,7 @@ void student_menu(Student*& stu) {
                 cout << "时钟解除暂停!" << endl;
             }
         } else if (op == 0) {
-            stu->submit_activity();
+            stu->submit();
             m_lock.lock();
             stu->out = true;
             m_lock.unlock();

@@ -15,6 +15,7 @@ struct single_course_a {
     int len;
     vector<string> words;
 };
+
 struct material_a {
     int weight;
     string name;
@@ -22,6 +23,7 @@ struct material_a {
     int len;
     vector<string> words;
 };
+
 struct hw_a {
     string name;
     int len;
@@ -58,6 +60,7 @@ struct whole_course {
     vector<int> ma_len;
     vector<vector<string> > ma_words;
 };
+
 struct single_activity_a {
     string date;
     int sh, sm, fh, fm;
@@ -66,19 +69,18 @@ struct single_activity_a {
     int len;
     vector<string> words;
 };
+
 class Admin {
    public:
     string user_name, pwd;
 
-    //班级修改相关
-
-    Admin();
+        Admin();
     Admin(string user_name);
 
     //管理员菜单
     void operMenu();
 
-    //发布考试时间和考试地点
+    //修改班级活动
     void change_activity();
 
     //发布新课程
@@ -87,6 +89,7 @@ class Admin {
     //修改原有课程
     void change_course();
 
+    //对学生个人文件夹的操作
     void delete_course_table_term(string stu_id, string date, int seq);
     void add_course_table_term(string stu_id, single_course_a n);
 };

@@ -644,7 +644,7 @@ void Student::set_activity_alarm() {
     }
     cout << "闹钟设置完毕" << endl;
 }
-void Student::submit_activity() {
+void Student::submit() {
     ofstream ofs;
     string activity_table_filename = "../../src/model/identity_model/activity_table/" + stu_id + "_activity_table.txt";
     ofs.open(activity_table_filename);
@@ -662,6 +662,15 @@ void Student::submit_activity() {
         }
     }
     ofs.close();
+    ofstream ofs1;
+    string log_file = "../../doc/stu";
+    ofs1.open(log_file, ios::app);
+    for (auto it = loggers.begin(); it != loggers.end(); it++) {
+        ofs1 << it->now << " " << it->kind << " " << it->id << " " << it->sth << endl;
+    }
+    ofs1.close();
 }
-void Student::log(string op) {
+void Student::log(string sth) {
+    logger addition = logger("stu", stu_id, sth);
+    loggers.push_back(addition);
 }
