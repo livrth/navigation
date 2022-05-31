@@ -1,7 +1,13 @@
 #include "teacher.h"
-// #include "homework.h"
+
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+
+#include "../../global_file.h"
 using namespace std;
 
 Teacher::Teacher() {
@@ -20,7 +26,6 @@ void Teacher::set_homework() {
     cin >> course_name;
     cout << "请输入该课程的编号: ";
     cin >> course_id;
-    // Homework temp_hw(this->teacher_id, course_id, course_name);
 }
 
 //批改作业
@@ -47,6 +52,50 @@ void Teacher::decompress_homework() {
 
 //得到某次作业的查重结果
 void Teacher::check_duplicate(string course_id, int times) {
+    cout << "\n查重函数 Debug Result: \n\n";
+    string hw_folder = "../../src/model/identity_model/homework_set/" + this->teacher_id + "_teacher/" + course_id + "_course/" + to_string(times) + "_times/";
+
+    //获取所有学号
+    ifstream ifs_stu_info;
+    ifs_stu_info.open(STU_INFO_FILE, ios::in);
+    if (!ifs_stu_info.is_open()) {
+        cout << "\n打开学生信息文件失败!\n";
+        system("pause");
+        return;
+    }
+
+    string stu_id, stu_pwd, stu_name, stu_class;
+    vector<string> all_stu;
+    while (ifs_stu_info >> stu_id >> stu_pwd >> stu_name >> stu_class) {
+        all_stu.push_back(stu_id);
+    }
+    //遍历每个学号
+    for (auto stu_id : all_stu) {
+        string hw_file = hw_folder + stu_id + "_stu/" + "hw.txt";  //当前学生作业
+        ifstream ifs_hw;
+        ifs_hw.open(hw_file, ios::in);
+        if (!ifs_hw.is_open()) {
+            cout << "\n打开学生 " << stu_id << " 作业文件失败!\n";
+            system("pause");
+            return;
+        }
+
+        string hw_content;  //作业中所有字符串拼接起来的结果
+        string hw_lines;
+        while (ifs_hw >> hw_lines) hw_content += hw_lines;
+        //输出作业内容测试一下
+        // cout << hw_content << "\n\n";
+
+
+        //TODO: AC自动机字符串匹配
+
+        for (auto other_id : all_stu) {
+            if (other_id != stu_id) {  //其他学生文件夹
+            }
+        }
+    }
+    system("pause");
+    system("cls");
 }
 
 void Teacher::log(string sth) {

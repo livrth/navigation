@@ -156,6 +156,11 @@ void teacher_menu(Teacher*& tea) {
             tea->set_homework();  //布置作业
         } else if (op == 2) {
             tea->mark_homework();  //批改作业
+        } else if (op == 8) {
+            //临时测试查重功能
+            string course_id = "0001";
+            int times = 1;
+            tea->check_duplicate(course_id, times);
         } else if (op == 0) {
             delete tea;
             cout << "注销成功" << endl;

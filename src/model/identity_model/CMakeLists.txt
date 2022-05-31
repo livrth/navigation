@@ -17,7 +17,6 @@ add_library(
 
 target_link_libraries(
 	${PROJECT_NAME}
-	# homework_model
 	course_model
 	navigation_model
 )

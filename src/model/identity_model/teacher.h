@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
+#include "../../global_file.h"
 using namespace std;
 struct logger_t {
     string now;
@@ -33,8 +35,8 @@ class Teacher {
 
     void set_homework();  //布置作业
 
-    void check_duplicate(string course_id, int times);      //作业查重
-    void decompress_homework();  //解压作业
+    void check_duplicate(string course_id, int times);  //作业查重
+    void decompress_homework();                         //解压作业
 
     void mark_homework();  //教师批改作业
 

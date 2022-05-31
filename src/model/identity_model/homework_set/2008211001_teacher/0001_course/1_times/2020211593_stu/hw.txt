@@ -1,0 +1,7 @@
+Problem3.Virtual circuit networks most certainly need this capability in order to route connection setup packets from an arbitrary source to an arbitrary destination.
+
+Problem4.The negotiation could set the window size, maximum packet size, data rate, and timer values.
+
+Problem7.It will follow all of the following routes: ABCD, ABCF, ABEF, ABEG, AGHD, AGHF, AGEB, and AGEF. The number of hops used is 24.
+
+Problem10.The routing table is 400 bits. Twice a second this table is written onto each line, so 800 bps are needed on each line in each direction.
