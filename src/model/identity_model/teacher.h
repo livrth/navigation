@@ -20,9 +20,10 @@ struct logger_t {
 
 class Teacher {
    public:
-    string teacher_id;       //教职工号
-    string name;             //教师姓名
-    string teaching_course;  //目前正在上的课
+    string teacher_id;                    //教职工号
+    string name;                          //教师姓名
+    vector<string> teaching_course_name;  //目前正在上的所有课名称
+    vector<string> teaching_course_id;    //所有正在上的课的ID 可能会用到这个数组
 
     Teacher();
     Teacher(string id, string name);
@@ -30,10 +31,12 @@ class Teacher {
     //教师操作菜单
     void operMenu();
 
-    //教师布置作业
-    void set_homework();
+    void set_homework();  //布置作业
 
-    //教师批改作业
-    void check_homework();
+    void check_duplicate(string course_id, int times);      //作业查重
+    void decompress_homework();  //解压作业
+
+    void mark_homework();  //教师批改作业
+
     void log(string sth);
 };

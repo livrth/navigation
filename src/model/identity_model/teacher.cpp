@@ -24,9 +24,31 @@ void Teacher::set_homework() {
 }
 
 //批改作业
-//同时系统实现查重
-void Teacher::check_homework() {
+void Teacher::mark_homework() {
+    string course_id;    //课程编号
+    string course_name;  //课程名称
+    int hw_times;        //作业次数
+
+    cout << "请输入要批改作业的课程名称: ";
+    cin >> course_name;
+    //教师输入课程名称，然后从 course_colleciton.txt 中查到课程id 赋值给 course_id;
+    // string hw_path = ......
+
+    cout << "请输入要批改的作业次数: ";
+    cin >> hw_times;
+
+    this->decompress_homework();                 //先调用解压作业
+    this->check_duplicate(course_id, hw_times);  //然后得到查重结果
 }
+
+//解压作业
+void Teacher::decompress_homework() {
+}
+
+//得到某次作业的查重结果
+void Teacher::check_duplicate(string course_id, int times) {
+}
+
 void Teacher::log(string sth) {
     logger_t addition = logger_t("teacher", teacher_id, sth);
     ofstream ofs1;

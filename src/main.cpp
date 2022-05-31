@@ -155,7 +155,7 @@ void teacher_menu(Teacher*& tea) {
         if (op == 1) {
             tea->set_homework();  //布置作业
         } else if (op == 2) {
-            tea->check_homework();  //检查作业
+            tea->mark_homework();  //批改作业
         } else if (op == 0) {
             delete tea;
             cout << "注销成功" << endl;

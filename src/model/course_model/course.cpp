@@ -83,13 +83,13 @@ void Course::download_material() {
 }
 void Course::query_homework_by_name() {
     string word;
-    cout << "\n请输入您要搜索的作业名（请在任意两个字符之间加空格）:";
+    cout << "\n请输入您要搜索的作业名(请在任意两个字符之间加空格): ";
     vector<string> notes;
     do {
         cin >> word;
         notes.push_back(word);
     } while (cin.get() != '\n');
-    cout << "\n作业查询结果：" << endl;
+    cout << "\n作业查询结果: " << endl;
     bool empty = true;
     for (int i = 1; i <= homework_number; i++) {
         for (auto j = notes.begin(); j != notes.end(); j++) {
@@ -109,13 +109,13 @@ void Course::query_homework_by_name() {
 }
 void Course::query_material_by_name() {
     string word;
-    cout << "\n请输入您要搜索的资料名（请在任意两个字符之间加空格）:";
+    cout << "\n请输入您要搜索的资料名(请在任意两个字符之间加空格): ";
     vector<string> notes;
     do {
         cin >> word;
         notes.push_back(word);
     } while (cin.get() != '\n');
-    cout << "\n资料查询结果：" << endl;
+    cout << "\n资料查询结果: " << endl;
     bool empty = true;
     for (auto i = materials.begin(); i != materials.end(); i++) {
         for (auto j = notes.begin(); j != notes.end(); j++) {
