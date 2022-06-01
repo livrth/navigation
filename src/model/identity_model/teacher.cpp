@@ -150,7 +150,13 @@ void Teacher::check_duplicate(string course_id, int times) {
         //输出作业内容测试一下
         // cout << hw_content << "\n\n";
 
+<<<<<<< HEAD
+        // TODO: Aho–Corasick algorithm, AC自动机字符串匹配
+        //分割为长度为10的字符串，每匹配一条重复率加 (10/作业总长度) x 100%
+        //查重一次作业时间复杂度O(T*C^2) T 为两个查重对象作业文本均摊长度,C 为学生人数
+=======
         // TODO: AC自动机字符串匹配
+>>>>>>> 9e2116704ba5654325b70ef4a5291f3f68d42f07
 
         for (auto other_id : all_stu) {
             if (other_id != stu_id) {  //其他学生文件夹
