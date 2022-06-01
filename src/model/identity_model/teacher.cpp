@@ -115,8 +115,7 @@ void Teacher::decompress_homework() {
 
 //得到某次作业的查重结果
 /*遍历每个学生，输出当前学生与其他所有学生的重复率
-算法保证正确，极端情况全相等文本可得重复率100%，完全不同内容文本重复率为0%
-*/
+算法保证正确，极端情况全相等文本可得重复率100%，完全不同内容文本重复率为0% */
 void Teacher::check_duplicate(string course_id, int times) {
     // cout << "\n查重函数 Debug Result: \n\n";
     string hw_folder = "../../src/model/identity_model/homework_set/" + this->teacher_id + "_teacher/" + course_id + "_course/" + to_string(times) + "_times/";
@@ -154,7 +153,7 @@ void Teacher::check_duplicate(string course_id, int times) {
         //  << hw_content << "\n\n";
         // system("pause");
 
-        // TODO: Aho–Corasick algorithm, AC自动机字符串匹配(Trie 图优化)
+        //Aho–Corasick algorithm, AC自动机字符串匹配(Trie 图优化)
         //分割为长度为10的字符串，每匹配一条重复率加 (10/作业总长度) x 100%
         //查重一次作业时间复杂度O(T*C^2) T 为两个查重对象作业文本均摊长度,C 为学生人数
 
