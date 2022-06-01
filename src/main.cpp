@@ -135,7 +135,8 @@ void student_menu(Student*& stu) {
             // going.~thread();
             //   delete going;
             delete stu;
-            cout << "注销成功" << endl;
+            cout << "\n注销成功\n"
+                 << endl;
             system("pause");
             system("cls");
             return;
@@ -164,7 +165,8 @@ void teacher_menu(Teacher*& tea) {
             tea->check_duplicate(course_id, times);
         } else if (op == 0) {
             delete tea;
-            cout << "注销成功" << endl;
+            cout << "\n注销成功\n"
+                 << endl;
             system("pause");
             system("cls");
             return;
@@ -189,7 +191,8 @@ void admin_menu(Admin*& admin) {
             admin->change_course();
         } else if (op == 0) {
             delete admin;
-            cout << "注销成功" << endl;
+            cout << "\n注销成功\n"
+                 << endl;
             system("pause");
             system("cls");
             return;
@@ -262,7 +265,8 @@ void login(string fileName, int type) {
             }
         }
     }
-    cout << "验证登录失败! 请检查用户名或者密码 " << endl;
+    cout << "\n验证登录失败! 请检查用户名或者密码\n"
+         << endl;
     system("pause");
     system("cls");
 
