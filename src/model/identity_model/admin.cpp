@@ -341,9 +341,12 @@ void Admin::release_new_course() {
         ofs.close();
         return;
     }
-    ofs << t.course_id << endl;
+    ofs << t.course_name << t.course_id << endl;
     ofs.close();
-
+    string folderPath = "../../src/identity_model/homework_set/" + t.teacher_id + "_teacher/" + t.course_id + "_course";
+    string command;
+    command = "mkdir -p " + folderPath;
+    system(command.c_str());
     log("add_a_new_whole_course");
 }
 
@@ -410,7 +413,7 @@ void Admin::add_course_table_term(string stu_id, single_course_a n) {
 void Admin::log(string sth) {
     logger_a addition = logger_a("admin", user_name, sth);
     ofstream ofs1;
-    string log_file = "../../doc/admin";
+    string log_file = "../../log/admin.txt";
     ofs1.open(log_file, ios::app);
     ofs1 << addition.now << " " << addition.kind << " " << addition.id << " " << addition.sth << endl;
     ofs1.close();

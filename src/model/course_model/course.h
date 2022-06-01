@@ -55,6 +55,8 @@ class Course {
     string course_qun;
     exam final;
     map<string, string> name_to_id;
+    int stu_number;
+    vector<string> stus;
     // vector<logger> loggers;
     Course();
     Course(string course_id, string course_name, string sdudent_id);
@@ -69,6 +71,7 @@ class Course {
     void query_material_by_weight();
     void qsort_m(int l, int r);
     void qsort_h(int l, int r);
+    void init2();
     // void log(string sth);
     // void submit();
 };

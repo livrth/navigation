@@ -681,7 +681,7 @@ void Student::submit() {
     }
     ofs.close();
     ofstream ofs1;
-    string log_file = "../../doc/stu";
+    string log_file = "../../log/stu.txt";
     ofs1.open(log_file, ios::app);
     for (auto it = loggers.begin(); it != loggers.end(); it++) {
         ofs1 << it->now << " " << it->kind << " " << it->id << " " << it->sth << endl;
