@@ -1,5 +1,7 @@
 #include "admin.h"
 
+#include <direct.h>
+
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -343,10 +345,20 @@ void Admin::release_new_course() {
     }
     ofs << t.course_name << t.course_id << endl;
     ofs.close();
-    string folderPath = "../../src/identity_model/homework_set/" + t.teacher_id + "_teacher/" + t.course_id + "_course";
-    string command;
-    command = "mkdir -p " + folderPath;
-    system(command.c_str());
+    char path0[200];
+    if (!getcwd(path0, 200)) {
+        cout << "Get path fail!" << endl;
+        return;
+    }
+    string path = path0;
+    int eff = path.find("\\build\\build");
+    path.erase(path.begin() + eff, path.end());
+    string folderPath, target;
+    //  string target, base = "../../src/model/identity_model/homework_set/" + teacher_id + "_teacher/" + course_id + "_course/" + time + "_times/";
+    folderPath = path + "\\src\\model\\identity_model\\homework_set\\" + t.teacher_id + "_teacher\\" + t.course_id + "_course";
+    if (0 != access(folderPath.c_str(), 0)) {
+        mkdir(folderPath.c_str());
+    }
     log("add_a_new_whole_course");
 }
 
