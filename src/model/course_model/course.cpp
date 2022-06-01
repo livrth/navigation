@@ -209,3 +209,63 @@ void Course::submit() {
     }
     ofs1.close();
 }*/
+void Course::init2() {
+    string course_filename = "../../src/model/course_model/course_set/" + course_id + "_course.txt";
+    ifstream ifs;
+    ifs.open(course_filename, ios::in);
+
+    if (!ifs.is_open()) {
+        cout << "课程文件不存在" << endl;
+        ifs.close();
+        return;
+    }
+
+    ifs >> course_name >> times_per_week;
+    for (int i = 1; i <= times_per_week; i++) {
+        single_course a;
+        string name, course_id, building_id;
+        ifs >> a.date >> a.seq >> a.place >> name >> a.campus >> course_id >> building_id;
+        a.sh = course_start_time_table[a.seq] / 60;
+        a.sm = course_start_time_table[a.seq] % 60;
+        a.fh = course_finish_time_table[a.seq] / 60;
+        a.fm = course_finish_time_table[a.seq] % 60;
+        course_table.push_back(a);
+    }
+    ifs >> teacher_name >> teacher_id >> course_qun >> total_weeks;
+    ifs >> final.week >> final.date >> final.st_hour >> final.st_min >> final.fi_hour >> final.fi_min >> final.campus >> final.place;
+    ifs >> ref_book_number;
+    for (int i = 1; i <= ref_book_number; i++) {
+        string book_name;
+        ifs >> book_name;
+        ref_books.push_back(book_name);
+    }
+    ifs >> material_number;
+    string word;
+    for (int i = 0; i <= material_number - 1; i++) {
+        material a;
+        ifs >> a.weight >> a.name >> a.id >> a.len;
+        for (int j = 0; j <= a.len - 1; j++) {
+            ifs >> word;
+            a.words.insert(word);
+        }
+        materials.push_back(a);
+        name_to_id[a.name] = a.id;
+        order_materials.push_back(i);
+    }
+    ifs >> homework_number;
+
+    for (int i = 1; i <= homework_number; i++) {
+        ifs >> hws[i].name >> hws[i].len;
+        for (int j = 0; j <= hws[i].len - 1; j++) {
+            ifs >> word;
+            hws[i].words.insert(word);
+        }
+    }
+    ifs >> stu_number;
+    string id;
+    for (int i = 1; i <= stu_number; i++) {
+        ifs >> id;
+        stus.push_back(id);
+    }
+    ifs.close();
+}

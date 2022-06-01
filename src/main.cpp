@@ -154,6 +154,7 @@ void teacher_menu(Teacher*& tea) {
         cin >> op;
         if (op == 1) {
             tea->set_homework();  //布置作业
+            system("pause");
         } else if (op == 2) {
             tea->mark_homework();  //批改作业
         } else if (op == 8) {
