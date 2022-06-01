@@ -291,8 +291,8 @@ void Admin::release_new_course() {
     }
     //输出
     ofstream ofs;
-    string path = "../../src/model/course_model/course_set/" + t.course_id + "_course.txt";
-    ofs.open(path, ios::out);  //创建文件
+    string path_course = "../../src/model/course_model/course_set/" + t.course_id + "_course.txt";
+    ofs.open(path_course, ios::out);  //创建文件
     if (!ofs.is_open()) {
         cout << "课程创建失败" << endl;
         ofs.close();
