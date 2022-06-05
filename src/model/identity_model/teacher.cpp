@@ -27,24 +27,82 @@ Teacher::Teacher(string id, string name) {
 void Teacher::set_homework() {
     string course_name, course_id, time;
     string course_collection = "../../src/model/identity_model/homework_set/" + teacher_id + "_teacher/course_collection.txt";
-    ifstream ifs;
-    ifs.open(course_collection, ios::in);
-    if (!ifs.is_open()) {
-        cout << "用户课程文件不存在" << endl;
-        ifs.close();
+    ifstream ifs1;
+    ifs1.open(course_collection, ios::in);
+    if (!ifs1.is_open()) {
+        cout << "用户文件不存在" << endl;
+        ifs1.close();
         return;
     }
     map<string, string> name_to_id;
     string name, id;
-    while (ifs >> name >> id) name_to_id[name] = id;
-
+    while (ifs1 >> name >> id) name_to_id[name] = id;
+    vector<string> description;
     cout << "请输入该课程的名称: " << endl;
     cin >> course_name;
     course_id = name_to_id[course_name];
     cout << "请输入您要布置的作业次数: " << endl;
     cin >> time;
-    Course cou = Course(course_id, course_name, teacher_id);
-    cou.init2();
+    whole_course_t t;
+    cout << "请输入你想改变的课程的id:";
+    cin >> t.course_id;
+    string course_filename = "../../src/model/course_model/course_set/" + t.course_id + "_course.txt";
+    ifstream ifs;
+    // cout<<"what"<<endl;
+    ifs.open(course_filename, ios::in);
+    if (!ifs.is_open()) {
+        cout << "课程文件不存在" << endl;
+        ifs.close();
+        return;
+    }
+    ifs >> t.course_name >> t.number;
+    for (int i = 1; i <= t.number; i++) {
+        single_course_t a;
+        ifs >> a.date >> a.seq >> a.place >> a.course_name >> a.campus >> a.course_id >> a.building_id;
+        t.course_table.push_back(a);
+    }
+    ifs >> t.teacher_name >> t.teacher_id >> t.course_qun >> t.total_weeks;
+    ifs >> t.final.week >> t.final.date >> t.final.sh >> t.final.sm >> t.final.fh >> t.final.fm >> t.final.campus >> t.final.place;
+    ifs >> t.ref_book_number;
+    for (int i = 1; i <= t.ref_book_number; i++) {
+        string book_name;
+        ifs >> book_name;
+        t.ref_books.push_back(book_name);
+        cout << book_name << endl;
+    }
+    // cout<<"fine"<<endl;
+    ifs >> t.material_number;
+    string word;
+    for (int i = 1; i <= t.material_number; i++) {
+        material_t a;
+        ifs >> a.weight >> a.name >> a.id >> a.len;
+        for (int i = 0; i <= a.len - 1; i++) {
+            ifs >> word;
+            a.words.push_back(word);
+        }
+        t.materials.push_back(a);
+        // cout << a.name << endl;
+    }
+    ifs >> t.homework_number;
+    for (int i = 1; i <= t.homework_number; i++) {
+        hw_t a;
+        ifs >> a.name >> a.len;
+        for (int i = 0; i <= a.len - 1; i++) {
+            ifs >> word;
+            a.words.push_back(word);
+        }
+        t.hws.push_back(a);
+    }
+    // cout<<"ok"<<endl;
+    ifs >> t.student_number;
+    for (int i = 1; i <= t.student_number; i++) {
+        string stu_id;
+        ifs >> stu_id;
+        t.stu_ids.push_back(stu_id);
+    }
+    ifs.close();
+    // Course cou = Course(course_id, course_name, teacher_id);
+    // cou.init2();
     char path0[200];
     if (!getcwd(path0, 200)) {
         cout << "Get path fail!" << endl;
@@ -62,8 +120,8 @@ void Teacher::set_homework() {
     }
     string end[4];
     ofstream location_out;
-    for (int i = 0; i <= cou.stu_number - 1; i++) {
-        target = folderPath + "\\" + cou.stus[i] + "_stu";
+    for (int i = 0; i <= t.student_number - 1; i++) {
+        target = folderPath + "\\" + t.stu_ids[i] + "_stu";
         // cout << target << endl;
         if (0 != access(target.c_str(), 0)) {
             mkdir(target.c_str());
@@ -86,6 +144,69 @@ void Teacher::set_homework() {
         end[3] = target + "\\unzip.txt";
         location_out.open(end[3], std::ios::out | std::ios::app);
         location_out.close();
+        cout << "请输入您要布置的作业的描述(字符请用空格分离）" << endl;
+
+        string word;
+        set<string> words;
+        int len = 0;
+        hw_t a;
+        do {
+            cin >> word;
+            words.insert(word);
+            len++;
+            a.name += word;
+        } while (cin.get() != '\n');
+        for (auto it = words.begin(); it != words.end(); it++) a.words.push_back(*it);
+        t.homework_number++;
+        t.hws.push_back(a);
+
+        ofstream ofs;
+        ofs.open(course_filename, ios::out);
+        if (!ofs.is_open()) {
+            cout << "课程文件不存在" << endl;
+            ofs.close();
+            return;
+        }
+        ofs << t.course_name << endl
+            << t.number << endl;
+        for (int i = 0; i <= t.number - 1; i++) {
+            single_course_t a = t.course_table[i];
+            ofs << a.date << " " << a.seq << " " << a.place << " " << t.course_name << " " << a.campus << " " << t.course_id << " " << a.building_id << endl;
+        }
+        ofs << t.teacher_name << " " << t.teacher_id << endl
+            << t.course_qun << endl
+            << t.total_weeks << endl;
+        ofs << t.final.week << " " << t.final.date << " " << t.final.sh << " " << t.final.sm << " " << t.final.fh << " " << t.final.fm << " " << t.final.campus << " " << t.final.place << " " << endl;
+        ofs << t.ref_book_number << endl;
+        for (int i = 0; i <= t.ref_book_number - 1; i++) {
+            string book_name = t.ref_books[i];
+            ofs << book_name << " " << endl;
+        }
+        ofs << t.material_number << endl;
+        for (int i = 0; i <= t.material_number - 1; i++) {
+            material_t a = t.materials[i];
+            ofs << a.weight << " " << a.name << " " << a.id << " " << a.len;
+            for (int i = 0; i <= a.len - 1; i++) {
+                ofs << " " << a.words[i];
+            }
+            ofs << endl;
+        }
+        ofs << t.homework_number << endl;
+        for (int i = 0; i <= t.homework_number - 1; i++) {
+            hw_t a = t.hws[i];
+            ofs << a.name << " " << a.len;
+            for (int i = 0; i <= a.len - 1; i++) {
+                ofs << " " << a.words[i];
+            }
+            ofs << endl;
+        }
+        ofs << t.student_number << endl;
+        for (int i = 0; i <= t.student_number - 1; i++) {
+            string stu_id = t.stu_ids[i];
+            ofs << stu_id << endl;
+        }
+        ofs.close();
+        return;
     }
     log("set_homework");
 }

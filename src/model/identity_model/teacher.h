@@ -5,6 +5,61 @@
 
 #include "../../global_file.h"
 using namespace std;
+struct single_course_t {
+    string date;
+    int seq;
+    string place;
+    string campus;
+    int building_id;
+    string course_name, course_id;
+    int len;
+    vector<string> words;
+};
+
+struct material_t {
+    int weight;
+    string name;
+    string id;
+    int len;
+    vector<string> words;
+};
+
+struct hw_t {
+    string name;
+    int len;
+    vector<string> words;
+};
+struct exam_t {
+    int week;
+    string date;
+    int sh, sm, fh, fm;
+    string campus;
+    string place;
+};
+struct whole_course_t {
+    int ref_book_number;
+    int number;
+    int homework_number;
+    int material_number;
+    int total_weeks;
+
+    string course_id;
+    string course_name;
+    exam_t final;
+    vector<string> ref_books;
+    vector<single_course_t> course_table;
+    vector<material_t> materials;
+    vector<hw_t> hws;
+    string teacher_name;
+    string teacher_id;
+    string course_qun;
+    vector<string> stu_ids;
+    int student_number;
+    vector<int> hw_len;
+    vector<vector<string> > hw_words;
+    vector<int> ma_len;
+    vector<vector<string> > ma_words;
+};
 struct logger_t {
     string now;
     string kind;
@@ -19,7 +74,6 @@ struct logger_t {
         sth = s;
     }
 };
-
 class Teacher {
    public:
     string teacher_id;                    //教职工号

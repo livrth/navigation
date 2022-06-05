@@ -108,7 +108,6 @@ void student_menu(Student*& stu) {
                 stu->stop = true;
                 m_lock.unlock();
                 cout << "时钟已经暂停!" << endl;
-
             } else {
                 GetLocalTime(&now);
                 m_lock.lock();
@@ -116,12 +115,9 @@ void student_menu(Student*& stu) {
                 if (stu->fast) {
                     stu->diff2 += stu->T[4].result - stu->T[3].result;
 
-                }
-
-                else {
+                } else {
                     stu->diff1 += stu->T[4].result - stu->T[3].result;
                 }
-
                 stu->stop = false;
                 m_lock.unlock();
                 cout << "时钟解除暂停!" << endl;
