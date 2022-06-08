@@ -45,7 +45,7 @@ void Teacher::set_homework() {
     cout << "请输入您要布置的作业次数: " << endl;
     cin >> time;
     whole_course_t t;
-    t.course_id = id;
+    t.course_id = name_to_id[course_name];
     string course_filename = "../../src/model/course_model/course_set/" + t.course_id + "_course.txt";
     ifstream ifs;
     // cout<<"what"<<endl;
