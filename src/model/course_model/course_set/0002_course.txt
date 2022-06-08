@@ -1,3 +1,4 @@
+计算机组成原理
 3
 Mon 3 2号楼208 计组 沙河 0002 2
 Mon 4 2号楼208 计组 沙河 0002 2
@@ -9,17 +10,13 @@ QQ6524315
 1
 <<computer_architecture_principe>>
 6
-50 ALU 011   
-19 CPU   012
-49 data_bus 013
-100 cache 014
-20 rom 015
-1 ram 016
-4
-p89t6,p12t3,p9t7
-second_hw
-division_compute_exercises
-cache_exercises
+50 ALU 011 3 A L U   
+19 CPU   012 3 C P U
+49 data_bus 013 8 d a t a _ b u s
+100 cache 014 5 c a c h e
+20 rom 015 3 r o m 
+1 ram 016 3 r a m
+0
 10
 2020211591 
 2020211590 

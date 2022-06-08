@@ -1,18 +1,26 @@
-物理
-2
-Wed 10 5号楼501 物理 沙河 0012 5
-Wed 11 5号楼502 物理 沙河 0012 5
-郎佩林 2008211099
-QQ23512
-17
-18 Mon 6 0 8 0 沙河 S101 
-2
-<<force>> 
-<<heat>> 
-0
-0
+Python编程
 4
+Mon 1 N516 Python编程 沙河 0012 1
+Mon 2 N516 Python编程 沙河 0012 1
+Wed 1 N516 Python编程 沙河 0012 5
+Wed 2 N516 Python编程 沙河 0012 5
+高占春 2008211001
+QQ2350371219
+18
+19 Mon 1 2 2 2 北京 N101 
+2
+<<computer_network5>> 
+<<WIFI_link>> 
+6
+10 gbn 001 3 g b n
+90 stopwait 002 8 s t o p w a i t
+80 selective 003 9 s e l e c t i v e
+1 tcp 004 3 t c p
+2 udp 005 3 u d p
+99 ip 006 2 i p
+2
+简单 2 简 单
+困难 2 困 难
+2
 2020211591
 2020211590
-2020211589
-2020211588
