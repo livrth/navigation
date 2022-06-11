@@ -505,21 +505,21 @@ void Student::delete_activity() {
         cout << "不存在这样的活动，请重试" << endl;
         return;
     }
-    vector<single_activity> x = time_to_activity[time];
+
     string description;
-    cout << "请输入你想删除的活动的描述:";
+
     bool flag = false;
     while (!flag) {
+        cout << "请输入欲删除活动的完整描述,并注意只有还没有删除过的个人活动才可以删除(输入0可退出):";
         cin >> description;
         if (description == "0") return;
-        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+        for (vector<single_activity>::iterator it = time_to_activity[time].begin(); it != time_to_activity[time].end(); ++it) {
             if (it->name == description && it->state == 'p') {
                 it->state = 'd';
                 flag = true;
                 break;
             }
         }
-        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以删除(输入0可退出):";
     }
     cout << "活动删除完毕" << endl;
     log("delete_activity");
@@ -545,21 +545,24 @@ void Student::change_activity() {
         cout << "不存在这样的活动，请重试" << endl;
         return;
     }
-    vector<single_activity> x = time_to_activity[time];
+
     string name, place;
-    cout << "请输入你想改变的活动的描述:";
+    vector<string> words;
+    int len;
     bool flag = false;
     while (!flag) {
+        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以更改(输入0可退出):";
         cin >> name;
         if (name == "0") return;
-        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+        for (vector<single_activity>::iterator it = time_to_activity[time].begin(); it != time_to_activity[time].end(); ++it) {
             if (it->name == name && it->state == 'p') {
                 it->state = 'd';
+                len = it->len;
+                for (auto c : it->words) words.push_back(c);
                 flag = true;
                 break;
             }
         }
-        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以更改(输入0可退出):";
     }
     single_activity y;
     cout << "请输入改变后活动的地点:";
@@ -586,6 +589,8 @@ void Student::change_activity() {
     y.state = 'p';
     y.clock_state = "circular_clock";
     y.date = number_to_date[date];
+    y.len = len;
+    for (auto c : words) y.words.push_back(c);
     time = (date - 1) * 1440 + 60 * y.sh + y.sm;
     insert(time, root, t2, cnt2);
     name_to_activity[y.name].push_back(y);
@@ -641,14 +646,15 @@ void Student::set_activity_alarm() {
         cout << "不存在这样的活动，请重试" << endl;
         return;
     }
-    vector<single_activity> x = time_to_activity[time];
+
     string name, place;
-    cout << "请输入你想改变的活动的描述:";
+
     bool flag = false;
     while (!flag) {
+        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以更改(输入0可退出):";
         cin >> name;
         if (name == "0") return;
-        for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+        for (vector<single_activity>::iterator it = time_to_activity[time].begin(); it != time_to_activity[time].end(); ++it) {
             if (it->name == name && it->state == 'p') {
                 cout << "请输入改变后的闹钟类型(只有no_clock,circular_clock,once_clock三种选项):";
                 // m_lock.lock();
@@ -658,7 +664,6 @@ void Student::set_activity_alarm() {
                 break;
             }
         }
-        cout << "请输入完整的活动描述,并注意只有还没有删除过的个人活动才可以更改(输入0可退出):";
     }
     cout << "闹钟设置完毕" << endl;
 
