@@ -127,7 +127,7 @@ void student_menu(Student*& stu) {
             m_lock.lock();
             stu->out = true;
             m_lock.unlock();
-            Sleep(1000);
+            Sleep(2000);
             // going.~thread();
             //   delete going;
             delete stu;

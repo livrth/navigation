@@ -1,5 +1,5 @@
 Sun 20 10 22 10 S6 sleep once_clock 5 s l e e p
-Sar 21 20 23 20 S6 take_a_shower circular_clock 11 s l e e p s l e e p s
+Sar 21 20 23 20 S6 take_a_shower circular_clock 11  t a k e a s h o w e r
 Mon 6 0 7 0 playground run no_clock 3 r u n
 Mon 6 0 11 20 playground play no_clock 4 p l a y
 Tue 10 30 11 20 篮球场 打篮球 no_clock 3 打 篮 球
@@ -7,12 +7,12 @@ Mon 3 3 4 4 宿舍 睡觉 no_clock 2 睡 觉
 Mon 1 1 1 2 排球场 打排球 no_clock 2 打 排 球
 Wed 10 1 10 2 宿舍 起床 no_clock 2 起 床
 Tue 11 1 12 1 肯德基 聚餐 no_clock 2 聚 餐
-Tue 15 0 16 0 麦当劳 喝水 once_clock 喝 水
-Wed 22 0 23 0 网吧 开黑 circular_clock 开 黑
-Thu 9 2 10 2 playground 升旗 no_clock 升 旗
-Thu 18 5 19 5 全聚德 烤鸭 once_clock 烤 鸭
-Fri 8 0 90 邮局 志愿 circular_clock 志 愿
-Sar 9 2 11 2 长城 旅游 once_clock 旅 游
-Sar 19 5 23 5 故宫 旅游 once_clock 旅 游
-Sun 6 10 8 10 颐和园 游园 no_clock 游 园
-Sun 8 20 11 50 圆明园 踏青 no_clock 踏 青
+Tue 15 0 16 0 麦当劳 喝水 once_clock 2 喝 水
+Wed 22 0 23 0 网吧 开黑 circular_clock 2 开 黑
+Thu 9 2 10 2 playground 升旗 no_clock 2 升 旗
+Thu 18 5 19 5 全聚德 烤鸭 once_clock 2 烤 鸭
+Fri 8 0 9 0 邮局 志愿 circular_clock 2 志 愿
+Sar 9 2 11 2 长城 旅游 once_clock 2 旅 游
+Sar 19 5 23 5 故宫 旅游 once_clock 2 旅 游
+Sun 6 10 8 10 颐和园 游园 no_clock 2 游 园
+Sun 8 20 11 50 圆明园 踏青 no_clock 2 踏 青

@@ -231,8 +231,10 @@ void Student::init() {
     t2[root = ++cnt2] = Node(0, 0, 1, 2147483647);
     single_activity x;
     while (ifs1 >> x.date >> x.sh >> x.sm >> x.fh >> x.fm >> x.place >> x.name >> x.clock_state >> x.len) {
+        x.words.clear();
         for (int i = 0; i <= x.len - 1; i++) {
             ifs1 >> word;
+
             x.words.push_back(word);
             word_to_par[word].insert(x.name);
             // cout << word << x.name << endl;

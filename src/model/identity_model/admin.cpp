@@ -32,9 +32,11 @@ void Admin::change_activity() {
     for (int i = 1; i <= ca_number; i++) {
         single_activity_a a;
         a.name = "";
+        a.words.clear();
         ifs >> a.date >> a.sh >> a.sm >> a.fh >> a.fm >> a.place >> a.name >> a.len;
         for (int i = 0; i <= a.len - 1; i++) {
             ifs >> word;
+
             a.words.push_back(word);
         }
         activities.push_back(a);
@@ -67,6 +69,7 @@ void Admin::change_activity() {
             cin >> n.date >> n.sh >> n.sm >> n.sh >> n.sm >> n.place >> n.len;
             for (int i = 0; i <= n.len - 1; i++) {
                 cin >> word;
+
                 n.words.push_back(word);
                 n.name += word;
             }
