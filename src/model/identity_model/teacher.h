@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
+
 #include "../../global_file.h"
 using namespace std;
 struct single_course_t {
@@ -76,6 +77,7 @@ struct logger_t {
 };
 class Teacher {
    public:
+    map<string, string> name_to_id;
     string teacher_id;                    //教职工号
     string name;                          //教师姓名
     vector<string> teaching_course_name;  //目前正在上的所有课名称
@@ -96,8 +98,8 @@ class Teacher {
 
     void set_homework();  //布置作业
 
-    void check_duplicate(string course_id, int times);  //作业查重
-    void decompress_homework();                         //解压作业
+    void check_duplicate(string course_id, int times, vector<string> v);  //作业查重
+    void decompress_homework(vector<string> v);                           //解压作业
 
     void mark_homework();  //教师批改作业
 
@@ -106,7 +108,7 @@ class Teacher {
     //以下为解压缩算法
     string charToStr(char x);
     void buildCodeTable(int n);
-    void loadZip(const char* pathname); 
-    void unzip(const char* pathname);	
-    void decompress();
+    void loadZip(const char* pathname);
+    void unzip(const char* pathname);
+    void decompress(string course, string time, vector<string> v);
 };

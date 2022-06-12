@@ -115,12 +115,16 @@ void Student::guide_now() {
         cin >> op;
         if (op == 1) {
             guide.print_path_by_course();
+            log("guide_by_course");
         } else if (op == 2) {
             guide.print_path_by_location();
+            log("guide_by_location");
         } else if (op == 3) {
             guide.print_path_by_time();
+            log("guide_by_time");
         } else if (op == 4) {
             guide.print_path_by_fixed_building();
+            log("guide_by_multi_place");
         } else if (op == 0) {
             cout << "\n退出成功!\n"
                  << endl;
@@ -735,4 +739,5 @@ void Student::typequery() {
             }
         }
     }
+    log("query_activity_by_type");
 }

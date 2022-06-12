@@ -1,14 +1,14 @@
 #ifndef NAVIGATION_COURSE_H
 #define NAVIGATION_COURSE_H
+#include <algorithm>
+#include <cstring>
 #include <iostream>
 #include <map>
+#include <queue>
 #include <set>
 #include <string>
-#include <cstring>
 #include <utility>
 #include <vector>
-#include <algorithm>
-#include <queue>
 using namespace std;
 struct single_course {
     string date;
@@ -16,6 +16,7 @@ struct single_course {
     int sh, sm, fh, fm;
     string place;
     string campus;
+    string building_id;
 };
 
 struct exam {
@@ -41,15 +42,15 @@ struct hw {
 };
 //下面是压缩用到的
 struct zipnode {
-	int val;
-	char ch;
-	zipnode* l, * r;
-	zipnode(int v, zipnode* lc = nullptr, zipnode* rc = nullptr) : val(v), l(lc), r(rc) {};
+    int val;
+    char ch;
+    zipnode *l, *r;
+    zipnode(int v, zipnode* lc = nullptr, zipnode* rc = nullptr) : val(v), l(lc), r(rc){};
 };
 struct cmp {
-	bool operator()(zipnode* a, zipnode* b) {
-		return a->val > b->val;
-	}
+    bool operator()(zipnode* a, zipnode* b) {
+        return a->val > b->val;
+    }
 };
 //
 class Course {
@@ -71,9 +72,9 @@ class Course {
     string course_qun;
     exam final;
     map<string, string> name_to_id;
-    int stu_number;
     vector<string> stus;
-    
+    int stu_number;
+
     //下面是压缩用到的
     int nch;
     unsigned int zip_lenstr;
@@ -102,8 +103,8 @@ class Course {
     void qsort_m(int l, int r);
     void qsort_h(int l, int r);
     void init2();
- 
-   //以下是压缩算法用到的
+
+    //以下是压缩算法用到的
     void compress(string str);
     unsigned char strToChar(string s);
     void dfs(zipnode* p, string s);
@@ -112,13 +113,12 @@ class Course {
     //以下为解压缩算法
     string charToStr(char x);
     void buildCodeTable(int n);
-    void loadZip(const char* pathname); 
-    void unzip(const char* pathname);	
+    void loadZip(const char* pathname);
+    void unzip(const char* pathname);
     void decompress();
 
     void log(string sth);
     void submit();
 };
-
 
 #endif  // NAVIGATION_COURSE_H

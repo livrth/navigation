@@ -4,9 +4,10 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include<algorithm>
-#include<cstring>
+
+#include <algorithm>
 #include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -23,94 +24,6 @@ Teacher::Teacher() {
 Teacher::Teacher(string id, string name) {
     this->teacher_id = id;
     this->name = name;
-}
-
-
-//解压缩算法
-void Teacher::loadZip(const char* pathname) {
-	ifstream in;
-	int nch;
-	in.open(pathname, ios::binary);
-	nch = in.get();
-	if (!nch) nch = 256;
-	for (int i = 0; i < 4; ++i) {
-		unsigned int tmp = in.get();
-		unzip_lenstr <<= 8;
-		unzip_lenstr += tmp;
-	}
-	int sum_code = 0;
-	for (int i = 1; i <= nch; ++i) {
-		unzip_chlen[i].first = in.get();
-		unzip_chlen[i].second = in.get();
-		sum_code += unzip_chlen[i].second;
-	}
-	int len_bit = sum_code / 8 + (sum_code % 8 != 0);
-	char* buf = new char[len_bit];
-	in.read(buf, len_bit);
-	for (int i = 0; i < len_bit; ++i)
-		unzip_text += charToStr(buf[i]);
-	buildCodeTable(sum_code);
-	delete[] buf;
-	unzip_text.clear();
-	len_bit = unzip_lenstr / 8 + (unzip_lenstr % 8 != 0);
-	buf = new char[len_bit];
-	in.read(buf, len_bit);
-	for (int i = 0; i < len_bit; ++i)	unzip_text += charToStr(buf[i]);
-	delete[] buf;
-	in.close();
-}
-
-void Teacher::unzip(const char* pathname) {
-	ofstream out;
-	out.open(pathname, ios::binary);
-	string now;
-	for (int i = 0; i < (int) unzip_lenstr; ++i) {
-		now += unzip_text[i];
-		if (unzip_decode.count(now)) {
-			out.put(unzip_decode[now]);
-			now.clear();
-		}
-	}
-}
-
-void Teacher::buildCodeTable(int n) {
-	int now = 1;
-	for (int i = 0; i < n; ++i) {
-		char now_char = unzip_chlen[now].first;
-		unzip_code[now_char] += unzip_text[i];
-		if ((int)unzip_code[now_char].length() == unzip_chlen[now].second) {
-			unzip_decode[unzip_code[now_char]] = now_char;
-			now++;
-		}
-	}
-}
-
-string Teacher::charToStr(char x) {
-	string res;
-	for (int i = 0; i < 8; ++i) {
-		if (x & 1)	res += '1';
-		else res += '0';
-		x >>= 1;
-	}
-	reverse(res.begin(), res.end());
-	return res;
-}
-
-void Teacher::decompress(){
-	string str;
-	cin>>str;
-	loadZip(str.c_str());
-	int pos=str.find_last_of('.');
-	string str1=str.substr(0,pos);
-	str1+="_unzip.txt";
-	unzip(str1.c_str());
-}
-//解压缩
-
-
-
-void Teacher::set_homework() {
-    string course_name, course_id, time;
     string course_collection = "../../src/model/identity_model/homework_set/" + teacher_id + "_teacher/course_collection.txt";
     ifstream ifs1;
     ifs1.open(course_collection, ios::in);
@@ -119,11 +32,108 @@ void Teacher::set_homework() {
         ifs1.close();
         return;
     }
-    map<string, string> name_to_id;
-    string name, id;
-    while (ifs1 >> name >> id) name_to_id[name] = id;
+    string name0, id0;
+    while (ifs1 >> name0 >> id0) name_to_id[name0] = id0;
     ifs1.close();
-    vector<string> description;
+}
+
+//解压缩算法
+void Teacher::loadZip(const char* pathname) {
+    ifstream in;
+    int nch;
+    in.open(pathname, ios::binary);
+    nch = in.get();
+    if (!nch) nch = 256;
+    for (int i = 0; i < 4; ++i) {
+        unsigned int tmp = in.get();
+        unzip_lenstr <<= 8;
+        unzip_lenstr += tmp;
+    }
+    int sum_code = 0;
+    for (int i = 1; i <= nch; ++i) {
+        unzip_chlen[i].first = in.get();
+        unzip_chlen[i].second = in.get();
+        sum_code += unzip_chlen[i].second;
+    }
+    int len_bit = sum_code / 8 + (sum_code % 8 != 0);
+    char* buf = new char[len_bit];
+    in.read(buf, len_bit);
+    for (int i = 0; i < len_bit; ++i)
+        unzip_text += charToStr(buf[i]);
+    buildCodeTable(sum_code);
+    delete[] buf;
+    unzip_text.clear();
+    len_bit = unzip_lenstr / 8 + (unzip_lenstr % 8 != 0);
+    buf = new char[len_bit];
+    in.read(buf, len_bit);
+    for (int i = 0; i < len_bit; ++i) unzip_text += charToStr(buf[i]);
+    delete[] buf;
+    in.close();
+}
+
+void Teacher::unzip(const char* pathname) {
+    ofstream out;
+    out.open(pathname, ios::binary);
+    string now;
+    for (int i = 0; i < (int)unzip_lenstr; ++i) {
+        now += unzip_text[i];
+        if (unzip_decode.count(now)) {
+            out.put(unzip_decode[now]);
+            now.clear();
+        }
+    }
+}
+
+void Teacher::buildCodeTable(int n) {
+    int now = 1;
+    for (int i = 0; i < n; ++i) {
+        char now_char = unzip_chlen[now].first;
+        unzip_code[now_char] += unzip_text[i];
+        if ((int)unzip_code[now_char].length() == unzip_chlen[now].second) {
+            unzip_decode[unzip_code[now_char]] = now_char;
+            now++;
+        }
+    }
+}
+
+string Teacher::charToStr(char x) {
+    string res;
+    for (int i = 0; i < 8; ++i) {
+        if (x & 1)
+            res += '1';
+        else
+            res += '0';
+        x >>= 1;
+    }
+    reverse(res.begin(), res.end());
+    return res;
+}
+
+void Teacher::decompress(string course, string time, vector<string> ids) {
+    char path0[200];
+    if (!getcwd(path0, 200)) {
+        cout << "Get path fail!" << endl;
+        return;
+    }
+    string path = path0;
+    int eff = path.find("\\build\\build");
+    path.erase(path.begin() + eff, path.end());
+    string folderPath, target;
+    //  string target, base = "../../src/model/identity_model/homework_set/" + teacher_id + "_teacher/" + course_id + "_course/" + time + "_times/";
+    folderPath = path + "\\src\\model\\identity_model\\homework_set\\" + teacher_id + "_teacher\\" + name_to_id[course] + "_course\\" + time + "_times";
+    for (auto id : ids) {
+        target = folderPath + "\\" + id + "_stu" + "\\hw_zip.txt";
+        loadZip(target.c_str());
+        int pos = target.find_last_of('.');
+        string str1 = target.substr(0, pos);
+        str1 += "_unzip.txt";
+        unzip(str1.c_str());
+    }
+}
+//解压缩
+
+void Teacher::set_homework() {
+    string course_name, course_id, time;
     cout << "请输入该课程的名称: " << endl;
     cin >> course_name;
     course_id = name_to_id[course_name];
@@ -300,49 +310,96 @@ void Teacher::set_homework() {
 void Teacher::mark_homework() {
     string course_id;    //课程编号
     string course_name;  //课程名称
-    int hw_times;        //作业次数
-
+    int hw_times;
     cout << "请输入要批改作业的课程名称: ";
     cin >> course_name;
     //教师输入课程名称，然后从 course_colleciton.txt 中查到课程id 赋值给 course_id;
     // string hw_path = ......
-
+    course_id = name_to_id[course_name];
     cout << "请输入要批改的作业次数: ";
     cin >> hw_times;
+    //作业次数
+    whole_course_t t;
+    t.course_id = name_to_id[course_name];
+    string course_filename = "../../src/model/course_model/course_set/" + t.course_id + "_course.txt";
+    ifstream ifs;
+    // cout<<"what"<<endl;
+    ifs.open(course_filename, ios::in);
+    if (!ifs.is_open()) {
+        cout << "课程文件不存在" << endl;
+        ifs.close();
+        return;
+    }
+    ifs >> t.course_name >> t.number;
+    for (int i = 1; i <= t.number; i++) {
+        single_course_t a;
+        ifs >> a.date >> a.seq >> a.place >> a.course_name >> a.campus >> a.course_id >> a.building_id;
+        t.course_table.push_back(a);
+    }
+    ifs >> t.teacher_name >> t.teacher_id >> t.course_qun >> t.total_weeks;
+    ifs >> t.final.week >> t.final.date >> t.final.sh >> t.final.sm >> t.final.fh >> t.final.fm >> t.final.campus >> t.final.place;
+    ifs >> t.ref_book_number;
+    for (int i = 1; i <= t.ref_book_number; i++) {
+        string book_name;
+        ifs >> book_name;
+        t.ref_books.push_back(book_name);
+        // cout << book_name << endl;
+    }
+    // cout<<"fine"<<endl;
+    ifs >> t.material_number;
+    string word;
+    for (int i = 1; i <= t.material_number; i++) {
+        material_t a;
+        ifs >> a.weight >> a.name >> a.id >> a.len;
+        for (int i = 0; i <= a.len - 1; i++) {
+            ifs >> word;
+            a.words.push_back(word);
+        }
+        t.materials.push_back(a);
+        // cout << a.name << endl;
+    }
+    ifs >> t.homework_number;
+    for (int i = 1; i <= t.homework_number; i++) {
+        hw_t a;
+        ifs >> a.name >> a.len;
+        for (int j = 0; j <= a.len - 1; j++) {
+            ifs >> word;
+            a.words.push_back(word);
+        }
+        t.hws.push_back(a);
+    }
+    // cout<<"ok"<<endl;
+    ifs >> t.student_number;
+    for (int i = 1; i <= t.student_number; i++) {
+        string stu_id;
+        ifs >> stu_id;
+        t.stu_ids.push_back(stu_id);
+    }
+    ifs.close();
 
-    this->decompress_homework();                 //先调用解压作业
-    this->check_duplicate(course_id, hw_times);  //输出查重结果
-    //然后就是其余补充的批改作业交互....
+    this->decompress(course_name, to_string(hw_times), t.stu_ids);  //先调用解压作业
+    this->check_duplicate(course_id, hw_times, t.stu_ids);          //输出查重结果
+                                                                    //然后就是其余补充的批改作业交互....
+    log("mark_homework");
 }
 
-void Teacher::decompress_homework() {
-    cout<<"请输入要解压作业的路径:";
-    decompress();
+void Teacher::decompress_homework(vector<string> ids) {
+    string course, time;
+    cout << "请输入要批改的课程:";
+    cin >> course;
+    cout << "请输入要批改的次数:";
+    cin >> time;
+    decompress(course, time, ids);
 }
 
 //得到某次作业的查重结果
 /*遍历每个学生，输出当前学生与其他所有学生的重复率
 算法保证正确，极端情况全相等文本可得重复率100%，完全不同内容文本重复率为0% */
-void Teacher::check_duplicate(string course_id, int times) {
+void Teacher::check_duplicate(string course_id, int times, vector<string> ids) {
     // cout << "\n查重函数 Debug Result: \n\n";
     string hw_folder = "../../src/model/identity_model/homework_set/" + this->teacher_id + "_teacher/" + course_id + "_course/" + to_string(times) + "_times/";
-
-    //获取所有学号
-    ifstream ifs_stu_info;
-    ifs_stu_info.open(STU_INFO_FILE, ios::in);
-    if (!ifs_stu_info.is_open()) {
-        cout << "\n打开学生信息文件失败!\n";
-        system("pause");
-        return;
-    }
-
-    string stu_id, stu_pwd, stu_name, stu_class;
-    vector<string> all_stu;
-    while (ifs_stu_info >> stu_id >> stu_pwd >> stu_name >> stu_class) {
-        all_stu.push_back(stu_id);
-    }
     //遍历每个学号
-    for (auto stu_id : all_stu) {
+    for (auto stu_id : ids) {
         string hw_file = hw_folder + stu_id + "_stu/" + "hw.txt";  //当前学生作业
         ifstream ifs_hw;
         ifs_hw.open(hw_file, ios::in);
@@ -387,7 +444,7 @@ void Teacher::check_duplicate(string course_id, int times) {
         // for (auto sp : split_string) cout << sp << endl;
         // system("pause");
 
-        for (auto other_id : all_stu) {
+        for (auto other_id : ids) {
             if (other_id != stu_id) {
                 string other_hw_file = hw_folder + other_id + "_stu/" + "hw.txt";  //其他学生作业
                 ifstream ifs_others;
@@ -451,7 +508,7 @@ void Teacher::check_duplicate(string course_id, int times) {
                     while (hh <= tt) {
                         int t = q[hh++];
                         for (int i = 0; i < 128; i++) {
-                            int &c = tr[t][i];
+                            int& c = tr[t][i];
                             // trie图优化：
                             //如果j的子节点c不存在 那么就让c直接指向最终的位置
                             //这里的ne[]此时是递归定义的，如果匹配下一个字母失败，就会直接跳到最终的位置
