@@ -47,7 +47,7 @@ void trial(Student*& stu) {
                 int t = stu->kth(r, stu->root, stu->t2);
                 // cout << t / 1440 + 1 << " " << t % 1440 / 60 << " " << t % 1440 % 60 << "\a" << endl;
                 Sleep(50);
-                if (abs(stu->weekly_sys_time - t) < 2) {
+                if (stu->weekly_sys_time == t) {
                     vector<single_activity> result = stu->time_to_activity[t];
                     for (vector<single_activity>::iterator it = result.begin(); it != result.end(); ++it) {
                         if (it->clock_state == "circular_clock") {
