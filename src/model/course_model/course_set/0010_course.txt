@@ -12,12 +12,13 @@ QQ2350371219
 <<computer_network5>> 
 <<WIFI_link>> 
 6
-10 gbn 001 3 g b n  
-90 stopwait 002 8 s t o p w a i t 
-80 selective 003 9 s e l e c t i v e
-1 tcp 004 3 t c p
-2 udp 005 3 u d p
+10 gbn 001 3 b g n
+90 stopwait 002 7 a i o p s t w
+80 selective 003 7 c e i l s t v
+1 tcp 004 3 c p t
+2 udp 005 3 d p u
 99 ip 006 2 i p
+
 2
 简单 2 简 单
 困难 2 困 难
