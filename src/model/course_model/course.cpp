@@ -1,11 +1,147 @@
 #include "course.h"
-
 #include <fstream>
+
 Course::Course(string course_id, string course_name, string id) {
     this->course_id = course_id;
     this->course_name = course_name;
     this->user_id = id;
 }
+
+//以下是压缩算法
+void Course::compress(string str){ 
+    cout<<"compress启动成功"<<endl;
+	buildText(str.c_str());
+	int pos=str.find_last_of('.');
+	string str1=str.substr(0,pos);
+	str=str1+"_zip.txt";
+	writeZip(str.c_str());
+    cout<<"已压缩";
+    system("pause");
+}
+
+void Course::buildText(const char* pathname) {
+	
+    map<char, int> cnt;
+	priority_queue<zipnode*, vector<zipnode*>, cmp> Q;
+	zip_text.find(pathname);
+	ifstream in;
+	char buf[1024];
+	in.open(pathname, ios::binary);
+	
+
+    while (true){
+		memset(buf, 0, sizeof(buf));
+		in.read(buf, 1024);
+		for (int i = 0; i < in.gcount(); ++i) 
+		{
+			cnt[buf[i]] ++;
+		}	
+		if (in.gcount() < 1024)
+			break;
+	}
+	
+    nch = cnt.size();
+	in.close();
+	for (auto x : cnt) {
+		zipnode* p = new zipnode(x.second);
+		p->ch = x.first;
+		Q.push(p);
+	}
+	while (Q.size() >= 2) {
+		zipnode* lc = Q.top();	Q.pop();
+		zipnode* rc = Q.top();	Q.pop();
+		rt = new zipnode(lc->val + rc->val, lc, rc);
+		Q.push(rt);
+	}
+	dfs(rt, "");
+	for (auto x : zip_code) {
+		if (isprint(x.first))	cout << x.first;
+		cout << "/" << (int)x.first << " : " << x.second << endl;
+	}
+	in.open(pathname, ios::binary);
+    
+   while (true)
+	{
+		memset(buf, 0, sizeof(buf));
+		in.read(buf, 1024);
+		for (int i = 0; i < in.gcount(); ++i) 
+		{
+			zip_text += zip_code[buf[i]];
+		}	
+		if (in.gcount() < 1024)
+			break;
+	}
+	in.close();
+}
+
+void Course::dfs(zipnode* p, string s) {
+	if (p->l == nullptr && p->r == nullptr) {
+		zip_code[p->ch] = s;
+		return;
+	}
+	if (p->l != nullptr)	dfs(p->l, s + '0');
+	if (p->r != nullptr)	dfs(p->r, s + '1');
+
+}
+
+void Course::writeZip(const char* pathname) {
+	ofstream out;
+	out.open(pathname, ios::binary);
+	zip_lenstr = zip_text.length();
+	out.put((unsigned char)nch);	
+	unsigned int len_tmp = zip_lenstr;
+	for (int i = 3; i >= 0; --i) {
+		out.put((unsigned char)(len_tmp >> (8 * i)) % (1 << 8));
+	}								
+	vector<string> tmp_zip_codelist;
+	for (auto x : zip_code) {
+		out.put(x.first);
+		out.put((unsigned char)x.second.length());
+		int remain_size = 8;
+		if (!tmp_zip_codelist.empty())
+			remain_size = 8 - (tmp_zip_codelist[tmp_zip_codelist.size() - 1].length());
+		string pre = x.second.substr(0, remain_size), nxt, _nxt;
+		if (remain_size <(int) x.second.length())	nxt = x.second.substr(remain_size);
+		if (nxt.length() > 8) {
+			_nxt = nxt.substr(8);
+			nxt = nxt.substr(0, 8);
+		}
+		if (tmp_zip_codelist.empty()) {
+			tmp_zip_codelist.push_back(pre);
+			if (!nxt.empty()) tmp_zip_codelist.push_back(nxt);
+			continue;
+		}
+		tmp_zip_codelist[tmp_zip_codelist.size() - 1] += pre;
+		if (!nxt.empty()) tmp_zip_codelist.push_back(nxt);
+		if (!_nxt.empty()) tmp_zip_codelist.push_back(_nxt);
+	}								
+	for (string x : tmp_zip_codelist)
+		out.put(strToChar(x));
+	string now;
+	for (char x : zip_text) {
+		now += x;
+		if (now.length() == 8) {
+			out.put(strToChar(now));
+			now.clear();
+		}
+	}
+	if (!now.empty())
+		out.put(strToChar(now));
+	out.close();
+}
+
+unsigned char Course::strToChar(string s) {
+	while (s.length() < 8)	s += '0';
+	unsigned char res = 0;
+	for (char x : s) {
+		res <<= 1;
+		res |= x - '0';
+	}
+	return res;
+}
+
+//压缩算法结束
+
 void Course::init() {
     string course_filename = "../../src/model/course_model/course_set/" + course_id + "_course.txt";
     ifstream ifs;
@@ -75,12 +211,24 @@ void Course::init() {
 }
 
 void Course::submit_homework() {
-    // code1();
+    string str;
+    cout<<"请输入要提交的作业的文件地址:"<<endl;
+    cin>>str;
+    compress(str);
 }
 void Course::submit_material() {
+    string str;
+    cout<<"请输入要提交的材料的文件地址："<<endl;
+    cin>>str;
+    compress(str);
 }
+
 void Course::download_material() {
+
+    cout<<"请输入要提交的材料的文件地址："<<endl;
+   // decompress();
 }
+
 void Course::query_homework_by_name() {
     string word;
     cout << "\n请输入您要搜索的作业名(请在任意两个字符之间加空格): ";
@@ -141,7 +289,7 @@ void Course::query_homework_by_grades() {
              << "成绩：" << hws[order_hws[i]].grades;
         cout << " 状态：" << hws[order_hws[i]].state << endl;
     }
-    /*cout << "请输入Yes来提交作业或者输入No来退出:";
+   /*cout << "请输入Yes来提交作业或者输入No来退出:";
     string opt;
     cin >> opt;
     if (opt == "No")

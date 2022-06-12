@@ -4,8 +4,11 @@
 #include <map>
 #include <set>
 #include <string>
+#include <cstring>
 #include <utility>
 #include <vector>
+#include <algorithm>
+#include <queue>
 using namespace std;
 struct single_course {
     string date;
@@ -14,6 +17,7 @@ struct single_course {
     string place;
     string campus;
 };
+
 struct exam {
     int week;
     string date;
@@ -35,7 +39,19 @@ struct hw {
     int len;
     set<string> words;
 };
-
+//下面是压缩用到的
+struct zipnode {
+	int val;
+	char ch;
+	zipnode* l, * r;
+	zipnode(int v, zipnode* lc = nullptr, zipnode* rc = nullptr) : val(v), l(lc), r(rc) {};
+};
+struct cmp {
+	bool operator()(zipnode* a, zipnode* b) {
+		return a->val > b->val;
+	}
+};
+//
 class Course {
    public:
     string course_id;    //课程编号
@@ -57,6 +73,13 @@ class Course {
     map<string, string> name_to_id;
     int stu_number;
     vector<string> stus;
+    //下面是压缩用到的
+    int nch;
+    unsigned int zip_lenstr;
+    zipnode* rt = nullptr;
+    map<char, string> zip_code;
+    string zip_text;
+    
     // vector<logger> loggers;
     Course();
     Course(string course_id, string course_name, string sdudent_id);
@@ -72,15 +95,17 @@ class Course {
     void qsort_m(int l, int r);
     void qsort_h(int l, int r);
     void init2();
-    // void log(string sth);
-    // void submit();
+ 
+   //以下是压缩算法用到的
+    void compress(string str);
+    unsigned char strToChar(string s);
+    void dfs(zipnode* p, string s);
+    void buildText(const char* pathname);
+    void writeZip(const char* pathname);
+
+    void log(string sth);
+    void submit();
 };
 
-struct Tree {
-    double weight;
-    string ch;
-    string code;
-    int lchild, rchild, parent;
-};
 
 #endif  // NAVIGATION_COURSE_H

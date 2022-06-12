@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
+#include <map>
 #include "../../global_file.h"
 using namespace std;
 struct single_course_t {
@@ -81,6 +81,13 @@ class Teacher {
     vector<string> teaching_course_name;  //目前正在上的所有课名称
     vector<string> teaching_course_id;    //所有正在上的课的ID 可能会用到这个数组
 
+    //以下为解压缩算法
+    unsigned int unzip_lenstr;
+    pair<char, int> unzip_chlen[257];
+    map<char, string> unzip_code;
+    map<string, char> unzip_decode;
+    string unzip_text;
+
     Teacher();
     Teacher(string id, string name);
 
@@ -95,4 +102,11 @@ class Teacher {
     void mark_homework();  //教师批改作业
 
     void log(string sth);
+
+    //以下为解压缩算法
+    string charToStr(char x);
+    void buildCodeTable(int n);
+    void loadZip(const char* pathname); 
+    void unzip(const char* pathname);	
+    void decompress();
 };

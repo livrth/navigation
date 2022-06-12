@@ -4,7 +4,8 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include<algorithm>
+#include<cstring>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -23,6 +24,90 @@ Teacher::Teacher(string id, string name) {
     this->teacher_id = id;
     this->name = name;
 }
+
+
+//解压缩算法
+void Teacher::loadZip(const char* pathname) {
+	ifstream in;
+	int nch;
+	in.open(pathname, ios::binary);
+	nch = in.get();
+	if (!nch) nch = 256;
+	for (int i = 0; i < 4; ++i) {
+		unsigned int tmp = in.get();
+		unzip_lenstr <<= 8;
+		unzip_lenstr += tmp;
+	}
+	int sum_code = 0;
+	for (int i = 1; i <= nch; ++i) {
+		unzip_chlen[i].first = in.get();
+		unzip_chlen[i].second = in.get();
+		sum_code += unzip_chlen[i].second;
+	}
+	int len_bit = sum_code / 8 + (sum_code % 8 != 0);
+	char* buf = new char[len_bit];
+	in.read(buf, len_bit);
+	for (int i = 0; i < len_bit; ++i)
+		unzip_text += charToStr(buf[i]);
+	buildCodeTable(sum_code);
+	delete[] buf;
+	unzip_text.clear();
+	len_bit = unzip_lenstr / 8 + (unzip_lenstr % 8 != 0);
+	buf = new char[len_bit];
+	in.read(buf, len_bit);
+	for (int i = 0; i < len_bit; ++i)	unzip_text += charToStr(buf[i]);
+	delete[] buf;
+	in.close();
+}
+
+void Teacher::unzip(const char* pathname) {
+	ofstream out;
+	out.open(pathname, ios::binary);
+	string now;
+	for (int i = 0; i < (int) unzip_lenstr; ++i) {
+		now += unzip_text[i];
+		if (unzip_decode.count(now)) {
+			out.put(unzip_decode[now]);
+			now.clear();
+		}
+	}
+}
+
+void Teacher::buildCodeTable(int n) {
+	int now = 1;
+	for (int i = 0; i < n; ++i) {
+		char now_char = unzip_chlen[now].first;
+		unzip_code[now_char] += unzip_text[i];
+		if ((int)unzip_code[now_char].length() == unzip_chlen[now].second) {
+			unzip_decode[unzip_code[now_char]] = now_char;
+			now++;
+		}
+	}
+}
+
+string Teacher::charToStr(char x) {
+	string res;
+	for (int i = 0; i < 8; ++i) {
+		if (x & 1)	res += '1';
+		else res += '0';
+		x >>= 1;
+	}
+	reverse(res.begin(), res.end());
+	return res;
+}
+
+void Teacher::decompress(){
+	string str;
+	cin>>str;
+	loadZip(str.c_str());
+	int pos=str.find_last_of('.');
+	string str1=str.substr(0,pos);
+	str1+="_unzip.txt";
+	unzip(str1.c_str());
+}
+//解压缩
+
+
 
 void Teacher::set_homework() {
     string course_name, course_id, time;
@@ -230,8 +315,9 @@ void Teacher::mark_homework() {
     //然后就是其余补充的批改作业交互....
 }
 
-//解压作业
 void Teacher::decompress_homework() {
+    cout<<"请输入要解压作业的路径:";
+    decompress();
 }
 
 //得到某次作业的查重结果
