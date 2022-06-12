@@ -699,3 +699,40 @@ void Student::log(string sth) {
     logger addition = logger("stu", stu_id, sth);
     loggers.push_back(addition);
 }
+void Student::typequery() {
+    cout << "请输入查询类型：";
+    string t;
+    cin >> t;
+    cout << endl;
+    if (t == "班级") {
+        for (int i = 1; i <= cnt2 - 1; i++) {
+            vector<single_activity> x = time_to_activity[kth(i, root, t2)];
+            for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+                if (kind[it->state] == "班级") {
+                    cout << "活动时间：" << it->date << it->sh << ":" << it->sm << "-" << it->fh << ":" << it->fm << "    ";
+                    cout << "活动地点:" << it->place << "    "
+                         << "活动名称：" << it->name << "    "
+                         << "活动类型：";
+                    cout << kind[it->state] << "     "
+                         << "闹钟属性：" << it->clock_state << endl;
+                    clash_test(it->date, it->sh * 60 + it->sm, it->fh * 60 + it->fm);
+                }
+            }
+        }
+    } else {
+        for (int i = 1; i <= cnt2 - 1; i++) {
+            vector<single_activity> x = time_to_activity[kth(i, root, t2)];
+            for (vector<single_activity>::iterator it = x.begin(); it != x.end(); ++it) {
+                if (kind[it->state] == "个人") {
+                    cout << "活动时间：" << it->date << it->sh << ":" << it->sm << "-" << it->fh << ":" << it->fm << "    ";
+                    cout << "活动地点:" << it->place << "    "
+                         << "活动名称：" << it->name << "    "
+                         << "活动类型：";
+                    cout << kind[it->state] << "     "
+                         << "闹钟属性：" << it->clock_state << endl;
+                    clash_test(it->date, it->sh * 60 + it->sm, it->fh * 60 + it->fm);
+                }
+            }
+        }
+    }
+}

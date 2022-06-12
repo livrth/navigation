@@ -155,4 +155,5 @@ class Student {
     void submit();  //学生返回时提交其修改
 
     void log(string sth);
+    void typequery();
 };

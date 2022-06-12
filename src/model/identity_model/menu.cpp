@@ -145,6 +145,8 @@ void Student::activity_menu() {
         cout << "\t\t|                                  |\n";
         cout << "\t\t|          4.个人活动闹钟          |\n";
         cout << "\t\t|                                  |\n";
+        cout << "\t\t|          5.活动类型查询          |\n";
+        cout << "\t\t|                                  |\n";
         cout << "\t\t|          0.返回个人主页          |\n";
         cout << "\t\t|                                  |\n";
         cout << "\t\t ----------------------------------\n";
@@ -174,6 +176,8 @@ void Student::activity_menu() {
             change_activity();
         } else if (op == 4) {
             set_activity_alarm();
+        } else if (op == 5) {
+            typequery();
         } else if (op == 0) {
             cout << "返回成功" << endl;
             system("pause");
