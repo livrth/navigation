@@ -333,7 +333,7 @@ void Course::submit_material() {
     do {
         cin >> word;
         addition.words.insert(word);
-        if (words.find(word) == words.end()) addition.len++;
+        if (addition.words.find(word) == addition.words.end()) addition.len++;
         addition.name += word;
     } while (cin.get() != '\n');
 
