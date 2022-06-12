@@ -355,10 +355,10 @@ int main() {
         cout << "\t\t|                                  |\n";
         cout << "\t\t|          3.系统管理登录          |\n";
         cout << "\t\t|                                  |\n";
-        cout << "\t\t|          4.学生用户注册          |\n";
-        cout << "\t\t|                                  |\n";
-        cout << "\t\t|          5.教师用户注册          |\n";
-        cout << "\t\t|                                  |\n";
+        // cout << "\t\t|          4.学生用户注册          |\n";
+        // cout << "\t\t|                                  |\n";
+        // cout << "\t\t|          5.教师用户注册          |\n";
+        // cout << "\t\t|                                  |\n";
         cout << "\t\t|          0.退出课程系统          |\n";
         cout << "\t\t|                                  |\n";
         cout << "\t\t ----------------------------------\n";
@@ -376,12 +376,12 @@ int main() {
             case 3:
                 login(ADMIN_INFO_FILE, 3);  //管理员登录
                 break;
-            case 4:
-                new_stu_reg();
-                break;
-            case 5:
-                new_teacher_reg();
-                break;
+                // case 4:
+                //     new_stu_reg();
+                //    break;
+                // case 5:
+                //    new_teacher_reg();
+                //    break;
             case 0:
                 cout << "\n已退出系统\n\n";
                 system("pause");
