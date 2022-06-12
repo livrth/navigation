@@ -332,8 +332,9 @@ void Course::submit_material() {
     cout << "请输入资料的名字(任意字符请用空格分离）:" << endl;
     do {
         cin >> word;
-        addition.words.insert(word);
         if (addition.words.find(word) == addition.words.end()) addition.len++;
+        addition.words.insert(word);
+
         addition.name += word;
     } while (cin.get() != '\n');
 
