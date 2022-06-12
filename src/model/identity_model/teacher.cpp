@@ -376,20 +376,40 @@ void Teacher::mark_homework() {
         t.stu_ids.push_back(stu_id);
     }
     ifs.close();
-
-    this->decompress(course_name, to_string(hw_times), t.stu_ids);  //先调用解压作业
-    this->check_duplicate(course_id, hw_times, t.stu_ids);          //输出查重结果
-                                                                    //然后就是其余补充的批改作业交互....
+    vector<string> ids;
+    // ifstream info;
+    string grades, state;
+    string varify, base = "../../src/model/identity_model/homework_set/" + teacher_id + "_teacher/" + course_id + "_course/";
+    for (auto id : t.stu_ids) {
+        varify = base + to_string(hw_times) + "_times/" + id + "_stu/" + "info.txt";
+        ifs.open(varify, ios::in);
+        if (!ifs.is_open()) {
+            cout << "作业文件不存在" << endl;
+            ifs.close();
+            return;
+        }
+        ifs >> grades >> state;
+        if (state == "已交") ids.push_back(id);
+        ifs.close();
+    }
+    this->decompress(course_name, to_string(hw_times), ids);  //先调用解压作业
+    this->check_duplicate(course_id, hw_times, ids);          //输出查重结果
+    ofstream ofs;
+    for (auto id : ids) {
+        cout << "请给出学生" + id + "的分数:" << endl;
+        cin >> grades;
+        varify = base + to_string(hw_times) + "_times/" + id + "_stu/" + "info.txt";
+        ofs.open(varify, ios::out);
+        if (!ofs.is_open()) {
+            cout << "作业文件不存在" << endl;
+            ofs.close();
+            return;
+        }
+        ofs << grades << " "
+            << "已交";
+        ofs.close();
+    }
     log("mark_homework");
-}
-
-void Teacher::decompress_homework(vector<string> ids) {
-    string course, time;
-    cout << "请输入要批改的课程:";
-    cin >> course;
-    cout << "请输入要批改的次数:";
-    cin >> time;
-    decompress(course, time, ids);
 }
 
 //得到某次作业的查重结果

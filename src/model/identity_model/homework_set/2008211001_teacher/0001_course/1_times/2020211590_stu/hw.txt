@@ -1,7 +1,5 @@
-Problem3.Virtual circuit networks most certainly need this capability in order to route connection setup packets from an arbitrary source to an arbitrary destination.
-
-Problem4.The negotiation could set the window size, maximum packet size, data rate, and timer values.
-
-Problem10.The routing table is 400 bits. Twice a second this table is written onto each line, so 800 bps are needed on each line in each direction.
-
-Problem12.The minimum occurs at 15 clusters, each with 16 regions, each region having 20 routers, or one of the equivalent forms, e.g., 20 clusters of 16 regions of 15 routers. In all cases the table size is 15 + 16 + 20 = 51.
+Chaude and Cold
+　　A patron in Montreal cafe turned on a tap in the washroom and got scalded. "This is an outrage," he complained. "The faucet marked C gave me boiling water."
+　　"But, Monsieur, C stands for chaude - French for hot. You should know that if you live in Montreal."
+　　"Wait a minute," roared the patron. "The other tap is also marked C."
+　　"Of course," said the manager, "It stands for cold. After all, Montreal is a bilingual city."
