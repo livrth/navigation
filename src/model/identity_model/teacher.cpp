@@ -60,7 +60,20 @@ void Teacher::loadZip(const char* pathname) {
     in.read(buf, len_bit);
     for (int i = 0; i < len_bit; ++i)
         unzip_text += charToStr(buf[i]);
-    buildCodeTable(sum_code);
+    //buildCodeTable(sum_code);
+
+    int now = 1;
+    for (int i = 0; i < sum_code; ++i) {
+        char now_char = unzip_chlen[now].first;
+        unzip_code[now_char] += unzip_text[i];
+        if ((int)unzip_code[now_char].length() == unzip_chlen[now].second) {
+            unzip_decode[unzip_code[now_char]] = now_char;
+            now++;
+        }
+    }
+
+
+
     delete[] buf;
     unzip_text.clear();
     len_bit = unzip_lenstr / 8 + (unzip_lenstr % 8 != 0);
@@ -84,17 +97,17 @@ void Teacher::unzip(const char* pathname) {
     }
 }
 
-void Teacher::buildCodeTable(int n) {
-    int now = 1;
-    for (int i = 0; i < n; ++i) {
-        char now_char = unzip_chlen[now].first;
-        unzip_code[now_char] += unzip_text[i];
-        if ((int)unzip_code[now_char].length() == unzip_chlen[now].second) {
-            unzip_decode[unzip_code[now_char]] = now_char;
-            now++;
-        }
-    }
-}
+// void Teacher::buildCodeTable(int n) {
+//     int now = 1;
+//     for (int i = 0; i < n; ++i) {
+//         char now_char = unzip_chlen[now].first;
+//         unzip_code[now_char] += unzip_text[i];
+//         if ((int)unzip_code[now_char].length() == unzip_chlen[now].second) {
+//             unzip_decode[unzip_code[now_char]] = now_char;
+//             now++;
+//         }
+//     }
+// }
 
 string Teacher::charToStr(char x) {
     string res;
@@ -128,7 +141,12 @@ void Teacher::decompress(string course, string time, vector<string> ids) {
         string str1 = target.substr(0, pos);
         str1 += "_unzip.txt";
         unzip(str1.c_str());
+        unzip_code.clear();
+        unzip_decode.clear();
+        unzip_text.clear();
     }
+
+    
 }
 //解压缩
 
