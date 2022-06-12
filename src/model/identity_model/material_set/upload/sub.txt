@@ -1,0 +1,7 @@
+The relevance of all of this to data communication is that real channels affectdifferent frequency signals differently. 
+
+Let us consider a specific example: thetransmission of the ASCII character ‘‘b’’ encoded in an 8-bit byte
+
+The relevance of all of this to data communication is that real channels affectdifferent frequency signals differently. 
+
+Let us consider a specific example: thetransmission of the ASCII character ‘‘b’’ encoded in an 8-bit byte

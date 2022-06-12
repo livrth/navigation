@@ -73,13 +73,20 @@ class Course {
     map<string, string> name_to_id;
     int stu_number;
     vector<string> stus;
+    
     //下面是压缩用到的
     int nch;
     unsigned int zip_lenstr;
     zipnode* rt = nullptr;
     map<char, string> zip_code;
     string zip_text;
-    
+    //以下为解压缩算法
+    unsigned int unzip_lenstr;
+    pair<char, int> unzip_chlen[257];
+    map<char, string> unzip_code;
+    map<string, char> unzip_decode;
+    string unzip_text;
+
     // vector<logger> loggers;
     Course();
     Course(string course_id, string course_name, string sdudent_id);
@@ -102,6 +109,12 @@ class Course {
     void dfs(zipnode* p, string s);
     void buildText(const char* pathname);
     void writeZip(const char* pathname);
+    //以下为解压缩算法
+    string charToStr(char x);
+    void buildCodeTable(int n);
+    void loadZip(const char* pathname); 
+    void unzip(const char* pathname);	
+    void decompress();
 
     void log(string sth);
     void submit();
