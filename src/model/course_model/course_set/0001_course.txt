@@ -11,14 +11,14 @@ QQ2350371219
 2
 <<computer_network5>> 
 <<WIFI_link>> 
-6
+7
 10 gbn 001 3 b g n
 90 stopwait 002 7 a i o p s t w
 80 selective 003 7 c e i l s t v
 1 tcp 004 3 c p t
 2 udp 005 3 d p u
 99 ip 006 2 i p
-
+2 test 0008 3 e s t
 2
 简单 2 单 简
 困难 2 困 难

@@ -85,14 +85,22 @@ void student_menu(Student*& stu) {
 
         } else if (op == 2) {
             stu->query_by_course_table();
+
         } else if (op == 3) {
             stu->query_by_course_time();
+            system("pause");
+            system("cls");
         } else if (op == 4) {
             stu->query_by_activity_name();
+            system("pause");
+            system("cls");
         } else if (op == 5) {
             stu->activity_menu();
+
         } else if (op == 6) {
             stu->query_by_activity_time();
+            system("pause");
+            system("cls");
         } else if (op == 7) {
             stu->guide_now();
         } else if (op == 8) {
@@ -100,6 +108,7 @@ void student_menu(Student*& stu) {
             stu->fast = true;
             m_lock.unlock();
             cout << "速率已经加倍!" << endl;
+
             system("pause");
             system("cls");
         } else if (op == 9) {
@@ -124,6 +133,8 @@ void student_menu(Student*& stu) {
                 m_lock.unlock();
                 cout << "时钟解除暂停!" << endl;
             }
+            system("pause");
+            system("cls");
         } else if (op == 0) {
             stu->submit();
             m_lock.lock();

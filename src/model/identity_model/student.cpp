@@ -346,25 +346,43 @@ void Student::course_menu(string object_id, string object_name, string stu_id) {
         cin >> op;
         if (op == 1) {
             log("submit_homework");
+
             cou->submit_homework();
+
         } else if (op == 2) {
             log("submit_material");
+
             cou->submit_material();
+
         } else if (op == 3) {
             log("download_material");
+
             cou->download_material();
+
         } else if (op == 4) {
             log("query_homework_by_name");
+
             cou->query_homework_by_name();
+            system("pause");
+            system("cls");
         } else if (op == 5) {
             log("query_homework_by_grades");
+
             cou->query_homework_by_grades();
+            system("pause");
+            system("cls");
         } else if (op == 6) {
             log("query_material_by_name");
+
             cou->query_material_by_name();
+            system("pause");
+            system("cls");
         } else if (op == 7) {
             log("query_material_by_weight");
+
             cou->query_material_by_weight();
+            system("pause");
+            system("cls");
         } else if (op == 0) {
             // cou->submit();
             delete cou;
