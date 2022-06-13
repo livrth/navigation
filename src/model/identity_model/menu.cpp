@@ -162,14 +162,24 @@ void Student::activity_menu() {
         cin >> op;
         if (op == 1) {
             set_activity();
+            system("pause");
+            system("cls");
         } else if (op == 2) {
             delete_activity();
+            system("pause");
+            system("cls");
         } else if (op == 3) {
             change_activity();
+            system("pause");
+            system("cls");
         } else if (op == 4) {
             set_activity_alarm();
+            system("pause");
+            system("cls");
         } else if (op == 5) {
             typequery();
+            system("pause");
+            system("cls");
         } else if (op == 0) {
             cout << "返回成功" << endl;
             system("pause");
