@@ -1,6 +1,5 @@
 #### 2022 Spring BUPT Data Structure Course Design
 
-__Under construction now.__
 
 Team Member:
 - [@livrth](https://github.com/livrth)
@@ -41,16 +40,16 @@ Team Member:
     - 查重率如何定义
 - [x] 教师布置作业
     - 考虑如何生成每门课的多个学生目录
-- [ ] 学生提交作业
-- [ ] 压缩解压缩
-- [ ] 教师批改作业
-- [ ] 上传作业/上传资料 [C++ CopyFile](https://blog.csdn.net/qq_32563489/article/details/83383812)
-- [ ] 学生可下载资料(看时间情况待定)
+- [x] 学生提交作业
+- [x] 压缩解压缩
+- [x] 教师批改作业
+- [x] 上传作业/上传资料 [C++ CopyFile](https://blog.csdn.net/qq_32563489/article/details/83383812)
+- [x] 学生可下载资料(看时间情况待定)
 
 6/1 TODO:
 - [x] 建筑服务设施不少于5种, 共20个
 - [ ] 导航跨校区校车/班车加上所需时间描述
-- [ ] 资料名称去重
+- [x] 资料名称去重
 - [ ] 建筑输出名称精确(15教学楼 5设施)
 - [x] 多学生教师用户信息以及目录生成
 
