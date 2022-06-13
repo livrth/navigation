@@ -46,7 +46,7 @@ void Student::query_by_course_name() {
             break;
         }
     }
-    log("query_by_course_name");
+    log("query_by_course_name" + object_name);
     system("pause");
     system("cls");
     course_menu(object_id, object_name, this->stu_id);
@@ -91,7 +91,7 @@ void Student::query_by_course_table() {
             break;
         }
     }
-    log("query_by_course_table");
+    log("query_by_course_table" + object_name);
     system("pause");
     system("cls");
     course_menu(object_id, object_name, this->stu_id);
@@ -334,7 +334,7 @@ void Student::query_by_course_time() {
     else
         close_t = kth(1, root, t1);
     cout << time_to_place[close_t].first << " " << time_to_place[close_t].second;
-    log("query_by_course_time");
+    log("query_by_course_time" + to_string(date) + "th" + to_string(hour) + ":" + to_string(min));
 }
 
 void Student::course_menu(string object_id, string object_name, string stu_id) {
@@ -414,15 +414,16 @@ void Student::query_by_activity_time() {
         cout << kind[it->state] << " "
              << "闹钟属性：" << it->clock_state << endl;
     }
-    log("query_by_activity_time");
+    log("query_by_activity_time_" + to_string(date) + "th" + to_string(hour) + ":" + to_string(min));
 }
 
 void Student::query_by_activity_name() {
-    string word;
+    string word, name;
     cout << "\n请输入您要搜索的活动名（请在任意两个字符之间加空格）:";
     set<single_activity> notes;
     do {
         cin >> word;
+        name += word;
         for (auto p = word_to_par[word].begin(); p != word_to_par[word].end(); p++) {
             vector<single_activity> to_find = name_to_activity[*p];
             for (auto it = to_find.begin(); it != to_find.end(); it++) {
@@ -438,7 +439,7 @@ void Student::query_by_activity_name() {
             }
         }
     } while (cin.get() != '\n');
-    log("query_by_activity_name");
+    log("query_by_activity_name" + name);
 }
 void Student::set_activity() {
     cout << "请输入活动的日期：";
@@ -486,7 +487,7 @@ void Student::set_activity() {
     time_to_activity[time].push_back(x);
     clash_test(number_to_date[date], x.sh * 60 + x.sm, x.fh * 60 + x.fm);
     cout << "活动设置完毕" << endl;
-    log("set_activity");
+    log("set_activity_" + x.name);
 }
 void Student::delete_activity() {
     cout << "请输入你想删除的活动的开始时间：";
@@ -526,7 +527,7 @@ void Student::delete_activity() {
         }
     }
     cout << "活动删除完毕" << endl;
-    log("delete_activity");
+    log("delete_activity_" + description);
 }
 void Student::change_activity() {
     cout << "请输入你想改变的活动的开始时间：";
@@ -601,7 +602,7 @@ void Student::change_activity() {
     time_to_activity[time].push_back(y);
     clash_test(y.date, y.sh * 60 + sm, y.fh * 60 + y.fm);
     cout << "活动改变完毕" << endl;
-    log("change_activity");
+    log("change_activity" + name);
 }
 
 void Student::clash_test(string date, int st, int ft) {
@@ -671,7 +672,7 @@ void Student::set_activity_alarm() {
     }
     cout << "闹钟设置完毕" << endl;
 
-    log("set_activity_alarm");
+    log("set_activity_alarm_for_" + name);
 }
 void Student::submit() {
     ofstream ofs;
@@ -739,5 +740,5 @@ void Student::typequery() {
             }
         }
     }
-    log("query_activity_by_type");
+    log("query_activity_by_type" + t);
 }

@@ -53,11 +53,13 @@ void trial(Student*& stu) {
                         if (it->clock_state == "circular_clock") {
                             cout << "\a"
                                  << "该去做事情了！" << endl;
+                            stu->log("clock_time_up");
                             Sleep(100);
                         }
                         if (it->clock_state == "once_clock") {
                             cout << "\a"
                                  << "该去做事情了！" << endl;
+                            stu->log("clock_time_up");
                             Sleep(100);
                             it->clock_state = "no_clock";
                         }
