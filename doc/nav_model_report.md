@@ -133,17 +133,357 @@ while (ifs >> file_date >> file_class_number >> file_classroom >> file_course_na
 
 存储信息的核心代码如上，使用哈希表 `map<string, int> mp` 以及 `map<string, string> campus_map` 分别存储课程名称对应的建筑编号，以及课程名称对应的校区之间的映射关系。
 
+接下来就是学生用户输入当前正在上课的名称，以及接下来要上课的名称，由于课程名称和其所在的建筑编号都已经保存在哈希表中，所以此时可以快速查询出这两门课所在的建筑编号，这样就可以查询已经求出的最短路径，然后输出就行了，代码如下：
+
+- 首先根据校区关键字判断是否需要跨校区导航
+
+```cpp
+cout << "\n请输入您正在上的课程名称: ";
+string course_go_on;
+cin >> course_go_on;
+
+cout << "请输入您将要上课的课程名称: ";
+string course_name;
+cin >> course_name;
+
+bool flag_shahe_xitu = false;  //沙河->西土城 跨校区
+bool flag_xitu_shahe = false;  //西土城 -> 沙河 跨校区
+string cps_now = campus_map[course_go_on];
+string cps_next = campus_map[course_name];
+if (cps_now == cps_next && cps_now == "沙河") {
+    cout << "\n已查询到您不需要跨校区上课, 当前为沙河校区内导航: \n";
+    this->campus_now = "沙河";
+} else if (cps_now == cps_next && cps_now == "西土城") {
+    cout << "\n已查询到您不需要跨校区上课, 当前为西土城校区内导航: \n";
+    this->campus_now = "西土城";
+} else if (cps_now == "沙河" && cps_next == "西土城") {
+    flag_shahe_xitu = true;
+    this->campus_now = "西土城";
+    cout << "\n已查询到您需跨校区上课, 将从沙河校区出发前往西土城校区: \n";
+
+    // cout << "已到达西土城\n\n";
+} else if (cps_now == "西土城" && cps_next == "沙河") {
+    flag_xitu_shahe = true;
+    this->campus_now = "沙河";
+    cout << "\n已查询到您需跨校区上课, 将从西土城校区出发前往沙河校区: \n";
+
+    // cout << "已到达沙河\n\n";
+}
+```
+
+- 读取地图数据文件，然后找到建筑编号
+
+```cpp
+int now_build_id = mp[course_go_on];  //当前所在校区的建筑
+int next_build_id = mp[course_name];  //目的校区所在建筑
+
+ifstream iifs;
+string path_file;
+
+if (this->campus_now == "沙河")
+    path_file = "../../src/model/navigation_model/path1.txt";  //沙河校区
+else
+    path_file = "../../src/model/navigation_model/path2.txt";  //西土城
+```
+
+接下来就是输出不同的导航策略下的路径规划方案，由于最短路径我们是已经预处理好的，所以只需要读取对应导航策略的路径数据文件然后输出方案即可，比如走自行车道的最短路方案在文件 `*bike_path.txt` 中。
+
+- 最短距离策略
+
+没有任何限制，没有拥挤度的最短距离路径预处理保存在文件 `path1.txt`(沙河校区)，以及 `path2`(西土城校区)
+
+```cpp
+for (std::string line; std::getline(iifs, line);) {
+    vector<string> v;  //去掉空格分开之后的所有单独建筑编号
+    string temp = "";
+
+    for (int i = 0; line[i]; i++) {
+        if (!isspace(line[i]))
+            temp += line[i];
+        else {
+            while (isspace(line[i])) i++;
+            i--;
+            v.push_back(temp);
+            temp = "";
+        }
+    }
+    v.push_back(temp);
+
+    if (stoi(v[0]) == now_build_id && stoi(v[1]) == next_build_id) {
+        // cout << line << endl;
+        for (int i = 2; i < (int)(v.size() - 2); i++) 
+            cout << (v[i] == "1" ? (cps_next + "校门 -> ") : v[i] + " 号教学楼 -> ");
+        cout << v[v.size() - 2] + " 号教学楼" << endl;
+        cout << "----------------------------------------------------------\n";
+        cout << "最短步行路线总长度: " << v[v.size() - 1] << " 米" << endl;
+        break;
+    }
+}
+```
+
+输出规划路径的代码如上所示，本质逻辑就是线性复杂度 $O(n)$ 遍历最短路方案，然后输出即可。
+
+- 最短时间策略
+
+在最短时间策略中，我们对地图道路附加上拥挤度属性，此部分导航按照课设要求不考虑跨校区。道路的拥挤度采用随机数赋予，道路拥挤程度程度使用整数范围在 $[1,3]$ 内表示，生成具有拥挤度的源码位于 `gen_map_crowd.cpp`, 生成地图的核心代码如下:
+
+```cpp
+void gen() {
+    std::random_device seed;
+    std::mt19937 rand(seed());
+    std::uniform_int_distribution<int> dist(0, 999); //距离，单位为米，随机距离 [1,1000]
+    std::uniform_int_distribution<int> building_id(0, 19);  //建筑编号 [1,20]
+    std::uniform_int_distribution<int> crowdedness(0, 2);  //道路拥挤程度 [1,3]
+
+    ofstream ofs;
+    ofs.open("map2_crowd.txt");
+
+    //选210条边
+    //建筑距离>50m的才符合实际
+    int cnt = 0;
+    while (1) {
+        int build1 = building_id(rand) + 1;
+        int build2 = building_id(rand) + 1;
+        int random_dist = (dist(rand) + 1) * (crowdedness(rand) + 1); //距离*拥挤度
+        if (random_dist < 50) continue;
+        if (build1 == build2) continue;  //排除自环的情况
+        cnt++;
+        ofs << build1 << ' ' << build2 << ' ' << random_dist << endl;
+        if (cnt >= 210) break;
+    }
+    ofs.close();
+}
+```
+
+根据上述有拥挤度的地图，预处理最短路方案的文件为 `path*_crowd.txt` 所以在查询最短路方案时查询这些文件 。输出最短时间方案的核心代码如下:
+
+```cpp
+//最短时间策略，重新生成地图考虑拥挤度 不考虑跨校区 步行不考虑交通方式
+//输出步行时间 步速 1.5m/s
+
+string crowd_path_file;
+if (this->campus_now == "沙河")
+    crowd_path_file = "../../src/model/navigation_model/path1_crowd.txt";  //沙河校区
+else
+    crowd_path_file = "../../src/model/navigation_model/path2_crowd.txt";
+
+ifstream ifs_crowd;
+ifs_crowd.open(crowd_path_file, ios::in);
+if (!ifs_crowd.is_open()) {
+    cout << "拥挤度路径寻找文件不存在!" << endl;
+    system("pause");
+    return;
+}
+
+cout << "最短步行时间路线如下: \n";
+cout << "------------------------------------------------\n";
+for (std::string line; std::getline(ifs_crowd, line);) {
+    vector<string> v;  //去掉空格分开之后的所有单独建筑编号
+    string temp = "";
+
+    for (int i = 0; line[i]; i++) {
+        if (!isspace(line[i]))
+            temp += line[i];
+        else {
+            while (isspace(line[i])) i++;
+            i--;
+            v.push_back(temp);
+            temp = "";
+        }
+    }
+    v.push_back(temp);
+
+    if (stoi(v[0]) == now_build_id && stoi(v[1]) == next_build_id) {
+        // cout << line << endl;
+        for (int i = 2; i < (int)(v.size() - 2); i++) cout << (v[i] == "1" ? (cps_next + "校门 -> ") : v[i] + " 号教学楼 -> ");
+        cout << v[v.size() - 2] + " 号教学楼" << endl;
+        cout << "------------------------------------------------\n";
+        cout << "最少步行所需时长约 " << 
+            stoi(v[v.size() - 1]) * 1.0 / 1.5 << " 秒" << endl;
+        break;
+    }
+}
+```
+
+- 交通工具策略导航
+
+此导航策略要求校区内选择自行车时，只能走自行车道路，默认自行车在校区任何地点都有；在考虑不同拥挤度的情况下时间最短；对应的地图文件位于 `bike_map*.txt` ，预处理求出的最短路方案位于文件 `bike_path*.txt` 中，输出走自行车道的导航方案核心代码如下:
+
+```cpp
+//交通工具策略 考虑新地图 自行车道 考虑拥挤度
+//自行车道重新生成地图
+//只需要最短时间，行驶速度为 4m/s
+//自行车道地图 bike_map1.txt bike_map2.txt bike_path1.txt bike_path2.txt
+string bike_path_file;
+if (this->campus_now == "沙河")
+    bike_path_file = "../../src/model/navigation_model/bike_path1.txt";  //沙河校区
+else
+    bike_path_file = "../../src/model/navigation_model/bike_path2.txt";
+
+ifstream ifs_bike;
+ifs_bike.open(bike_path_file, ios::in);
+if (!ifs_bike.is_open()) {
+    cout << "自行车道路径寻找文件不存在!" << endl;
+    system("pause");
+    return;
+}
+
+cout << "自行车道最短时间路线如下: \n";
+cout << "-------------------------------------------------------\n";
+for (std::string line; std::getline(ifs_bike, line);) {
+    vector<string> v;  //去掉空格分开之后的所有单独建筑编号
+    string temp = "";
+
+    for (int i = 0; line[i]; i++) {
+        if (!isspace(line[i]))
+            temp += line[i];
+        else {
+            while (isspace(line[i])) i++;
+            i--;
+            v.push_back(temp);
+            temp = "";
+        }
+    }
+    v.push_back(temp);
+
+    if (stoi(v[0]) == now_build_id && stoi(v[1]) == next_build_id) {
+        // cout << line << endl;
+        for (int i = 2; i < (int)(v.size() - 2); i++) 
+            cout << (v[i] == "1" ? (cps_next + "校门 -> ") : v[i] + " 号教学楼 -> ");
+        cout << v[v.size() - 2] + " 号教学楼" << endl;
+        cout << "-------------------------------------------------\n";
+        cout << "最少骑车所需时长约 " << 
+            stoi(v[v.size() - 1]) * 1.0 / 4.0 << " 秒" << endl;
+        break;
+    }
+}
+```
+
+以上就是学生用户根据课程名称关键字进行导航，其核心代码逻辑的分析和说明。
+
 
 
 ##### 3.3.3.2. 根据上课地点导航
 
+在此功能需求中，学生需要输入上课的地点，系统为学生输出路径规划方案。
 
+- 上课地点是上课的物理位置（例如 沙河 2号楼208）
+
+- 起点和终点可以在不同校区，需要考虑校区间的交通方式；
+
+- 校区间的交通方式为：定点班车（可以自行规划班次时刻表）和公共汽车（可等间隔发车）。
+
+首先是程序执行的演示效果如下，和根据课程名称导航一样，系统会自动识别是否需要跨校区进行导航，如果不需要跨校区就输出在本校区内的导航，我们就以一个比较复杂的跨校区例子来演示, 同样来到导航选择菜单：
+
+![image-20220613220205580](nav_model_report.assets/image-20220613220205580.png)
+
+我们输入操作选项 $2$ 进行根据上课地点来导航，然后接着输入当前所在的上课地点，以及接下来所要去的上课地点。在图示的测试样例中，我们输入当前位于沙河校区 2 号楼 208，将要抵达西土城校区 8 号楼 104 进行上课。
+
+导航自动识别到需要跨校区，先输出校区间的导航路径，包括校车以及定点班车的方案。
+
+然后分别输出所有导航策略，包括最短路径，最短时间，不同交通方式策略下的最短路径规划方案:
+
+![image-20220613220350189](nav_model_report.assets/image-20220613220350189.png)
+
+接下来我们讲述此功能实现的代码细节，同样的，和根据课程名称导航的函数类似，我们先读取学生课程表信息，然后使用哈希表分别存储上课教室和其所在对应的建筑编号，以及上课教室和其所在上课的校区之间的映射关系 ，这样对于 C++ 中的 `std::map` 我们每次都可以高效 $O(logN)$ 时间复杂度查询到建筑编号，进行导航。
+
+```cpp
+//课程表信息
+//存入课程对应的建筑编号
+map<string, int> mp;  //具体教室 教室所在建筑编号
+// map<string, string> campus_map;  //具体教室 教室所在校区
+set<string> all_course;
+//星期 第几节 教室 课程名称 所在校区 课程编号 教室所在建筑
+string file_date, file_classroom, file_course_name, file_campus;
+int file_class_number, name_length;
+string file_course_id, garbage;
+int file_building_id;
+while (ifs >> file_date >> file_class_number >> file_classroom >> file_course_name >> file_campus >> file_course_id >> file_building_id >> name_length) {
+    for (int z = 1; z <= name_length; z++) {
+        ifs >> garbage;
+    }
+    mp[file_classroom] = file_building_id;
+    // campus_map[file_course_name] = file_campus;  //所在校区
+    all_course.insert(file_course_name);
+}
+```
+
+这部分代码其实也是和上面根据课程名称导航部分唯一不同地方，我们使用哈希表维护的查询信息不同，一个是根据课程名称，此处是根据上课地点。其余的代码均完全复用即可，因为导航最本质的逻辑都是要归到建筑的编号上，不论根据什么导航，我们先想办法找到目的的建筑编号，然后其余的代码逻辑完全照搬复用即可，此功能后续实现部分完全参考上面根据课程名称导航的讲述，以及源码的注释即可。
+
+还有就是需要注意一点，对于课表中没有课的建筑，导航系统是读取不到建筑信息的，所以也就无法输出路线，在测试样例中**请务必根据学生课表信息的课程进行导航，请勿随意输入建筑设施的编号**。
 
 
 
 ##### 3.3.3.3. 根据上课时间导航
 
+在此功能需求中，需要学生输入打算上课的时间，然后系统为学生查询距离此时间最近的课程。如果当天已无课程，会提示学生输入改天的时间。
 
+上课时间可以是 “周五10点30分（Fri 10:30) ” 系统会自动更据学生的班级信息和最近的上课时间（未开始）查询上课地点。
+
+首先是程序执行的演示效果如下，和根据课程名称导航一样，系统会自动识别是否需要跨校区进行导航，如果不需要跨校区就输出在本校区内的导航，我们就以一个比较复杂的跨校区例子来演示, 同样来到导航选择菜单：
+
+![image-20220613222005448](nav_model_report.assets/image-20220613222005448.png)
+
+学生用户先输入当前所在校区以及当前所在的建筑编号，方便导航系统定位。然后学生需要输入自己打算上课的时间，比如周五早上 10:30 分，此处注意输入格式，使用英文星期，随后系统便开始导航规划路径输出如下:
+
+![image-20220613222233173](nav_model_report.assets/image-20220613222233173.png)
+
+导航效果如上图所示，系统首先会根据学生用户输入的上课时间，为学生查询到最近还未开始上的课程，包括这门课的校区（上图显示为西土城），这门课在目的校区所在的建筑编号（上图显示为西土城校区 3号楼），以及这门课的名称（上图显示为 PHP 语言基础）。接下来会根据是否需要跨校区导航，分别输出所有导航策略，包括最短路径，最短时间，不同交通方式策略下的最短路径规划方案。
+
+接下来我们讲述这部分代码实现的细节和逻辑。学生课表的作息时间完全使用北邮计算机学院大二下学期的课表作息，这里使用我自己的课表作息时间来模拟系统时间，如下图所示：
+
+<img src="report.assets/course.jpg" alt="course_table" style="zoom: 50%;" />
+
+系统首先根据学生输入的时间，来查找最近未开始上的课，如果当天已无课程，会提示学生输入改天的时间。对于世界的查找，代码具体实现的逻辑就是很简单的判断输入的时间落入哪个课程时间段:
+
+```cpp
+int class_number;
+if (query_hour < 8)    //小于第一节课的时间
+    class_number = 1;  //每天的第一节课
+else if (query_hour <= 8) {
+    if (query_minute == 0)
+        class_number = 1;
+    else if (query_minute <= 50)
+        class_number = 2;
+    else
+        class_number = 3;
+    else ...
+}
+...
+```
+
+变量 `class_number` 存储根据学生输入的时间 ，查询得到的课程节号，以便于进一步查找更多上课的信息，比如课程所在的校区，课程所在的建筑编号，等等。
+
+在这个需求中，我们需要使用哈希表维护的映射关系就更麻烦一些。因为需要维护的信息有：
+
+- 课程所在星期及课程节号
+- 课程名称及其对应所在建筑编号
+- 课程名称及其对应所在的校区
+
+所以需要在哈希表中维护更多信息，我们使用如下代码来实现初始数据的存储映射关系:
+
+```cpp
+map<pair<string, int>, pair<string, int> > mp;  //<{Mon, 1}, {计网,5}> 星期 课程节号 课程名称 建筑编号
+map<string, string> campus_map;                 //课程 课程所在校区
+set<string> all_course;
+//星期 第几节 教室 课程名称 所在校区 课程编号 教室所在建筑
+string file_date, file_classroom, file_course_name, file_campus;
+int file_class_number, name_length;
+string file_course_id, garbage;
+int file_building_id;
+while (ifs >> file_date >> file_class_number >> file_classroom >> file_course_name >> file_campus >> file_course_id >> file_building_id >> name_length) {
+    for (int z = 1; z <= name_length; z++) {
+        ifs >> garbage;
+    }
+    mp[{file_date, file_class_number}] = {file_course_name, file_building_id};
+    campus_map[file_course_name] = file_campus;  //所在校区
+    all_course.insert(file_course_name);
+}
+```
+
+哈希表 `mp` 内嵌两个 C++ `std::pair` 来同时维护课程日期，课程节号，课程名称，以及上课所在建筑编号，哈希表 `campus_map` 映射课程名称以及课程所在的校区。
+
+上面已经说过了，如何维护课程信息之间的映射关系是不同条件导航实现思路的唯一区别，最后只需要转换为查询建筑编号就行了，所以后面的代码，完全复用根据课程名称导航，或者根据课程地点导航部分。
 
 
 
