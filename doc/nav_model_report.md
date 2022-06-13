@@ -488,3 +488,36 @@ while (ifs >> file_date >> file_class_number >> file_classroom >> file_course_na
 
 
 ##### 3.3.3.4. 经过固定地点导航（选做算法部分）
+
+在此功能需求中，需要实现通过学生用户指定必须经过的建筑编号来规划从起点到终点的最短路。
+
+此算法实现源代码位于导航模块目录下的 `bonus_algo.cpp` , 我们通过证明算法的正确性，分析算法的复杂度，最后再讲解源码的过程来依次讲述这部分实现的内容。
+
+1. 算法思路概述：
+
+首先将问题抽象为这样的图论问题: 给定一个有向无负权图 $G(V,E)$, 起点 $S$, 终点 $T$, 且给定 $K$ 个图中互不相同的点 $a_1, a_2, a_3....a_k$ , 求出从 $S$ 出发到 $T$ ，同时经过所有点 $a_i(i=1 \sim k)$ 的一条最短路。
+
+初步分析此问题的最坏情况，即在 $G$ 上求一条最短路，从 $S$ 出发到 $T$ 且必须经过所有点。此的问题即为经典的 [Hamiltonian path problem](https://en.wikipedia.org/wiki/Hamiltonian_path_problem), 在 TCS 学术界早已证明为  NP-complete 问题，目前无多项式时间复杂度解法。所以此问题最坏情况可归约至 NP 完全问题，下面考虑一般情况下的此问题。
+
+对于只求出经过有限数量固定点的情况，将图 $G$ 分割为两个点集 $G_1, G_2$, 令 $G_1 = \{V_1|V_1 ∈ a_i(i = 1 \sim k)\}$, $G_2 = G \backslash G_1$, 定义最短路 $Path(S,T,K)$ 表示在此问题约束下的最短路状态空间。定义图 $G$ 子集 $G_s$ 的排列 $P(G_s) = \{permutation(g_1, g_2, g_3...g_k) | g_1, g_2, g_3...g_k ∈ G_s \}$ , 则最短路状态空间：
+$$
+Path(S,T,K) = min\{Path(S,g_1^{\prime}, K) + \sum_{i=2}^{k} Path(S,g_i^{\prime},K) + Path(g_k^{\prime}, T, K), k \geq 2 \}
+$$
+其中 $\{g_1^{\prime}, g_2^{\prime}, g_3^{\prime}...g_k^{\prime} ∈ P(G_1) \}$ 表示约束点集子图的一个排列, $Path(S,T,K)$ 为此问题的空间集合。
+
+2. 算法正确性证明：
+
+假设 $Path(S,T,K^{\prime})$ 为此问题的最优解空间, 讨论约束集合 $K$ 与 $K^{\prime}$ 的关系:
+
+- $K^{\prime} \subset K$， 由 $min\{Path(S,T,K)\} = min\{Path(S,T,K^{\prime})\}$ 可知 $K^{\prime} = K$ 即最优解唯一，为 $min\{Path(S,T,K)\}$
+
+- $K^{\prime} \not\subset K$ 且 $K^{\prime} \cap K \neq \emptyset$, 令 $K^{\prime\prime} = K^{\prime} \cap K$, 则存在子图 $G_{K^{\prime\prime}}$ 的一个排列 $P(G_{K^{\prime\prime}}) \not\in P(G_1)$, 这与所有的约束条件 $P(G_k) \in P(G_1)$ 矛盾, 所以 $K^{\prime} \not\subset K$ 且 $K^{\prime} \cap K \neq \emptyset$ 不成立.
+
+
+- $K^{\prime} \cap K = \emptyset$, 同第二种集合关系，推导可知与所有的约束条件 $P(G_k) \in P(G_1)$ 矛盾，不成立.
+
+- $K \subset K^{\prime}$, 同第一种集合关系. 由条件 $min\{Path(S,T,K)\} = min\{Path(S,T,K^{\prime})\}$ 可知 $K^{\prime} = K$ 即最优解唯一，为 $min\{Path(S,T,K)\}$
+
+综上推导可知此最短路问题的唯一最优解状态空间为 $min\{Path(S,T,K)\}$ 不存在其它的最优解情况。
+
+3. 算法复杂度分析：
