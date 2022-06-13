@@ -17,7 +17,7 @@ class Guide {
 
     Guide();
     Guide(string in_campus, string stu_id);  //现在所处的校区 当前操作学生的学号
-    Guide(string stu_id);  // 当前操作学生的学号
+    Guide(string stu_id);                    // 当前操作学生的学号
 
     void build_graph(string campus_now);  //每次导航时候都要先建图 放入内存中
 
