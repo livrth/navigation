@@ -126,7 +126,7 @@ void Admin::change_course() {
         string book_name;
         ifs >> book_name;
         t.ref_books.push_back(book_name);
-        cout << book_name << endl;
+        // cout << book_name << endl;
     }
     // cout<<"fine"<<endl;
     ifs >> t.material_number;
