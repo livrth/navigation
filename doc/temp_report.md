@@ -28,7 +28,7 @@
 -  编写课外信息管理的全部代码
 - 编写除压缩和解压相关算法的课内信息管理的全部代码
 - 编写时间模拟算法
-- 编写admin_model和teacher_model中除了作业查重算法的全部代码
+- 编写`admin_model`和`teacher_model`中除了作业查重算法的全部代码
 
  任晓斌
 - 编写导航模块的全部代码（包括途径多个地点最短路的选作算法）
@@ -141,7 +141,24 @@ int Student::kth(int x, int root, Node *t) {
 }
  ```
   `rank(x+1)`通过分治查找返回x的后继的排名，`kth(y)`通过分治查找返回排名y的数据的值。两个二分查找复杂度均为$O(log n)$，则只需要$O(log n)$复杂度即可得到结果
-- 通过`insert(x)`来添加结点，依然采用后序遍历，则可以在$O (log n)$时间内完成活动的添加。
+- 通过`insert(x)`来添加结点，依然采用分治，则可以在$O (log n)$时间内完成活动的添加。
+```cpp
+void Student::insert(int x, int root, Node *t, int &cnt) {
+    if (x < t[root].value)
+        if (!t[root].left)
+            t[t[root].left = ++cnt] = Node(0, 0, 1, x);
+        else
+            insert(x, t[root].left, t, cnt);
+    else if (x > t[root].value)
+        if (!t[root].right)
+            t[t[root].right = ++cnt] = Node(0, 0, 1, x);
+        else
+            insert(x, t[root].right, t, cnt);
+    else
+        t[root].num++;
+    update(root, t);
+}
+```
 ###### 3.1.1.3.2.利用端点和中点坐标的冲突检测算法
   场景
  - 在用户设置活动或者查看活动时，需要检测是否与课程存在冲突
@@ -302,6 +319,103 @@ bool Student::interact(int x1, int x2, int y1, int y2) {
   可得：
   $T(n) = Cn + nlogn$
   不难看出复杂度为$O(nlogn)$。
+##### 3.2.3.2 压缩文件
+
+场景
+
+* 学生提交作业和提交材料  
+
+算法实现
+
+* 哈夫曼树的结构为
+
+```cpp
+struct zipnode {
+    int val;//保存字母的权值
+    char ch;//保存字母
+    zipnode *l, *r;//结点的左右孩子，初始时设置为空
+    zipnode(int v, zipnode* lc = nullptr, zipnode* rc = nullptr) : val(v), l(lc), r(rc){};
+};
+struct cmp { //使用堆的优先排列生成树
+    bool operator()(zipnode* a, zipnode* b) {
+        return a->val > b->val;
+    }
+};
+```
+
+* 在处理需要压缩的文件时，采用二进制方式读取文件
+
+  ```cpp
+  in.open(pathname, ios::binary);
+  ```
+
+  
+
+* 采取堆的优先排列生成哈夫曼树,时间复杂度为$O(nlog(n))$同时输出字母及其ASCII码对应的数值，以及字母对应的编码
+
+  ```cpp
+  priority_queue<zipnode*, vector<zipnode*>, cmp> Q;
+  for (auto x : cnt) {
+          zipnode* p = new zipnode(x.second);
+          p->ch = x.first;
+          Q.push(p);
+      }
+  while (Q.size() >= 2) {
+          zipnode* lc = Q.top();
+          Q.pop();
+          zipnode* rc = Q.top();
+          Q.pop();
+          rt = new zipnode(lc->val + rc->val, lc, rc);
+          Q.push(rt);
+      }
+  dfs(rt, "");//哈夫曼树的优先遍历
+  for (auto x : zip_code) {
+          if (isprint(x.first)) cout << x.first;
+          cout << "/" << (int)x.first << " : " << x.second << endl;
+      }
+  ```
+
+* 对哈夫曼树进行深度优先遍历，时间复杂度为$O(n)$,`dfs`函数如下
+
+```cpp
+void dfs(zipnode* p, string s) {
+    if (p->l == nullptr && p->r == nullptr) {
+        zip_code[p->ch] = s;
+        return;
+    }
+    if (p->l != nullptr) dfs(p->l, s + '0');
+    if (p->r != nullptr) dfs(p->r, s + '1');
+}
+```
+
+* compress函数的逻辑如下。`str`是输入的作业地址，由学生输入作业次数等信息后自动生成，`buildText`函数用于生成哈夫曼树以及对原文件进行二进制读入，`writeZip`函数将编码以及哈夫曼树的信息写入新生成的压缩文件中。
+
+```cpp
+void compress(string str) {
+    cout << "compress启动成功" << endl;
+    buildText(str.c_str());
+    int pos = str.find_last_of('.');
+    string str1 = str.substr(0, pos);
+    str = str1 + "_zip.txt";//将新生成的文件命名为XXX_zip.txt
+    writeZip(str.c_str());
+}
+```
+
+优点
+
+*  由于解压缩需要压缩时的信息，若用普通文档储存压缩时信息，解压缩时读入文件会相当困难;而且压缩的文件不需要被看到。于是参考了对二进制文件的处理方式，选择用二进制文件存储压缩后的信息，简单高效。
+
+
+
+##### 3.2.3.3 解压缩文件
+
+场景：
+
+* 学生下载资料，老师批改作业
+
+算法实现
+
+*
 
 #### 3.2.4.与其他模块交互
 - 学生用户可以在个人主页中通过课程表选定课程或者通过搜索来创建课程类实例并进入课程界面实现课程提供的各种功能
