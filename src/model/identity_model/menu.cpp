@@ -61,7 +61,7 @@ void Guide::guideOperMenu() {
     cout << "\t\t|                            |\n";
     cout << "\t\t|     3.根据上课时间导航     |\n";
     cout << "\t\t|                            |\n";
-    cout << "\t\t|     4.经过固定地点导航     |\n";
+    cout << "\t\t|     4.途径多个地点导航     |\n";
     cout << "\t\t|                            |\n";
     cout << "\t\t|     0.退出当前导航系统     |\n";
     cout << "\t\t|                            |\n";
