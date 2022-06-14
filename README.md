@@ -19,7 +19,8 @@ Dependency：
 Use CMake to build with bash:
 
 ```bash
-rm -rf build/ && mkdir build && cd build && cmake -G "MinGW Makefiles" .. && cmake --build . -j 24 --target navigation && cd ../
+rm -rf build/ && mkdir build && cd build && cmake -G "MinGW Makefiles" .. \
+&& cmake --build . -j 24 --target navigation && cd ../
 ```
 
 Enter the build directory to execute the program:
