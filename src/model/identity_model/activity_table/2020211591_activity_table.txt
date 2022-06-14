@@ -1,19 +1,19 @@
-Sun 20 10 22 10 S6 sleep once_clock 5 s l e e p
-Sar 21 20 23 20 S6 take_a_shower circular_clock 11 t a k e a s h o w e r
-Mon 6 0 7 0 playground run no_clock 3 r u n
-Mon 6 0 11 20 playground play no_clock 4 p l a y
-Tue 10 30 11 20 篮球场 打篮球 no_clock 3 打 篮 球
-Mon 3 3 4 4 宿舍 睡觉 no_clock 2 睡 觉
-Mon 1 1 1 2 排球场 打排球 no_clock 3 打 排 球
+Sun 20 10 22 10 宿舍 sleep once_clock 5 s l e e p
+Sar 21 20 23 20 宿舍 take_a_shower circular_clock 11 t a k e a s h o w e r
+Mon 6 0 7 0 学校操场 run no_clock 3 r u n
+Mon 6 0 11 20 学校操场 play no_clock 4 p l a y
+Tue 10 30 11 20 学校体育馆 打篮球 no_clock 3 打 篮 球
+Mon 3 3 4 4 学校游泳馆 游泳 no_clock 2 游 泳
+Mon 1 1 1 2 学校排球场 打排球 no_clock 3 打 排 球
 Wed 10 1 10 2 宿舍 起床 no_clock 2 起 床
-Tue 11 1 12 1 肯德基 聚餐 no_clock 2 聚 餐
-Tue 15 0 16 0 麦当劳 喝水 once_clock 2 喝 水
-Wed 22 0 23 0 网吧 开黑 circular_clock 2 开 黑
-Thu 9 2 10 2 playground 升旗 no_clock 2 升 旗
-Thu 18 5 19 5 全聚德 烤鸭 once_clock 2 烤 鸭
-Fri 8 0 9 0 邮局 志愿 circular_clock 2 志 愿
+Tue 11 1 12 1 食堂 聚餐 no_clock 2 聚 餐
+Tue 15 0 16 0 学校食堂 喝水 once_clock 2 喝 水
+Wed 22 0 23 0 学校电动车充电桩 充 电 circular_clock 2 充 电
+Thu 9 2 10 2 学校操场 升旗 no_clock 2 升 旗
+Thu 18 5 19 5 学校餐厅 烤鸭 once_clock 2 烤 鸭
+Fri 8 0 9 0 学校邮局 志愿 circular_clock 2 志 愿
 Sar 9 2 11 2 长城 旅游 once_clock 2 旅 游
 Sar 19 5 23 5 故宫 旅游 once_clock 2 旅 游
-Sun 6 10 8 10 颐和园 游园 no_clock 2 游 园
-Sun 8 20 11 50 圆明园 踏青 no_clock 2 踏 青
-Sar 10 2 11 2 学生活动中心 活动 circular_clock 2 活 动
+Sun 6 10 8 10 天坛 游园 no_clock 2 游 园
+Sun 8 20 11 50 地坛 踏青 no_clock 2 踏 青
+

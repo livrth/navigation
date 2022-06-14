@@ -1,0 +1,7 @@
+Problem3.Virtual circuit networks most certainly need this capability in order to route connection setup packets from an arbitrary source to an arbitrary destination.
+
+Problem4.The negotiation could set the window size, maximum packet size, data rate, and timer values.
+
+Problem10.The routing table is 400 bits. Twice a second this table is written onto each line, so 800 bps are needed on each line in each direction.
+
+Problem12.The minimum occurs at 15 clusters, each with 16 regions, each region having 20 routers, or one of the equivalent forms, e.g., 20 clusters of 16 regions of 15 routers. In all cases the table size is 15 + 16 + 20 = 51.
