@@ -198,7 +198,12 @@ void Admin::change_course() {
         } else if (opt == 4) {
             cout << "请输入增加的这堂课的日期,课序，教室，校区,建筑编号";
             single_course_a n;
-            cin >> n.date >> n.seq >> n.place >> n.campus >> n.building_id;
+            cin >> n.date >> n.seq >> n.place >> n.campus >> n.building_id >> n.len;
+            string word;
+            for (int i = 0; i <= n.len - 1; i++) {
+                cin >> word;
+                n.words.push_back(word);
+            }
             n.course_id = t.course_id;
             n.course_name = t.course_name;
             t.course_table.push_back(n);
@@ -266,8 +271,8 @@ void Admin::release_new_course() {
     cout << "请输入课程的名字,节数,id,每节课的构成,老师姓名,老师id,课程群，课时，考试信息,参考书目数目,参考书目,学生数目,学生id：" << endl;
     cin >> t.course_name >> t.number >> t.course_id;
     //输入
+    single_course_a a;
     for (int i = 1; i <= t.number; i++) {
-        single_course_a a;
         string word;
         cin >> a.date >> a.seq >> a.place >> a.course_name >> a.campus >> a.course_id >> a.building_id >> a.len;
         for (int i = 0; i <= a.len - 1; i++) {
@@ -333,20 +338,22 @@ void Admin::release_new_course() {
     }
     ofs.close();
     single_course_a n;
-    for (int i = 1; i <= t.number - 1; i++) {
+    for (int i = 0; i <= t.number - 1; i++) {
         n = t.course_table[i];
         for (int i = 0; i <= t.student_number - 1; i++) {
             add_course_table_term(t.stu_ids[i], n);
         }
     }
-    string teacher_info_file = "../../src/identity_model/homework_set/" + t.teacher_id + "_teacher/course_collection.txt";
+
+    string teacher_info_file = "../../src/model/identity_model/homework_set/" + t.teacher_id + "_teacher/course_collection.txt";
     ofs.open(teacher_info_file, ios::app);  //创建文件
     if (!ofs.is_open()) {
-        cout << "教师文件打开失败" << endl;
+        cout << "教师文件打开失败" << teacher_info_file << endl;
         ofs.close();
         return;
     }
-    ofs << t.course_name << t.course_id << endl;
+    ofs << endl
+        << t.course_name << " " << t.course_id << endl;
     ofs.close();
     char path0[200];
     if (!getcwd(path0, 200)) {
@@ -410,13 +417,14 @@ void Admin::delete_course_table_term(string stu_id, string date, int seq) {
 void Admin::add_course_table_term(string stu_id, single_course_a n) {
     string filename = "../../src/model/identity_model/course_table/" + stu_id + "_course_table.txt";
     ofstream ofs;
+
     ofs.open(filename, ios::app);
     if (!ofs.is_open()) {
         cout << "学生" + stu_id + "课程文件不存在" << endl;
         ofs.close();
         return;
     }
-    cout << endl;
+    ofs << endl;
     ofs << n.date << " " << n.seq << " " << n.place << " " << n.course_name << " " << n.campus << " " << n.course_id << " " << n.building_id << " " << n.len;
     for (int j = 0; j <= n.len - 1; j++) {
         ofs << " " << n.words[j];
