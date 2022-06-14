@@ -1,11 +1,38 @@
 #### 2022 Spring BUPT Data Structure Course Design
 
 
-Team Member:
+__Team Member:__
 - [@livrth](https://github.com/livrth)
 - [@likely-dog](https://github.com/likely-dog)
 - [@guanshuidong](https://github.com/guanshuidong)
 
+__Compile & Run:__
+
+Dependency：
+
+- GCC compiler on Windows systems (mingw64)
+- GCC version support >= C++14
+- CMake version >= 3.21
+- bash shell for build in terminal
+
+
+Use CMake to build with bash:
+
+```bash
+rm -rf build/ && mkdir build && cd build && cmake -G "MinGW Makefiles" .. && cmake --build . -j 24 --target navigation && cd ../
+```
+
+Enter the build directory to execute the program:
+
+```bash
+cd build/build/
+
+./navigation.exe
+```
+
+<details>
+<summary>Development Agenda</summary>
+<pre><code>
 
 4/19 TODO:
 - [x] 学生用户注册等功能
@@ -57,7 +84,7 @@ Team Member:
 - [x] 参考文献整理添加
 - [x] 文档开头注明编译运行环境以及依赖等
 - [x] 取消注释欢迎界面
-- [ ] 实验报告加封面
+- [x] 实验报告加封面
 - [x] 测试报告截图问题
 
 Final TODO:
@@ -70,3 +97,6 @@ Final TODO:
     - 导航模块文档中注明可选的建筑/时间以避免违法输入
 - [ ] 验收前提前准备所有功能的输入测试样例
 - [ ] 录制视频
+
+</code></pre>
+</details>
