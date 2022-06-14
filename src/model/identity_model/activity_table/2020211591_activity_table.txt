@@ -16,3 +16,4 @@ Sar 9 2 11 2 长城 旅游 once_clock 2 旅 游
 Sar 19 5 23 5 故宫 旅游 once_clock 2 旅 游
 Sun 6 10 8 10 颐和园 游园 no_clock 2 游 园
 Sun 8 20 11 50 圆明园 踏青 no_clock 2 踏 青
+Sar 10 2 11 2 学生活动中心 活动 circular_clock 2 活 动
