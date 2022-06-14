@@ -33,7 +33,6 @@ cd build/build/
 
 <details>
 <summary>Development Agenda</summary>
-<pre><code>
 
 4/19 TODO:
 - [x] 学生用户注册等功能
@@ -96,8 +95,7 @@ Final TODO:
     - 时间为系统时间不需要模拟
 - [x] 最终项目文档
     - 导航模块文档中注明可选的建筑/时间以避免违法输入
-- [ ] 验收前提前准备所有功能的输入测试样例
-- [ ] 录制视频
+- [x] 验收前提前准备所有功能的输入测试样例
+- [x] 录制视频
 
-</code></pre>
 </details>
