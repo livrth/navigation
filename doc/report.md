@@ -105,9 +105,9 @@ cd build/build/
 
 接下来对每个模块进行详细的逻辑实现思路分析以及代码实现细节的讲述。
 
-### 3.1. 用户身份模块 (identity_model)
+### 3.1. 用户身份模块
 
-#### 3.1.1. 学生部分 (stu_model)
+#### 3.1.1. 学生部分
 ##### 3.1.1.1. 数据结构说明和数据字典
 
  - 1.`map<string, string name_to_id`
@@ -165,7 +165,7 @@ cd build/build/
  - 9.模拟时间快进
  - 10.活动闹钟提醒 (以模拟时间为准，通过输出`"\a"`模拟闹铃)
 ##### 3.1.1.3. 算法及分析
-###### 3.1.1.3.1. 二叉搜索树
+###### 3.1.1.3.1. 二叉搜索树[^1]
  场景：
 - 对课程和活动时间进行查询时使用
 
@@ -320,7 +320,358 @@ bool Student::interact(int x1, int x2, int y1, int y2) {
 
 ![批改2](.assets/批改2.png)
 
-### 3.2. 学生课程模块 (course_model)
+
+
+##### 3.1.3.5. 查重算法详述
+
+在教师批改作业功能实现中，需要调用查重算法对学生提交的作业进行查重。本课程设计实现了近似线性的高效查重算法，内部实现采用 Aho–Corasick algorithm (AC自动机算法)，下面为查重算法设计的详细讲解 。
+
+###### 3.1.3.5.1. AC 自动机引入
+
+1. AC 自动机概述[^2]
+
+在[计算机科学](https://zh.wikipedia.org/wiki/计算机科学)中，**Aho–Corasick算法**是由 [Alfred V. Aho](https://zh.wikipedia.org/wiki/阿尔佛雷德·艾侯) 和Margaret J.Corasick 发明的字符串搜索算法，用于在输入的一串字符串中匹配有限组“字典”中的子串。它与普通字符串匹配的不同点在于同时与所有字典串进行匹配。算法均摊情况下具有近似于线性的 [时间复杂度](https://zh.wikipedia.org/wiki/时间复杂度)，约为字符串的长度加所有匹配的数量。
+
+2. AC 自动机简介[^3]
+
+AC 自动机是 **以 Trie 的结构为基础**，结合 **KMP** 算法的思想建立的。简单来说，建立一个 AC 自动机有两个步骤：
+
+- 基础的 Trie 结构：将所有的模式串构成一棵 Trie。
+
+- KMP 的思想：对 Trie 树上所有的结点构造失配指针。
+
+然后就可以利用它进行多模式匹配了。
+
+######  3.1.3.5.2. 字典树构建
+
+AC 自动机在初始时会将若干个模式串丢到一个 Trie 里，然后在 Trie 上建立 AC 自动机。这个 Trie 就是普通的 Trie，该怎么建怎么建。
+
+这里需要仔细解释一下 Trie 的结点的含义，尽管这很小儿科，但在之后的理解中极其重要。Trie 中的结点表示的是某个模式串的前缀。我们在后文也将其称作状态。一个结点表示一个状态，Trie 的边就是状态的转移。
+
+形式化地说，对于若干个模式串 $s_1,s_2\dots s_n$，将它们构建一棵字典树后的所有状态的集合记作 $Q$。
+
+###### 3.1.3.5.3. 失配指针
+
+AC 自动机利用一个 fail 指针来辅助多模式串的匹配。
+
+状态 $u$ 的 fail 指针指向另一个状态 $v$，其中 $v\in Q$，且 $v$ 是 $u$ 的最长后缀（即在若干个后缀状态中取最长的一个作为 fail 指针）。我在这里简单对比一下这里的 fail 指针与 KMP 中的 next 指针：
+
+1. 共同点：两者同样是在失配的时候用于跳转的指针。
+2. 不同点：next 指针求的是最长 Border（即最长的相同前后缀），而 fail 指针指向所有模式串的前缀中匹配当前状态的最长后缀。
+
+因为 KMP 只对一个模式串做匹配，而 AC 自动机要对多个模式串做匹配。有可能 fail 指针指向的结点对应着另一个模式串，两者前缀不同。AC 自动机在做匹配时，同一位上可匹配多个模式串。
+
+###### 3.1.3.5.4. 构建 fail 指针
+
+下面介绍构建 fail 指针的 **基础思想**：
+
+构建 fail 指针，可以参考 KMP 中构造 Next 指针的思想。
+
+考虑字典树中当前的结点 $u$，$u$ 的父结点是 $p$，$p$ 通过字符 `c` 的边指向 $u$，即 $trie[p,c]=u$。假设深度小于 $u$ 的所有结点的 fail 指针都已求得。
+
+1. 如果 $\text{trie}[\text{fail}[p],c]$ 存在：则让 u 的 fail 指针指向 $\text{trie}[\text{fail}[p],c]$。相当于在 $p$ 和 $\text{fail}[p]$ 后面加一个字符 `c`，分别对应 $u$ 和 $fail[u]$。
+2. 如果 $\text{trie}[\text{fail}[p],c]$ 不存在：那么我们继续找到 $\text{trie}[\text{fail}[\text{fail}[p]],c]$。重复 1 的判断过程，一直跳 fail 指针直到根结点。
+3. 如果真的没有，就让 fail 指针指向根结点。
+
+如此即完成了 $\text{fail}[u]$ 的构建。
+
+- 例子：
+
+下面放一张 GIF 帮助理解。对字符串 `i`  `he`  `his`  `she`  `hers` 组成的字典树构建 fail 指针：
+
+1. 黄色结点：当前的结点 $u$。
+2. 绿色结点：表示已经 BFS 遍历完毕的结点，
+3. 橙色的边：fail 指针。
+4. 红色的边：当前求出的 fail 指针。
+
+![AC_automation_gif_b_3.gif](https://oi-wiki.org/string/images/ac-automaton1.gif)
+
+我们重点分析结点 6 的 fail 指针构建：
+
+![AC_automation_6_9.png](https://oi-wiki.org/string/images/ac-automaton1.png)
+
+找到 6 的父结点 5，$\text{fail}[5]=10$。然而 10 结点没有字母 `s` 连出的边；继续跳到 10 的 fail 指针，$\text{fail}[10]=0$。发现 0 结点有字母 `s` 连出的边，指向 7 结点；所以 $\text{fail}[6]=7$。最后放一张建出来的图
+
+![finish](https://oi-wiki.org/string/images/ac-automaton4.png)
+
+###### 3.1.3.5.5. 字典树与 Trie 图
+
+先来看构建函数 `build()`，该函数的目标有两个，一个是构建 fail 指针，一个是构建自动机。参数如下：
+
+1. `tr[u,c]`：有两种理解方式。我们可以简单理解为字典树上的一条边，即 $\text{trie}[u,c]$；也可以理解为从状态（结点）$u$ 后加一个字符 `c` 到达的状态（结点），即一个状态转移函数 $\text{trans}(u,c)$。下文中我们将用第二种理解方式继续讲解。
+2. 队列 `q`：用于 BFS 遍历字典树。
+3. `fail[u]`：结点 $u$ 的 fail 指针。
+
+```cpp
+// C++ Version
+void build() {
+  for (int i = 0; i < 26; i++)
+    if (tr[0][i]) q.push(tr[0][i]);
+  while (q.size()) {
+    int u = q.front();
+    q.pop();
+    for (int i = 0; i < 26; i++) {
+      if (tr[u][i])
+        fail[tr[u][i]] = tr[fail[u]][i], q.push(tr[u][i]);
+      else
+        tr[u][i] = tr[fail[u]][i];
+    }
+  }
+}
+```
+
+解释一下上面的代码：build 函数将结点按 BFS 顺序入队，依次求 fail 指针。这里的字典树根结点为 0，我们将根结点的子结点一一入队。若将根结点入队，则在第一次 BFS 的时候，会将根结点儿子的 fail 指针标记为本身。因此我们将根结点的儿子一一入队，而不是将根结点入队。
+
+然后开始 BFS：每次取出队首的结点 u（$\text{fail}[u]$ 在之前的 BFS 过程中已求得），然后遍历字符集（这里是 0-25，对应 a-z，即 $u$ 的各个子节点）：
+
+1. 如果 $\text{trans}[u][i]$ 存在，我们就将 $\text{trans}[u][i]$ 的 fail 指针赋值为 $\text{trans}[\text{fail}[u]][i]$。这里似乎有一个问题。根据之前的讲解，我们应该用 while 循环，不停的跳 fail 指针，判断是否存在字符 `i` 对应的结点，然后赋值，但是这里通过特殊处理简化了这些代码。
+2. 否则，令 $\text{trans}[u][i]$ 指向 $\text{trans}[\text{fail}[u]][i]$ 的状态。
+
+这里的处理是，通过 `else` 语句的代码修改字典树的结构。没错，它将不存在的字典树的状态链接到了失配指针的对应状态。在原字典树中，每一个结点代表一个字符串 $S$，是某个模式串的前缀。而在修改字典树结构后，尽管增加了许多转移关系，但结点（状态）所代表的字符串是不变的。
+
+而 $\text{trans}[S][c]$ 相当于是在 $S$ 后添加一个字符 `c` 变成另一个状态 $S'$。如果 $S'$ 存在，说明存在一个模式串的前缀是 $S'$，否则我们让 $\text{trans}[S][c]$ 指向 $\text{trans}[\text{fail}[S]][c]$。由于 $\text{fail}[S]$ 对应的字符串是 $S$ 的后缀，因此 $\text{trans}[\text{fail}[S]][c]$ 对应的字符串也是 $S'$ 的后缀。
+
+换言之在 Trie 上跳转的时侯，我们只会从 $S$ 跳转到 $S'$，相当于匹配了一个 $S'$；但在 AC 自动机上跳转的时侯，我们会从 $S$ 跳转到 $S'$ 的后缀，也就是说我们匹配一个字符 `c`，然后舍弃 $S$ 的部分前缀。舍弃前缀显然是能匹配的。那么 fail 指针呢？它也是在舍弃前缀啊！试想一下，如果文本串能匹配 $S$，显然它也能匹配 $S$ 的后缀。所谓的 fail 指针其实就是 $S$ 的一个后缀集合。
+
+`tr` 数组还有另一种比较简单的理解方式：如果在位置 $u$ 失配，我们会跳转到 $\text{fail}[u]$ 的位置。所以我们可能沿着 fail 数组跳转多次才能来到下一个能匹配的位置。所以我们可以用 `tr` 数组直接记录记录下一个能匹配的位置，这样就能节省下很多时间。
+
+这样修改字典树的结构，使得匹配转移更加完善。同时它将 fail 指针跳转的路径做了压缩（就像并查集的路径压缩），使得本来需要跳很多次 fail 指针变成跳一次。
+
+###### 3.1.3.5.6. 多模式匹配
+
+接下来分析匹配函数 `query()`：
+
+```cpp
+// C++ Version
+int query(char *t) {
+  int u = 0, res = 0;
+  for (int i = 1; t[i]; i++) {
+    u = tr[u][t[i] - 'a'];  // 转移
+    for (int j = u; j && e[j] != -1; j = fail[j]) {
+      res += e[j], e[j] = -1;
+    }
+  }
+  return res;
+}
+```
+
+这里 $u$ 作为字典树上当前匹配到的结点，`res` 即返回的答案。循环遍历匹配串，$u$ 在字典树上跟踪当前字符。利用 fail 指针找出所有匹配的模式串，累加到答案中。然后清零。在上文中我们分析过，字典树的结构其实就是一个 trans 函数，而构建好这个函数后，在匹配字符串的过程中，我们会舍弃部分前缀达到最低限度的匹配。fail 指针则指向了更多的匹配状态。最后上一份图。对于刚才的自动机：
+
+![AC_automation_b_13.png](https://oi-wiki.org/string/images/ac-automaton3.png)
+
+我们从根结点开始尝试匹配 `ushersheishis`，那么 $p$ 的变化将是：
+
+![AC_automation_gif_c.gif](https://oi-wiki.org/string/images/ac-automaton3.gif)
+
+1. 红色结点：$p$ 结点
+2. 粉色箭头：$p$ 在自动机上的跳转，
+3. 蓝色的边：成功匹配的模式串
+4. 蓝色结点：示跳 fail 指针时的结点（状态）。
+
+时间复杂度：定义 $|s_i|$ 是模板串的长度，$|S|$ 是文本串的长度，$|\Sigma|$ 是字符集的大小。如果连了 trie 图，时间复杂度就是 $O(\sum|s_i|+n|\Sigma|+|S|)$，其中 $n$ 是 AC 自动机中结点的数目，并且最大可以达到 $O(\sum|s_i|)$。如果不连 trie 图，并且在构建 fail 指针的时候避免遍历到空儿子，时间复杂度就是 $O(\sum|s_i|+|S|)$。
+
+###### 3.1.3.5.7. 查重算法实现
+
+经过上面对 AC 自动机基本的初步认识，我们可以知道 AC 自动机可以实现字符串的多模式快速匹配，如果你没有看懂具体的细节这不要紧，因为我们的查重算法重点在于应用 AC 自动机。先来看一个非常模板的AC自动机问题, 题目出处为杭电OJ **HDU 2222**:
+
+给定 $n$ 个长度不超过 $50$ 的由小写英文字母组成的单词，以及一篇长为 $m$ 的文章。问其中有多少个单词在文章中出现了。注意：每个单词不论在文章中出现多少次，仅累计 $1$ 次。
+
+输入格式：第一行包含整数 $T$，表示共有 $T$ 组测试数据。对于每组数据，第一行一个整数 $n$，接下去 $n$ 行表示 $n$ 个单词，最后一行输入一个字符串，表示文章。
+
+输出格式：对于每组数据，输出一个占一行的整数，表示有多少个单词在文章中出现。
+
+数据范围：$1 \le n \le 10^4$，$1 \le m \le 10^6$
+
+输入样例：
+
+```
+1
+5
+she
+he
+say
+shr
+her
+yasherhs
+```
+
+输出样例：
+
+```
+3
+```
+
+此问题可以用 AC 自动机实现模式匹配字符串，做到线性复杂度。做法也非常简单，将所有短串插入建立 AC 自动机，然后使用母串在 AC 自动机上进行字符串匹配统计计数即可。
+
+知道如何解决这个问题，那么自然也就可以使用这个思路来进行文本的查重了。假设我们要查重学生 A 以及学生 B 本次作业的重复率，将学生 A 的作业分割为长度为 $10$ 的一些字符串，然后插入构建 AC 自动机。对于学生 B 的作业，就是上面所述问题的母串了，我们只需要对母串在已经构建好的 AC 自动机上做字符串匹配，然后统计有多少学生 A 作业中的长度为 $10$ 的字符串在学生 B 的作业中出现过即可。	
+
+假设字符串重复次数为 $X$ , 将学生 A 和学生 B 的作业分别分割为长度为 $10$ 的字符串后，分别得到的字符串数量为  $C_1, C_2$, 那么定义查重率 $V = 2X / (C_1 + C_2)$ , 此查重率定义较为合理，考虑完全雷同的文本，查重率显然为 $100\%$, 对于完全不同的文本，查重率为 $0$, 其余情况介于这个范围内。
+
+###### 3.1.3.5.8. 复杂度分析
+
+由于每次查重都要对所有提交学生的作业两两查重，假设  $T$ 为两个查重对象作业文本均摊长度, $C$ 为学生人数,
+
+那么查重一次作业时间复杂度 $O(TC^2)$.
+
+最后附上算法实现的核心代码，完整源码位于教师用户文件  `teacher.cpp` 中：
+
+```cpp
+void Teacher::check_duplicate(string course_id, int times, vector<string> ids) {
+    // cout << "\n查重函数 Debug Result: \n\n";
+    string hw_folder = "../../src/model/identity_model/homework_set/" +
+        this->teacher_id + "_teacher/" + course_id +
+        "_course/" + to_string(times) + "_times/";
+    //遍历每个学号
+    for (auto stu_id : ids) {
+        string hw_file = hw_folder + stu_id + "_stu/" + "hw.txt";  //当前学生作业
+        ifstream ifs_hw;
+        ifs_hw.open(hw_file, ios::in);
+        if (!ifs_hw.is_open()) {
+            cout << "\n打开学生 " << stu_id << " 作业文件失败!\n";
+            system("pause");
+            return;
+        }
+        string hw_content;  //作业中所有字符串拼接起来的结果
+        string hw_lines;
+        while (ifs_hw >> hw_lines) hw_content += hw_lines;
+        // Aho–Corasick algorithm, AC自动机字符串匹配(Trie 图优化)
+        //分割为长度为10的字符串
+        //查重一次作业时间复杂度O(T*C^2) T 为两个查重对象作业文本均摊长度,C 为学生人数
+        /*
+        other_hw_content 待匹配母串
+        hw_content 待分割的子串
+        */
+        vector<string> split_string;
+        set<string> filter1;
+        int cnt = 0;
+        string add_temp = "";
+        for (int i = 0; hw_content[i]; i++) {
+            if (cnt % 10 == 0) {
+                split_string.push_back(add_temp);
+                filter1.insert(add_temp);
+                add_temp = "";
+                cnt = 0;
+            }
+            add_temp += hw_content[i];
+            cnt++;
+        }
+        if (add_temp.size() != 0) split_string.push_back(add_temp);
+
+        for (auto other_id : ids) {
+            if (other_id != stu_id) {
+                string other_hw_file = hw_folder + other_id + "_stu/" + "hw.txt";  //其他学生作业
+                ifstream ifs_others;
+                ifs_others.open(other_hw_file, ios::in);
+                string other_hw_content;
+                string other_hw_lines;
+                while (ifs_others >> other_hw_lines) 
+                    other_hw_content += other_hw_lines;
+                /*other_hw_content 待匹配母串
+                hw_content 待分割的子串
+                split_string 分割后的子串
+                split_pattern 分割后的母串*/
+                vector<string> split_pattern;
+                int cnt2 = 0;
+                set<string> filter2;
+                string add_temp2 = "";
+                for (int i = 0; other_hw_content[i]; i++) {
+                    if (cnt2 % 10 == 0) {
+                        split_pattern.push_back(add_temp2);
+                        filter2.insert(add_temp2);
+                        add_temp2 = "";
+                        cnt2 = 0;
+                    }
+                    add_temp2 += other_hw_content[i];
+                    cnt2++;
+                }
+                if (add_temp2.size() != 0) split_pattern.push_back(add_temp2);
+                // AC自动机实现
+                const int N = 1000, S = 15;  //约定作业最长1000*15 字符
+                // const int M = 10000;         //母串长度
+                // int n;
+                int tr[N * S][130];  // trie
+                int cnt[N * S];      //每个节点结尾的10长度单词的数量
+                // char str[M];
+                string str;
+                int q[N * S];  // bfs宽搜队列
+                int ne[N * S];
+                int idx = 0;  // trie idx
+                char init = 0;
+                // AC自动机插入字符串
+                auto insert = [&](string str) {
+                    int p = 0;  //根节点
+                    for (int i = 0; str[i]; i++) {
+                        int t = str[i] - init;
+                        if (!tr[p][t]) tr[p][t] = ++idx;
+                        p = tr[p][t];
+                    }
+                    cnt[p]++;
+                };
+                // bfs构建AC自动机
+                auto build = [&]() {
+                    int hh = 0, tt = -1;
+                    for (int i = 0; i < 128; i++) {
+                        //将根节点的子节点全部入队 就是第一层
+                        if (tr[0][i]) q[++tt] = tr[0][i];
+                    }
+                    while (hh <= tt) {
+                        int t = q[hh++];
+                        for (int i = 0; i < 128; i++) {
+                            int& c = tr[t][i];
+                            // trie图优化：
+                            //如果j的子节点c不存在 那么就让c直接指向最终的位置
+                            //这里的ne[]此时是递归定义的，如果匹配下一个字母失败，
+                            //就会直接跳到最终的位置
+                            //不会在每一个fail指针处都判断是否存在该字母
+                            if (!c)
+                                tr[t][i] = tr[ne[t]][i];
+                            else {
+                                //如果子节点c存在 那就和朴素的写法一样 更新子节点的next
+                                ne[c] = tr[ne[t]][i];
+                                q[++tt] = c;
+                            }
+                        }
+                    }
+                };
+
+                // main logic
+                memset(tr, 0, sizeof tr);
+                idx = 0;
+                memset(cnt, 0, sizeof cnt);
+                memset(ne, 0, sizeof ne);
+                memset(q, 0, sizeof q);
+                for (auto s : split_string) {
+                    insert(s);
+                }
+                build();
+                str = other_hw_content;  //待匹配长母串
+                int res = 0;
+                for (int i = 0, j = 0; str[i]; i++) {
+                    int t = str[i] - init;
+                    // trie图优化:
+                    j = tr[j][t];  //不用再while循环了
+                    int p = j;
+                    while (p) {
+                        res += cnt[p];
+                        cnt[p] = 0;
+                        p = ne[p];
+                    }
+                }
+                double dup_rate = 1.0 * res * 2 / (filter1.size() + filter2.size());
+                cout << "\n学生 " << stu_id << " 与学生 " << 
+                    other_id << " 本次作业作业重复率为 " << dup_rate * 100 << "%\n";
+            }
+        }
+    }
+    system("pause");
+    system("cls");
+}
+```
+
+
+
+### 3.2. 学生课程模块
+
 #### 3.2.1. 数据结构说明和数据字典
   - 1.`struct single_course`
 
@@ -386,7 +737,7 @@ bool Student::interact(int x1, int x2, int y1, int y2) {
   可得：
   $T(n) = Cn + nlogn$
   不难看出复杂度为 $ O(nlogn) $ 。
-##### 3.2.3.2. 压缩文件
+##### 3.2.3.2. 压缩文件[^7]
 
 场景：
 
@@ -554,8 +905,6 @@ void unzip(const char* pathname) {//保存
 }
 ```
 
-
-
 优缺点：
 
 - 解码信息存储在文件中，不必手工输入，操作简单。
@@ -607,7 +956,7 @@ _此模块代码实现和报告/文档撰写由（2020211592 任晓斌）实现_
 
 #### 3.3.2. 核心算法概述
 
-在各种不同策略和要求的最短路实现代码中，均采用 [Floyd 算法](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)来预处理出全源最短路，且以文件保存所有预处理好的最短路结果，每次导航只需快速查询即可，不用每次导航都跑一次最短路算法。
+在各种不同策略和要求的最短路实现代码中，均采用 [Floyd 算法](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm) [^6]来预处理出全源最短路，且以文件保存所有预处理好的最短路结果，每次导航只需快速查询即可，不用每次导航都跑一次最短路算法。
 
 为什么采用预预处理全源最短路，而不是每次导航都跑一次 Dijkstra 或者其它单源最短路算法呢？我们先分析一下每次导航都要跑 Dijkstra 算法的时间和空间复杂度。朴素实现的 Dijkstra 算法时间复杂度为 $O(mn)$, 其中 $m$ 为图中的边数，$n$ 为图中的点数。考虑每次导航时如果在线建图一次，其 I/O 所用时间已经是近似 $O(n^2)$ 时间复杂度, 且导航在系统中是较为常用的部分，需要频繁调用。
 
@@ -1078,7 +1427,7 @@ while (ifs >> file_date >> file_class_number >> file_classroom >> file_course_na
 
 此算法实现源代码位于导航模块目录下的 `bonus_algo.cpp` , 我们通过证明算法的正确性，分析算法的复杂度，最后再讲解源码的过程来依次讲述这部分实现的内容。
 
-1. 算法思路概述：
+1. 算法思路概述[^4][^5]：
 
 首先将问题抽象为这样的图论问题: 给定一个无向无负权图 $G(V,E)$, 规定起点 $S$, 终点 $T$, 且给定 $K$ 个图中互不相同的点 $a_1, a_2, a_3....a_k$ , 求出从 $S$ 出发到 $T$ ，同时经过所有点 $a_i(i=1 \sim k)$ 的一条最短路。
 
@@ -1286,11 +1635,14 @@ void Guide::print_path_by_fixed_building() {  //选做算法  经过固定地点
 
 软件工程方面，我们进一步理解了项目从启动到验收的全过程，并且在编写大量代码的过程中培养了思维和代码能力。
 
-数据结构方面，我们写了二叉搜索树，`Floyd`算法，哈夫曼树，AC自动机等较为复杂的数据结构，加深了我们对其的理解。 
-
+数据结构方面，我们写了二叉搜索树，Floyd 算法，哈夫曼树，动态规划，AC自动机等较为复杂的算法和数据结构，加深了我们对其的理解。 
 
 ## 5. 参考文献
 
-
-[^1]: [哈夫曼压缩算法](https://zhuanlan.zhihu.com/p/144562146)
-[^2]: [二进制文件处理](http://c.biancheng.net/view/302.html)
+[^1]: [Binary search tree](https://en.wikipedia.org/wiki/Binary_search_tree)
+[^2]:[Aho–Corasick algorithm](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm)
+[^3]: [OI-Wiki AC 自动机](https://oi-wiki.org/string/ac-automaton/)
+[^4]: [Find the shortest path in a graph which visits certain nodes](https://stackoverflow.com/questions/222413/find-the-shortest-path-in-a-graph-which-visits-certain-nodes)
+[^5]: [Dynamic programming](https://en.wikipedia.org/wiki/Dynamic_programming)
+[^6]: [Floyd–Warshall algorithm](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)
+[^7]: [Huffman coding](https://en.wikipedia.org/wiki/Huffman_coding)
