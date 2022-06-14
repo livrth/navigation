@@ -497,7 +497,7 @@ void compress(string str) {
 
 算法实现：
 
-- 有关量定义
+- 有关变量定义
 
 ```cpp
     unsigned int unzip_lenstr; //记录哈夫曼码的长度
@@ -507,7 +507,7 @@ void compress(string str) {
     string unzip_text; //存放解压缩后的字符串
 ```
 
-- `decompress`逻辑如下，`str`存放的是需要解压缩的文件地址，` loadZip	`函数读入压缩后的文件，生成码表，并且解压缩；`unzip`函数将解压缩后的内容存放在_zip_unzip.txt文件中。
+- `decompress` 逻辑如下，`str` 存放的是需要解压缩的文件地址，` loadZip` 函数读入压缩后的文件，生成码表，并且解压缩；`unzip` 函数将解压缩后的内容存放在 `*zip_unzip.txt `文件中。
 
 ```cpp
 void decompress() {
