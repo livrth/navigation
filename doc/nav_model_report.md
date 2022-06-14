@@ -495,19 +495,19 @@ while (ifs >> file_date >> file_class_number >> file_classroom >> file_course_na
 
 1. 算法思路概述：
 
-首先将问题抽象为这样的图论问题: 给定一个有向无负权图 $G(V,E)$, 起点 $S$, 终点 $T$, 且给定 $K$ 个图中互不相同的点 $a_1, a_2, a_3....a_k$ , 求出从 $S$ 出发到 $T$ ，同时经过所有点 $a_i(i=1 \sim k)$ 的一条最短路。
+首先将问题抽象为这样的图论问题: 给定一个无向无负权图 $G(V,E)$, 规定起点 $S$, 终点 $T$, 且给定 $K$ 个图中互不相同的点 $a_1, a_2, a_3....a_k$ , 求出从 $S$ 出发到 $T$ ，同时经过所有点 $a_i(i=1 \sim k)$ 的一条最短路。
 
 初步分析此问题的最坏情况，即在 $G$ 上求一条最短路，从 $S$ 出发到 $T$ 且必须经过所有点。此的问题即为经典的 [Hamiltonian path problem](https://en.wikipedia.org/wiki/Hamiltonian_path_problem), 在 TCS 学术界早已证明为  NP-complete 问题，目前无多项式时间复杂度解法。所以此问题最坏情况可归约至 NP 完全问题，下面考虑一般情况下的此问题。
 
 对于只求出经过有限数量固定点的情况，将图 $G$ 分割为两个点集 $G_1, G_2$, 令 $G_1 = \{V_1|V_1 ∈ a_i(i = 1 \sim k)\}$, $G_2 = G \backslash G_1$, 定义最短路 $Path(S,T,K)$ 表示在此问题约束下的最短路状态空间。定义图 $G$ 子集 $G_s$ 的排列 $P(G_s) = \{permutation(g_1, g_2, g_3...g_k) | g_1, g_2, g_3...g_k ∈ G_s \}$ , 则最短路状态空间：
 $$
-Path(S,T,K) = min\{Path(S,g_1^{\prime}, K) + \sum_{i=2}^{k} Path(S,g_i^{\prime},K) + Path(g_k^{\prime}, T, K), k \geq 2 \}
+Path(S,T,K) = min\{Path(S,g_1^{\prime}, K) + \sum_{i=2}^{k-1} Path(g_i,g_{i+1}^{\prime},K) + Path(g_k^{\prime}, T, K), k \geq 2 \}
 $$
-其中 $\{g_1^{\prime}, g_2^{\prime}, g_3^{\prime}...g_k^{\prime} ∈ P(G_1) \}$ 表示约束点集子图的一个排列, $Path(S,T,K)$ 为此问题的空间集合。
+其中 $\{g_1^{\prime}, g_2^{\prime}, g_3^{\prime}...g_k^{\prime} ∈ P(G_1) \}$ 表示约束点集子图的一个排列, $Path(S,T,K)$ 为最优解的状态集合。
 
 2. 算法正确性证明：
 
-假设 $Path(S,T,K^{\prime})$ 为此问题的最优解空间, 讨论约束集合 $K$ 与 $K^{\prime}$ 的关系:
+假设 $Path(S,T,K^{\prime})$ 同为此问题的最优解空间, 讨论约束集合 $K$ 与 $K^{\prime}$ 的关系:
 
 - $K^{\prime} \subset K$， 由 $min\{Path(S,T,K)\} = min\{Path(S,T,K^{\prime})\}$ 可知 $K^{\prime} = K$ 即最优解唯一，为 $min\{Path(S,T,K)\}$
 
@@ -518,6 +518,167 @@ $$
 
 - $K \subset K^{\prime}$, 同第一种集合关系. 由条件 $min\{Path(S,T,K)\} = min\{Path(S,T,K^{\prime})\}$ 可知 $K^{\prime} = K$ 即最优解唯一，为 $min\{Path(S,T,K)\}$
 
-综上推导可知此最短路问题的唯一最优解状态空间为 $min\{Path(S,T,K)\}$ 不存在其它的最优解情况。
+综上推导可知此最短路问题的唯一最优解状态空间为 $min\{Path(S,T,K)\}$ 不存在其它的最优解情况. QED.
 
 3. 算法复杂度分析：
+
+根据问题最优解的状态转移表达式来逐项分析:
+
+$$
+Path(S,T,K) = min\{Path(S,g_1^{\prime}, K) + \sum_{i=2}^{k-1} Path(g_i,g_{i+1}^{\prime},K) + Path(g_k^{\prime}, T, K), k \geq 2 \}
+$$
+
+对于求解 $\sum_{i=2}^{k-1} Path(g_i,g_{i+1}^{\prime},K)$, 需要 $O(K!)$ 时间复杂度，$K$ 为约束集合大小，也就是图中必须经过的点数集合大小。对于上式整体的求和结果，必须考虑到排列 $P(G_1)$ 的所有排列情况，通俗来讲为 $g_1^{\prime}$ 以及 $g_k^{\prime}$ 的所有情况都需要考虑，同时不断更新最优解。仔细思考一下，这本质上就是要求任意两点之间的最短路，那么可用的算法通常来说有 Floyd 算法求解全源最短路，或者对于每个点都执行一次 Dijkstra 算法，但是后者实现起来较为麻烦，切复杂度只有常数级别的优化，故此处采用 Floyd 算法来实现。	
+
+所以算法最终的复杂度为 $O(N^3 + K!)$, 其中 $N = |V|$, $K = |G_1|$ .
+
+4. 算法代码实现和样例解释:
+
+由于项目的地图中有超过20个建筑设施，所以不便于使用校园地图来举例讲述。为了直观演示算法的正确性和效果，我们此处构建一个较小的样例来说明，此测试样例对应的地图文件位于导航模块下的 `shortest_path_test_map.txt`, 我们首先绘制此样例对应的无向带权图如下所示: 
+
+<img src="nav_model_report.assets/graph_bonus.png" alt="graph_bonus" style="zoom: 80%;" />
+
+<center style="color:#C0C0C0;text-decoration:underline">使用   csacademy.com/app/graph_editor 绘制</center>
+
+考虑从 $1$ 号点出发，终点为 $6$ 号点, 途中必须经过 $2,3,4,5$ 号点的测试样例。算法在开始执行前先使用 Floyd 算法预处理一次全源最短路，并记忆化保存，此样例中 $G_1 = \{2,3,4,5\}$, $|G_1| = 4$. 令 $P(G_1) = \{a_1, a_2...a_k\}$, 则对于 $P(G_1)$ 的每种排列，都求一次 $\sum_{i=2}^{k-1} Path(g_i,g_{i+1},K)$, 再加上 $Path(S,a_1, K) + Path(a_k, T, K)$ 的值来持续更新最优解即可，用伪代码描述如下：
+
+```python
+//Precomputation: Find all pairs shortest paths, e.g. using Floyd-Warshall
+n = number of nodes
+for i=1 to n: for j=1 to n: d[i][j]=INF
+for k=1 to n:
+    for i=1 to n:
+        for j=1 to n:
+            d[i][j] = min(d[i][j], d[i][k] + d[k][j])
+
+//Now try all permutations
+shortest = INF
+for each permutation a[1],a[2],...a[k] of the 'mustpass' nodes:
+    shortest = min(shortest, d['start'][a[1]]+d[a[1]][a[2]]+...+d[a[k]]['end'])
+print shortest
+```
+最后附上我们在项目中对于此算法完整的代码实现:
+
+```cpp
+void Guide::print_path_by_fixed_building() {  //选做算法  经过固定地点
+    cout << "请输入您当前所在校区: ";
+    string campus_now;
+    cin >> campus_now;
+    cout << "请输入您所在的建筑编号(例如 5): ";
+    int startp;
+    cin >> startp;
+
+    cout << "请输入您的目的建筑编号(例如 3): ";
+    int endp;
+    cin >> endp;
+
+    //读入地图中的边
+    string path_file;
+    // test
+    // path_file = "../../src/model/navigation_model/shortest_path_test_map.txt";
+
+    if (campus_now == "沙河")
+        path_file = "../../src/model/navigation_model/map1.txt";  //沙河校区
+    else
+        path_file = "../../src/model/navigation_model/map2.txt";  //西土城
+
+    ifstream ifs;
+    ifs.open(path_file, ios::in);
+    if (!ifs.is_open()) {
+        cout << "\n打开地图路径文件失败!" << endl;
+        system("pause");
+        return;
+    }
+
+    const int N = 220, INF = 1e9;
+    int n = 210;
+    int d[N][N];
+    int P[N][N];  //记录DP过程中间点, 还要记录路径
+    memset(P, 0, sizeof P);
+    // init dist
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= n; j++)
+            if (i == j)
+                d[i][j] = 0;
+            else
+                d[i][j] = INF;
+
+    auto floyd = [&]() {
+        for (int k = 1; k <= n; k++)
+            for (int i = 1; i <= n; i++)
+                for (int j = 1; j <= n; j++)
+                    if (d[i][k] + d[k][j] < d[i][j]) {
+                        d[i][j] = d[i][k] + d[k][j];
+                        P[i][j] = k;
+                    }
+    };
+
+    std::function<void(int, int)> output_path = [&](int u, int v) -> void {  
+        // 输出 u v 最短路经过的所有点, 输出不包括起点终点
+        if (P[u][v] == 0) return;
+        output_path(u, P[u][v]);
+        cout << P[u][v] << "号建筑 -> ";
+        output_path(P[u][v], v);
+        return;
+    };
+
+    //读入地图边
+    int a, b, x;
+    while (ifs >> a >> b >> x) {
+        d[a][b] = d[b][a] = min(d[a][b], x);  //判断重边
+    }
+    // ifs.close();
+
+    floyd();
+
+    cout << "\n请输入您必须要经过的固定建筑物编号, \
+    \n例如 3 2 3 5, 第一个 3 代表个数, \
+    表示必须经过 2, 3, 5 三个点: ";
+    vector<int> node;
+    int cnt;
+    cin >> cnt;
+    for (int i = 0; i < cnt; i++) {
+        int x;
+        cin >> x;
+        node.push_back(x);
+    }
+    sort(node.begin(), node.end());
+
+    int res = INF;
+    vector<int> best_path;
+    do {
+        int dist = d[startp][node[0]];
+        for (int i = 0; i < cnt - 1; i++) dist += d[node[i]][node[i + 1]];
+        dist += d[node[cnt - 1]][endp];
+        if (dist < res) {
+            res = dist;
+            best_path = node;
+        }
+    } while (next_permutation(node.begin(), node.end()));
+
+    //目前只是得到最短路d[][]的表示路径
+    //对于每一步最短路，都输出详细的单步路径
+    vector<int> final_path;
+    final_path.push_back(startp);
+    for (auto t : best_path) final_path.push_back(t);
+    final_path.push_back(endp);
+
+    cout << "\n已为您规划" << campus_now << "校区最短路径如下: \n";
+    cout << "--------------------------------------------------\n";
+
+    for (int i = 0; i < (int)final_path.size() - 1; i++) {
+        cout << final_path[i] << "号建筑 -> ";
+        output_path(final_path[i], final_path[i + 1]);
+    }
+    cout << final_path.back() << " 号建筑" << endl;  //终点
+    cout << "-----------------------------------------------------------\n";
+    cout << "最短路距离总和为: " << res << " 米" << endl;
+    cout << "------------------------------------------------------------\n";
+
+    system("pause");
+    system("cls");
+    return;
+}
+```
+
+以上就是整个导航模块所有功能实现的详细过程讲述，至此所有模块的文档说明完毕。
