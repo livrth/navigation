@@ -81,7 +81,7 @@
 - 10.`map<word_to_sen,map<word_to_par>`
 
    字符到包含该字符的字符串的map
-   这个`map`位于学生模块中，包含 `x` 项，用于模糊查找，`map`内部使用红黑树，在查找时通过对输入的 `k `个字符作为 `key`,查找对应的`value`,可以以 $O(klog x)$时间复杂度实现模糊查找。
+   这个`map`位于学生模块中，包含 `x` 项，用于模糊查找，`map`内部使用红黑树，在查找时通过对输入的 `k `个字符作为 `key`,查找对应的`value`,可以以  $ O(klog x) $  时间复杂度实现模糊查找。
 
 
 ##### 3.1.1.2.实现的功能
@@ -103,7 +103,7 @@
  -  8.模拟时间暂停
 
  - 9.模拟时间快进
- - 10.活动闹钟提醒 (以模拟时间为准，通过输出"\a"模拟闹铃)
+ - 10.活动闹钟提醒 (以模拟时间为准，通过输出`"\a"`模拟闹铃)
 ##### 3.1.1.3.算法及分析
 ###### 3.1.1.3.1.二叉搜索树
  场景
@@ -119,11 +119,11 @@
  分析
 - 二分查找复杂度分析:
   最坏情况：假设所要查找的数据在树中最后一层，那么查找次数`k`满足$2^k=n$,$k=logn$。
-  最坏复杂度=$O(log   n)$
+  最坏复杂度 = $O(log   n)$ 
 - 假设数据量为n.
  程序中通过 `kth( rank( time+ 1) )` 来找到time的后继：
  ```cpp
- int Student::rank(int x, int root, Node -t) {
+ int Student::rank(int x, int root, Node *t) {
     if (root) {
         if (x < t[root].value)
             return rank(x, t[root].left, t);
@@ -134,16 +134,16 @@
     return 1;
 }
 
-int Student::kth(int x, int root, Node -t) {
+int Student::kth(int x, int root, Node *t) {
     if (x <= t[t[root].left].size) return kth(x, t[root].left, t);
     if (x <= t[t[root].left].size + t[root].num) return t[root].value;
     return kth(x - t[t[root].left].size - t[root].num, t[root].right, t);
 }
  ```
-  `rank(x+1)`通过分治查找返回x的后继的排名，`kth(y)`通过分治查找返回排名y的数据的值。两个二分查找复杂度均为$O(log n)$，则只需要$O(log n)$复杂度即可得到结果
-- 通过`insert(x)`来添加结点，依然采用分治，则可以在$O (log n)$时间内完成活动的添加。
+  `rank(x+1)`通过分治查找返回x的后继的排名，`kth(y)`通过分治查找返回排名y的数据的值。两个二分查找复杂度均为 $ O(log n) $ ，则只需要 $O(log n)$ 复杂度即可得到结果
+- 通过`insert(x)`来添加结点，依然采用分治，则可以在 $O (log n) $ 时间内完成活动的添加。
 ```cpp
-void Student::insert(int x, int root, Node -t, int &cnt) {
+void Student::insert(int x, int root, Node *t, int &cnt) {
     if (x < t[root].value)
         if (!t[root].left)
             t[t[root].left = ++cnt] = Node(0, 0, 1, x);
@@ -328,7 +328,7 @@ bool Student::interact(int x1, int x2, int y1, int y2) {
   最后结束于T(1), 即：$2^k=n$
   可得：
   $T(n) = Cn + nlogn$
-  不难看出复杂度为$O(nlogn)$。
+  不难看出复杂度为 $ O(nlogn) $ 。
 ##### 3.2.3.2 压缩文件
 
 场景
@@ -409,7 +409,7 @@ void dfs(zipnode- p, string s) {
 }
 ```
 
-- compress的逻辑如下。`str`是输入的作业地址，由学生输入作业次数等信息后自动生成，`buildText`函数用于生成哈夫曼树以及对原文件进行二进制读入，`writeZip`函数将编码以及哈夫曼树的信息写入新生成的压缩文件中。
+- `compress`的逻辑如下。`str`是输入的作业地址，由学生输入作业次数等信息后自动生成，`buildText`函数用于生成哈夫曼树以及对原文件进行二进制读入，`writeZip`函数将编码以及哈夫曼树的信息写入新生成的压缩文件中。
 
 ```cpp
 void compress(string str) {
@@ -446,7 +446,7 @@ void compress(string str) {
     string unzip_text; //存放压缩文件中的编码信息
 ```
 
-- decompress逻辑如下，`str`存放的是需要解压缩的文件地址，` loadZip	`函数读入压缩后的文件，生成码表，并且解压缩；`unzip`函数将解压缩后的内容存放在_zip_unzip.txt文件中。
+- `decompress`逻辑如下，`str`存放的是需要解压缩的文件地址，` loadZip	`函数读入压缩后的文件，生成码表，并且解压缩；`unzip`函数将解压缩后的内容存放在_zip_unzip.txt文件中。
 
 ```cpp
 void decompress() {
