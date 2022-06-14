@@ -394,6 +394,10 @@ bool Student::interact(int x1, int x2, int y1, int y2) {
 
 - 学生提交作业和提交材料  
 
+示意图
+
+![compress](.assets/howcomprworks.png)
+
 算法实现
 
 - 哈夫曼树的结构为
@@ -418,7 +422,7 @@ struct cmp { //使用堆的优先排列生成树
 unsigned int zip_lenstr;//记录文档的长度
 zipnode- rt = nullptr;//初始化哈夫曼树
 map<char, string> zip_code;//记录哈夫曼树生成的字符与对应的编码
-string zip_text;//压缩后的文件以字符串的形式保存
+string zip_text;//压缩后的文件编码以字符串的形式保存
 ```
 
 
@@ -431,7 +435,7 @@ string zip_text;//压缩后的文件以字符串的形式保存
 
   
 
-- 采取堆的优先排列生成哈夫曼树,时间复杂度为$O(nlog(n))$同时输出字母及其ASCII码对应的数值，以及字母对应的编码
+- 采取堆的优先队列生成哈夫曼树,时间复杂度为$O(nlog(n))$同时输出字母及其ASCII码对应的数值，以及字母对应的编码
 
   ```cpp
   priority_queue<zipnode-, vector<zipnode->, cmp> Q;
@@ -489,9 +493,15 @@ void compress(string str) {
 
 ##### 3.2.3.3. 解压缩文件
 
-场景：
+场景
 
 - 学生下载资料，老师批改作业
+
+示意图
+
+
+
+![howdecomworks](.assets/howdecomworks.png)
 
 算法实现
 
@@ -500,9 +510,9 @@ void compress(string str) {
 ```cpp
     unsigned int unzip_lenstr; //记录哈夫曼码的长度
     pair<char, int> unzip_chlen[257];//存放生成的码表，包括字符和权值，最多存放257对信息
-    map<char, string> unzip_code;//存放解压缩前的字母信息
-    map<string, char> unzip_decode;//存放解压缩后的字母信息
-    string unzip_text; //存放压缩文件中的编码信息
+    map<char, string> unzip_code;//辅助生成unzip_decode
+    map<string, char> unzip_decode;//存放解压缩后的字符信息
+    string unzip_text; //存放解压缩后的字符串
 ```
 
 - `decompress`逻辑如下，`str`存放的是需要解压缩的文件地址，` loadZip	`函数读入压缩后的文件，生成码表，并且解压缩；`unzip`函数将解压缩后的内容存放在_zip_unzip.txt文件中。
@@ -519,7 +529,7 @@ void decompress() {
 }
 ```
 
-- 函数`buildCodeTable`作用是将压缩文件中的如何解压缩的信息读入并且生成码表，由函数`loadZip`调用。程序可以自行生成码表，不需要手动输入，方便操作。
+- 函数`buildCodeTable`作用是将压缩文件中的如何解压缩的信息读入并且生成码表，由函数`loadZip`调用。程序可以自行生成码表并解码，不需要手动输入，方便操作。
 
 ```cpp
 void buildCodeTable(int n) {//建立编码列表函数 
@@ -528,12 +538,31 @@ void buildCodeTable(int n) {//建立编码列表函数
 		char now_char = unzip_chlen[now].first;
 		unzip_code[now_char] += unzip_text[i];
 		if (unzip_code[now_char].length() == unzip_chlen[now].second) {
-			unzip_decode[unzip_code[now_char]] = now_char; 
+			unzip_decode[unzip_code[now_char]] = now_char; //生成解压缩字符串
 			now++;
 		}
 	}
 }
 ```
+
+* 函数`unzip`在写入文件的过程中，将`unzip_decode`的字符再次比对，确保正确再写入，相当于一个二次检查,时间复杂度为 $O(n)$ 。
+
+```cpp
+void unzip(const char* pathname) {//保存 
+	ofstream out;
+	out.open(pathname, ios::binary);
+	string now;
+	for (int i = 0; i < unzip_lenstr; ++i) {
+		now += unzip_text[i];
+		if (unzip_decode.count(now)) {
+			out.put(unzip_decode[now]);
+			now.clear();
+		}
+	}
+}
+```
+
+
 
 优缺点：
 
