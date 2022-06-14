@@ -20,7 +20,7 @@ void Guide::print_path_by_fixed_building() {  //选做算法  经过固定地点
     int startp;
     cin >> startp;
 
-    cout << "请输入您的目的建筑编号(例如 3): ";
+    cout << "请输入您的目的建筑编号(例如 8): ";
     int endp;
     cin >> endp;
 
@@ -82,7 +82,7 @@ void Guide::print_path_by_fixed_building() {  //选做算法  经过固定地点
 
     floyd();
 
-    cout << "\n请输入您必须要经过的固定建筑物编号,\n例如 3 2 3 5, 第一个 3 代表个数, 表示必须经过 2, 3, 5 三个点: ";
+    cout << "\n请输入要经过的固定建筑物编号,\n例如 4 1 2 3 4, 第一个 4 表示个数, 必须经过 1, 2, 3, 4 这四个建筑: ";
     vector<int> node;
     int cnt;
     cin >> cnt;

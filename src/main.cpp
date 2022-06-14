@@ -336,7 +336,6 @@ void new_teacher_reg() {
 
 int main() {
     //起始欢迎界面
-    /*
     system("cls");
     cout << "\n\n";
     Sleep(100);
@@ -353,7 +352,6 @@ int main() {
     cout << "\t\tWelcome to Course Assistance System \n";
     Sleep(1500);
     system("cls");
-    */
 
     int op;
     while (true) {
