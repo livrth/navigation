@@ -123,7 +123,7 @@
 - 假设数据量为n.
  程序中通过 `kth( rank( time+ 1) )` 来找到time的后继：
  ```cpp
- int Student::rank(int x, int root, Node *t) {
+ int Student::rank(int x, int root, Node -t) {
     if (root) {
         if (x < t[root].value)
             return rank(x, t[root].left, t);
@@ -134,7 +134,7 @@
     return 1;
 }
 
-int Student::kth(int x, int root, Node *t) {
+int Student::kth(int x, int root, Node -t) {
     if (x <= t[t[root].left].size) return kth(x, t[root].left, t);
     if (x <= t[t[root].left].size + t[root].num) return t[root].value;
     return kth(x - t[t[root].left].size - t[root].num, t[root].right, t);
@@ -143,7 +143,7 @@ int Student::kth(int x, int root, Node *t) {
   `rank(x+1)`通过分治查找返回x的后继的排名，`kth(y)`通过分治查找返回排名y的数据的值。两个二分查找复杂度均为$O(log n)$，则只需要$O(log n)$复杂度即可得到结果
 - 通过`insert(x)`来添加结点，依然采用分治，则可以在$O (log n)$时间内完成活动的添加。
 ```cpp
-void Student::insert(int x, int root, Node *t, int &cnt) {
+void Student::insert(int x, int root, Node -t, int &cnt) {
     if (x < t[root].value)
         if (!t[root].left)
             t[t[root].left = ++cnt] = Node(0, 0, 1, x);
@@ -181,23 +181,30 @@ bool Student::interact(int x1, int x2, int y1, int y2) {
  - 2.与活动相关的功能都在本模块内部实现
  - 3.通过路径导航功能可以创建guide实例，实现学生的导航需求
 ##### 3.1.1.5执行效果
-课程表
+- 课程名称查询
 
-![](.assets/课程表.png)
-课程名称查找
+![image-20220614152406600](.assets/image-20220614152406600.png)
 
-![作业名称查询](.assets/作业名称查询-16550867314724.png)
+- 活动类型查询
 
-根据输入时间给出下一节课的教室
+  ![活动类型查询](.assets/活动类型查询.png)
 
-![](.assets/根据输入时间给出下一节课的教室.png)
+- 学生设置活动
 
-学生设置个人活动并进行冲突检测
+  ![学生设置活动](.assets/学生设置活动-165519311137525.png)
 
-![设置个人活动并进行冲突检测](.assets/设置个人活动并进行冲突检测.png)
-部分日志记录
+- 课程课表查询
 
-![log](.assets/log.png)
+  ![课程课表查询](.assets/课程课表查询.png)
+
+- 活动名称查找
+
+  ![活动名称查找](.assets/活动名称查找.png)
+
+  - 活动页面
+
+    ![活动页面](.assets/活动页面.png)
+
  #### 3.1.2.管理员用户
  ##### 3.1.2.1.数据结构说明和数据字典
 - 1.`struct single_course_a`
@@ -220,12 +227,15 @@ bool Student::interact(int x1, int x2, int y1, int y2) {
 ##### 3.1.2.3.与其他模块交互
 - 管理员对文件的修改将会影响到其他用户在之后读取各种数据的情况
 ##### 3.1.2.4执行效果
-管理员设置班级活动
+- 管理员修改考试时间
 
-![管理员设置班级活动](.assets/管理员设置班级活动.png)
-管理员修改考试时间
+![修改课程](.assets/修改课程-165518552895014.png)
 
-![修改课程](.assets/修改课程.png)
+- 管理员发布班级活动
+
+![管理员发布班级活动](.assets/管理员发布班级活动.png)
+
+
 
 #### 3.1.3. 教师用户
 ##### 3.1.3.1.数据结构说明和数据字典
@@ -312,9 +322,9 @@ bool Student::interact(int x1, int x2, int y1, int y2) {
 }
  ```
 - 考虑到最好情况，假设每次都是均匀划分，则运算成本为：
-  $T(n) =2 * T(n/2) + n$
+  $T(n) =2 - T(n/2) + n$
   递归展开后：
-  $T(n) = 2 * 2[T(n/4) + n/2] + n = 2^kT(n/(2^k)) + kn$
+  $T(n) = 2 - 2[T(n/4) + n/2] + n = 2^kT(n/(2^k)) + kn$
   最后结束于T(1), 即：$2^k=n$
   可得：
   $T(n) = Cn + nlogn$
@@ -323,27 +333,38 @@ bool Student::interact(int x1, int x2, int y1, int y2) {
 
 场景
 
-* 学生提交作业和提交材料  
+- 学生提交作业和提交材料  
 
 算法实现
 
-* 哈夫曼树的结构为
+- 哈夫曼树的结构为
 
 ```cpp
 struct zipnode {
     int val;//保存字母的权值
     char ch;//保存字母
-    zipnode *l, *r;//结点的左右孩子，初始时设置为空
-    zipnode(int v, zipnode* lc = nullptr, zipnode* rc = nullptr) : val(v), l(lc), r(rc){};
+    zipnode -l, -r;//结点的左右孩子，初始时设置为空
+    zipnode(int v, zipnode- lc = nullptr, zipnode- rc = nullptr) : val(v), l(lc), r(rc){};
 };
 struct cmp { //使用堆的优先排列生成树
-    bool operator()(zipnode* a, zipnode* b) {
+    bool operator()(zipnode- a, zipnode- b) {
         return a->val > b->val;
     }
 };
 ```
 
-* 在处理需要压缩的文件时，采用二进制方式读取文件
+- 有关量定义
+
+```cpp
+unsigned int zip_lenstr;//记录文档的长度
+zipnode- rt = nullptr;//初始化哈夫曼树
+map<char, string> zip_code;//记录哈夫曼树生成的字符与对应的编码
+string zip_text;//压缩后的文件以字符串的形式保存
+```
+
+
+
+- 在处理需要压缩的文件时，采用二进制方式读取文件
 
   ```cpp
   in.open(pathname, ios::binary);
@@ -351,19 +372,19 @@ struct cmp { //使用堆的优先排列生成树
 
   
 
-* 采取堆的优先排列生成哈夫曼树,时间复杂度为$O(nlog(n))$同时输出字母及其ASCII码对应的数值，以及字母对应的编码
+- 采取堆的优先排列生成哈夫曼树,时间复杂度为$O(nlog(n))$同时输出字母及其ASCII码对应的数值，以及字母对应的编码
 
   ```cpp
-  priority_queue<zipnode*, vector<zipnode*>, cmp> Q;
+  priority_queue<zipnode-, vector<zipnode->, cmp> Q;
   for (auto x : cnt) {
-          zipnode* p = new zipnode(x.second);
+          zipnode- p = new zipnode(x.second);
           p->ch = x.first;
           Q.push(p);
       }
   while (Q.size() >= 2) {
-          zipnode* lc = Q.top();
+          zipnode- lc = Q.top();
           Q.pop();
-          zipnode* rc = Q.top();
+          zipnode- rc = Q.top();
           Q.pop();
           rt = new zipnode(lc->val + rc->val, lc, rc);
           Q.push(rt);
@@ -375,10 +396,10 @@ struct cmp { //使用堆的优先排列生成树
       }
   ```
 
-* 对哈夫曼树进行深度优先遍历，时间复杂度为$O(n)$,`dfs`函数如下
+- 对哈夫曼树进行深度优先遍历，时间复杂度为$O(n)$,`dfs`函数如下
 
 ```cpp
-void dfs(zipnode* p, string s) {
+void dfs(zipnode- p, string s) {
     if (p->l == nullptr && p->r == nullptr) {
         zip_code[p->ch] = s;
         return;
@@ -388,7 +409,7 @@ void dfs(zipnode* p, string s) {
 }
 ```
 
-* compress函数的逻辑如下。`str`是输入的作业地址，由学生输入作业次数等信息后自动生成，`buildText`函数用于生成哈夫曼树以及对原文件进行二进制读入，`writeZip`函数将编码以及哈夫曼树的信息写入新生成的压缩文件中。
+- compress的逻辑如下。`str`是输入的作业地址，由学生输入作业次数等信息后自动生成，`buildText`函数用于生成哈夫曼树以及对原文件进行二进制读入，`writeZip`函数将编码以及哈夫曼树的信息写入新生成的压缩文件中。
 
 ```cpp
 void compress(string str) {
@@ -403,7 +424,7 @@ void compress(string str) {
 
 优点
 
-*  由于解压缩需要压缩时的信息，若用普通文档储存压缩时信息，解压缩时读入文件会相当困难;而且压缩的文件不需要被看到。于是参考了对二进制文件的处理方式，选择用二进制文件存储压缩后的信息，简单高效。
+-  由于压缩的文件不需要被看到,而二进制文件储存相对来说占空间小。于是参考了对二进制文件的处理方式，选择用二进制文件存储压缩后的信息，简单高效。
 
 
 
@@ -411,19 +432,71 @@ void compress(string str) {
 
 场景：
 
-* 学生下载资料，老师批改作业
+- 学生下载资料，老师批改作业
 
 算法实现
 
-*
+- 有关量定义
 
+```cpp
+    unsigned int unzip_lenstr; //记录哈夫曼码的长度
+    pair<char, int> unzip_chlen[257];//存放生成的码表，包括字符和权值，最多存放257对信息
+    map<char, string> unzip_code;//存放解压缩前的字母信息
+    map<string, char> unzip_decode;//存放解压缩后的字母信息
+    string unzip_text; //存放压缩文件中的编码信息
+```
+
+- decompress逻辑如下，`str`存放的是需要解压缩的文件地址，` loadZip	`函数读入压缩后的文件，生成码表，并且解压缩；`unzip`函数将解压缩后的内容存放在_zip_unzip.txt文件中。
+
+```cpp
+void decompress() {
+    string str;
+    cin >> str;
+    loadZip(str.c_str());
+    int pos = str.find_last_of('.');
+    string str1 = str.substr(0, pos);
+    str1 += "_unzip.txt";//命名压缩后的文件。由于是压缩后再解压缩的，因此名字后缀改成_zip_unzip.txt
+    unzip(str1.c_str());
+}
+```
+
+- 函数`buildCodeTable`作用是将压缩文件中的如何解压缩的信息读入并且生成码表，由函数`loadZip`调用。程序可以自行生成码表，不需要手动输入，方便操作。
+
+```cpp
+void buildCodeTable(int n) {//建立编码列表函数 
+	int now = 1;
+	for (int i = 0; i < n; ++i) {
+		char now_char = unzip_chlen[now].first;
+		unzip_code[now_char] += unzip_text[i];
+		if (unzip_code[now_char].length() == unzip_chlen[now].second) {
+			unzip_decode[unzip_code[now_char]] = now_char; 
+			now++;
+		}
+	}
+}
+```
+
+优缺点：
+
+- 解码信息存储在文件中，不必手工输入，操作简单
+- 由于和其他函数交互的原因，一次解压后再次解压会出现乱码
 #### 3.2.4.与其他模块交互
 - 学生用户可以在个人主页中通过课程表选定课程或者通过搜索来创建课程类实例并进入课程界面实现课程提供的各种功能
 #### 3.2.5.执行效果
-作业名称查询
-![](.assets/作业名称查询.png)
-资料权重排序
-![](.assets/资料权重排序.png)
+- 提交课程资料
+
+![提交课程资料](.assets/提交课程资料.png)
+
+- 资料权重排序
+
+  ![](.assets/资料权重排序-165519155957817.png)
+
+- 作业名称查询
+
+  ![](.assets/作业名称查询-165519167113219.png)
+
+  
+
 压缩解压测试
 ![原始](.assets/原始.png)
 ![解压](.assets/解压.png)
@@ -438,6 +511,5 @@ void compress(string str) {
 ## 7. 参考文献
 
 
-[^1]:[参考文献](https://blog.csdn.net/qq_44628595/article/details/117350096)
-
-[^2]: [哈夫曼压缩算法]()
+[^1]: [哈夫曼压缩算法](https://zhuanlan.zhihu.com/p/144562146)
+[^2]: [二进制文件处理](http://c.biancheng.net/view/302.html)
