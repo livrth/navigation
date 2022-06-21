@@ -8,7 +8,7 @@ __Team Member:__
 
 __Compile & Run:__
 
-Dependency：
+Dependency:
 
 - GCC compiler on Windows systems (mingw64)
 - GCC version support >= C++14
