@@ -13,7 +13,7 @@ Dependency：
 - GCC compiler on Windows systems (mingw64)
 - GCC version support >= C++14
 - CMake version >= 3.21
-- bash shell for build in terminal
+- Bash shell for build in terminal
 
 
 Use CMake to build with bash:
