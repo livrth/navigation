@@ -6,6 +6,20 @@ __Team Member:__
 - [@likely-dog](https://github.com/likely-dog)
 - [@guanshuidong](https://github.com/guanshuidong)
 
+_6/28/2022 Update: The final score of this course design is (95/100), even though **we didn't write any GUI**._
+
+__Featured Algorithms:__
+
+- [Aho–Corasick algorithm](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm)
+- [Special shortest path problem solved using Floyd's algorithm and dynamic programming](https://stackoverflow.com/questions/222413/find-the-shortest-path-in-a-graph-which-visits-certain-nodes)
+
+__Algorithms & DS used:__
+
+- [Huffman coding](https://en.wikipedia.org/wiki/Huffman_coding)
+- [Binary search tree](https://en.wikipedia.org/wiki/Binary_search_tree)
+- [Floyd–Warshall algorithm](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)
+- and other basic algorithms...
+
 __Compile & Run:__
 
 Dependency:
