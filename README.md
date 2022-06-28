@@ -6,7 +6,7 @@ __Team Member:__
 - [@likely-dog](https://github.com/likely-dog)
 - [@guanshuidong](https://github.com/guanshuidong)
 
-_6/28/2022 Update: The final score of this course design is (95/100), even though **we didn't write any GUI**._
+_6/28/2022 Update: The final score of this course design is (95/100), even though **we didn't write any GUI**. Since our team members are not all familiar with C++, the code implementation is very naive and simple, but all the requirements have been realized._
 
 __Featured Algorithms:__
 
